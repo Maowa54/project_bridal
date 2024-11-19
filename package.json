@@ -1,0 +1,51 @@
+{
+  "name": "trendyera",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.25.7",
+    "@fortawesome/fontawesome-free": "^6.6.0",
+    "axios": "^1.7.7",
+    "bootstrap-icons": "^1.11.3",
+    "flowbite": "^2.5.2",
+    "nouislider": "^15.8.1",
+    "nprogress": "^0.2.0",
+    "react": "^18.3.1",
+    "react-apexcharts": "^1.4.1",
+    "react-dom": "^18.3.1",
+    "react-hot-toast": "^2.4.1",
+    "react-icons": "^5.3.0",
+    "react-range-slider-input": "^3.0.7",
+    "react-router-dom": "^6.26.2",
+    "react-select": "^5.8.1",
+    "react-slick": "^0.30.2",
+    "react-slider": "^2.0.6",
+    "react-tailwindcss-datepicker": "^1.7.2",
+    "recharts": "^2.13.0",
+    "slick-carousel": "^1.8.1",
+    "sweetalert2": "^11.14.3"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.9.0",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "autoprefixer": "^10.4.20",
+    "daisyui": "^4.12.13",
+    "eslint": "^9.9.0",
+    "eslint-plugin-react": "^7.35.0",
+    "eslint-plugin-react-hooks": "^5.1.0-rc.0",
+    "eslint-plugin-react-refresh": "^0.4.9",
+    "globals": "^15.9.0",
+    "postcss": "^8.4.43",
+    "tailwindcss": "^3.4.10",
+    "vite": "^5.4.1"
+  }
+}

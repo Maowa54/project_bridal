@@ -1,0 +1,98 @@
+{
+    "status": true,
+    "message": "Products retrieved successfully",
+    "data": {
+        "current_page": 1,
+        "data": [
+            {
+                "id": 41,
+                "unique_id": "P-00041",
+                "client_id": 12,
+                "user_id": 12,
+                "business_id": 8,
+                "name": "Orange",
+                "short_desc": "sfdsgfd",
+                "image": "12_3802_1727847111.webp",
+                "category_id": 11,
+                "is_published": 1,
+                "price": 30000,
+                "stock": 51,
+                "code": "EPP78060118",
+                "buying_price": 222,
+                "has_variation": 0,
+                "is_discount": 0,
+                "discount_amount": "22",
+                "discount_date": null,
+                "stock_location_id": 15,
+                "created_by": 12,
+                "created_at": "2024-10-02T05:32:26.000000Z",
+                "updated_at": "2024-10-02T05:35:01.000000Z",
+                "product_variation": [],
+                "variation_combinations": [],
+                "category": {
+                    "id": 11,
+                    "name": "Food"
+                }
+            },
+            {
+                "id": 40,
+                "unique_id": "P-00040",
+                "client_id": 12,
+                "user_id": 12,
+                "business_id": 8,
+                "name": "T Shirt",
+                "short_desc": "sfvdsvggd hrfhtr",
+                "image": "12_9364_1727847040.webp",
+                "category_id": 10,
+                "is_published": 1,
+                "price": 0,
+                "stock": 0,
+                "code": "EPP86644360",
+                "buying_price": 0,
+                "has_variation": 1,
+                "is_discount": 0,
+                "discount_amount": null,
+                "discount_date": null,
+                "stock_location_id": 15,
+                "created_by": 12,
+                "created_at": "2024-10-02T05:31:09.000000Z",
+                "updated_at": "2024-10-02T05:31:09.000000Z",
+                "product_variation": [
+                    {
+                        "id": 49,
+                        "product_id": 40,
+                        "variation_id": 4,
+                        "variaton_values": "xxl",
+                        "created_at": "2024-10-02T05:31:09.000000Z",
+                        "updated_at": "2024-10-02T05:31:09.000000Z",
+                        "variation": {
+                            "id": 4,
+                            "name": "size"
+                        }
+                    }
+                ],
+                "variation_combinations": [
+                    {
+                        "id": 29,
+                        "product_id": 40,
+                        "values": "xxl",
+                        "buying_price": 22,
+                        "price": 22,
+                        "stock": 22,
+                        "discount_date": "2024-10-17",
+                        "discount": 22,
+                        "code": "EPP86644360",
+                        "created_at": "2024-10-02T05:31:09.000000Z",
+                        "updated_at": "2024-10-02T05:31:09.000000Z"
+                    }
+                ],
+                "category": {
+                    "id": 10,
+                    "name": "Cloth"
+                }
+            }
+        ],
+       
+        "total": 2
+    }
+}

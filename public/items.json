@@ -1,0 +1,38 @@
+[
+    {
+      "id": 1,
+      "name": "Food",
+      "imageUrl": "/assets/Food.jpg"
+    },
+    {
+      "id": 2,
+      "name": "Mens Shoe",
+      "imageUrl": "/assets/Shoe.jpg"
+    },
+    {
+      "id": 3,
+      "name": "Organic Food",
+      "imageUrl": "/assets/organic.jpg"
+    },
+    {
+      "id": 4,
+      "name": "Womens Shoe",
+      "imageUrl": "/assets/women-shoe.jpg"
+    },
+    {
+      "id": 5,
+      "name": "Womens Clothing",
+      "imageUrl": "/assets/women-clothing.jpg"
+    },
+    {
+      "id": 6,
+      "name": "Mens Clothing",
+      "imageUrl": "/assets/men-clothing.jpg"
+    },
+    {
+      "id": 7,
+      "name": "Kids Clothing",
+      "imageUrl": "/assets/kids-clothing.jpg"
+    }
+  ]
+  

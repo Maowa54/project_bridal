@@ -1,0 +1,130 @@
+
+[
+  {
+    "title": "Dashboard",
+    "path": "/dashboard",
+    "icon": "FaTachometerAlt"
+  },
+  {
+    "title": "Config",
+    "icon": "FaCogs",
+    "submenu": [
+      
+      {
+        "title": "User",
+        "path": "/config/user"
+      },
+      {
+        "title": "Invoice",
+        "path": "/config/invoice"
+      },
+      {
+        "title": "Api",
+        "path": "/config/api"
+      },
+      {
+        "title": "SMS",
+        "path": "/config/sms"
+      },
+      {
+        "title": "Low Stock",
+        "path": "/config/low-stock"
+      }
+      
+    ]
+  },
+  {
+    "title": "Product",
+    "icon": "FaBox",
+    "submenu": [
+      {
+        "title": "Create Product",
+        "path": "/product/create-product"
+      },
+      {
+        "title": "All Product",
+        "path": "/product/all-product"
+      },
+    
+     
+      {
+        "title": "Variation",
+        "path": "/product/variation"
+      },
+      {
+        "title": "Stock Location",
+        "path": "/product/stock-location"
+      }
+    ]
+  },
+  {
+    "title": "Category",
+    "path": "/category",
+    "icon": "FaTags"
+  },
+  {
+    "title": "Order",
+    "path": "/order",
+    "icon": "FaShoppingCart"
+  },
+  {
+    "title": "Follow Up",
+    "path": "/follow-up",
+    "icon": "FaClipboardList"
+  },
+  {
+    "title": "Stock",
+    "icon": "FaWarehouse",
+    "submenu": [
+      {
+        "title": "Stock Adjust",
+        "path": "/stock/all"
+      },
+      {
+        "title": "Add Stock",
+        "path": "/stock/add"
+      }
+    ]
+  },
+  {
+    "title": "POS",
+    "path": "/pos",
+    "icon": "FaCashRegister"
+  },
+  {
+    "title": "Access",
+    "path": "/access",
+    "icon": "FaLock"
+  },
+  {
+    "title": "Analytics",
+    "icon": "FaChartLine",
+    "submenu": [
+      {
+        "title": "Report",
+        "path": "/analytics/report"
+      },
+      {
+        "title": "Sales Target",
+        "path": "/analytics/sales-target"
+      }
+    ]
+  },
+  {
+    "title": "Profile",
+    "path": "/profile",
+    "icon": "FaUserGraduate"
+  },
+  {
+    "title": "Customer",
+    "path": "/customer",
+    "icon": "FaUser"
+  },
+  {
+    "title": "Payment",
+    "path": "/payment",
+    "icon": "FaCreditCard"
+  }
+]
+
+
