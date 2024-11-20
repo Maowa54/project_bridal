@@ -1,74 +1,106 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import Count from "../../Component/Frontend/Count";
 import SocialMedia from "../../Component/Frontend/SocialMedia";
 import Navbar from "../../Component/Frontend/Navbar";
 import Footer from "../../Component/Frontend/Footer";
+import AddToCart from "../../Component/Frontend/AddToCart";
+
 
 const Singleproduct = () => {
+  const [products, setProducts] = useState([]);
+  const [CategoryProducts, setCategoryProducts] = useState([]);
 
-   const [products, setProducts] = useState([]);
 
-   useEffect(() => {
-    const storedProducts = localStorage.getItem('allProducts');
-    if (storedProducts) {
-      setProducts(JSON.parse(storedProducts)); 
-      
-      console.log(products);
-    }
-  }, []);
-   
+  useEffect(() => {
+   const storedProducts = localStorage.getItem('allProducts');
+   if (storedProducts) {
+     setProducts(JSON.parse(storedProducts));
+     
+   }
+ }, []);
 
-  const location = useLocation();
-  const { product } = location.state || {}; // Get the product passed from ProductsPage
-  if (!product) {
-    return <p>Product not found</p>;
-  }
+ useEffect(() => {
+   console.log('Updated products state:', products);
+ }, [products]);
+  
 
-  console.log(product);
+ const location = useLocation();
+ const { product } = location.state || {};
+ if (!product) {
+   return <p>Product not found</p>;
+ }
+
+ useEffect(() => {
+   if (product) {
+     const filtered = products.filter(
+       (p) => p.category_id === product.category_id
+     );
+     setCategoryProducts(filtered);
+   }
+ }, [products, product]);
+
+
+
+
+ console.log(CategoryProducts);
 
   const [mainImage, setMainImage] = useState("/assets/Images/bride-5.png");
   const thumbnails = ["bride-6.png", "bride-7.png", "bride-8.png"];
 
-  // const product = {
-  //   name: "EMERALD ROSE",
-  //   description:
-  //     "Minimalistic, sophisticated color combinations will give you an elegant look with this intricate piece. Very quality full stone work and fine jardosi is the main work pattern for this one with bit of self color sequence .",
-  //   price: "9750 BDT",
-  //   details: {
-  //     color: "Green",
-  //     fabric: "Maslin",
-  //     kamiz: "Maslin",
-  //     dupatta: "Maslin",
-  //     inner: "Silk",
-  //     pant: "Silk",
-  //   },
-  // };
+ 
+const [count, setCount] = useState(1);
 
+const increment = () => setCount(count + 1);
+
+const decrement = () => {
+  if (count > 1) setCount(count - 1);
+};
+
+
+
+
+const handleCart = () => {
+  const existingProducts = JSON.parse(localStorage.getItem("products")) || [];
+
+  // Check if product already exists in cart
+  const productIndex = existingProducts.findIndex(
+    (item) => item.id === product.id
+  );
+
+  if (productIndex >= 0) {
+    // If the product is already in cart, update the quantity
+    existingProducts[productIndex].count += count;
+  } else {
+    // Add the new product with quantity
+    existingProducts.push({ ...product, count });
+  }
+
+  localStorage.setItem("products", JSON.stringify(existingProducts));
+};
+
+  // State to manage the modal visibility
   const [showModal, setShowModal] = useState(false);
   const handleAddToCart = () => setShowModal(true);
   const [isPopupVisible, setPopupVisible] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false); // State for the cart modal
 
   const closeModal = () => setShowModal(false);
-  const closeCart = () => setIsModalOpen(false);
 
   const handleButtonClick = () => setPopupVisible(true);
   const handleClosePopup = () => setPopupVisible(false);
-  const handleViewCart = () => setIsModalOpen(true); // Open cart modal
 
-  // Close cart modal
+  const [isModalOpen, setIsModalOpen] = useState(false); // State to handle modal visibility
 
-  const [count, setCount] = useState(1); // Initial count value
-
-  const handleCountChange = (newCount) => {
-    setCount(newCount); // Update count in the Order component
+  const handleViewCart = () => {
+    setIsModalOpen(true); // Open the modal
   };
 
+  const handleCloseCart = () => {
+    setIsModalOpen(false); // Close the modal
+  };
   return (
     <div>
-    <Navbar/>
-    <div className="container mx-auto flex">
+      <Navbar />
+      <div className="container mx-auto flex">
         <SocialMedia />
         <div className="w-[90%] mx-auto">
           <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -112,10 +144,35 @@ const Singleproduct = () => {
                 ))}
               </div> */}
               {/* Buttons */}
+
+              <div className="flex space-x-3 mt-4  items-center  ">
+                <p className="text-sm md:text-base ">Quantity:</p>
+                <div className="flex items-center ">
+                  <button
+                    onClick={decrement}
+                    className="size-8 md:text-lg font-semibold bg-black text-white hover:bg-gray-800"
+                  >
+                    -
+                  </button>
+                  <span className="text-sm md:text-base pt-1 text-center border border-black size-8 font-medium">
+                    {count}
+                  </span>
+                  <button
+                    onClick={increment}
+                    className="size-8 md:text-lg font-semibold bg-black text-white hover:bg-gray-800"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+
               <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 mt-8">
                 <button
                   className="inline-flex justify-center text-nowrap items-center w-full sm:w-auto px-5 py-2 text-sm md:text-base bg-transparent border border-teal-700 text-teal-700 rounded-lg font-semibold hover:bg-teal-700 hover:text-white transition-colors duration-300 ease-in-out hover:scale-105 hover:shadow-2xl shadow"
-                  onClick={handleAddToCart}
+                  onClick={() => {
+                    handleAddToCart(); // Close the modal
+                    handleCart(product);
+                  }}
                 >
                   <i className="fas fa-shopping-cart mr-2 "></i>Add To Cart
                 </button>
@@ -152,19 +209,17 @@ const Singleproduct = () => {
                         </button>
                         <button
                           className="px-4 py-2  text-xs md:text-sm bg-teal-700 text-white rounded hover:bg-teal-600 text-nowrap"
-                          onClick={() => {
-                            closeModal(); // Close the modal
-                            handleViewCart(); // Open the cart
-                          }}
+                          onClick={handleViewCart} // When clicked, open the modal
                         >
                           View Cart
                         </button>
+                        {isModalOpen && <AddToCart onClose={handleCloseCart} />}{" "}
                       </div>
                     </div>
                   </div>
                 )}
 
-                <Link to="/order">
+                <Link to="/order" onClick={handleCart}>
                   <button className="inline-flex justify-center items-center w-full text-nowrap sm:w-auto px-8 py-2 text-sm md:text-base bg-gradient-to-r from-teal-500 to-teal-700 border border-teal-200 text-white font-semibold rounded-lg transform transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-2xl">
                     <i className="fas fa-shopping-bag mr-2"></i>Buy Now
                   </button>
@@ -258,15 +313,16 @@ const Singleproduct = () => {
 
               <div className="mt-6">
                 <p className="py-2 text-justify text-sm md:text-base ">
-                <span className="font-semibold"> Care : </span>  Dry Clean Only Preserve: in air tight poly.{" "}
+                  <span className="font-semibold"> Care : </span> Dry Clean Only
+                  Preserve: in air tight poly.{" "}
                 </p>
               </div>
               <div className="">
                 <p className="py-2 text-justify text-sm md:text-base">
-                 <span className="font-semibold"> Disclaimer:</span> Product colour may slightly vary due to
-                  photographic lighting sources or your monitor setting. Lace
-                  and/or Embellishments and Fabric or Material may vary
-                  depending on availability.
+                  <span className="font-semibold"> Disclaimer:</span> Product
+                  colour may slightly vary due to photographic lighting sources
+                  or your monitor setting. Lace and/or Embellishments and Fabric
+                  or Material may vary depending on availability.
                 </p>{" "}
               </div>
             </div>
@@ -277,34 +333,20 @@ const Singleproduct = () => {
           </div>
           {/* Client Images */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-4 justify-items-center">
-            <div className="mb-2">
-              <Link to="/singleProduct">
-                <img
-                  src="/assets/Images/Bride-2.png"
-                  alt="Client wearing bridal attire 1"
-                  className="w-full h-auto transition-transform duration-300 ease-in-out hover:scale-105"
-                />
-              </Link>
-            </div>
-            <div className="mb-2">
-              <Link to="/singleProduct">
-                <img
-                  src="/assets/Images/Bride-3.png"
-                  alt="Client wearing bridal attire 2"
-                  className="w-full h-auto transition-transform duration-300 ease-in-out hover:scale-105"
-                />
-              </Link>
-            </div>
-            <div className="mb-2">
-              <Link to="/singleProduct">
-                <img
-                  src="/assets/Images/bride-4.png"
-                  alt="Client wearing bridal attire 3"
-                  className="w-full h-auto transition-transform duration-300 ease-in-out hover:scale-105"
-                />
-              </Link>
-            </div>
-          </div>
+  {CategoryProducts.filter((item) => item.id !== product.id) // Exclude the selected product
+                .map((product) => (
+    <div className="mb-2" key={product.id}>
+      <Link to="/singleProduct" state={{ product }}>
+        <img
+          src={`https://expressitplus.co.uk/public/storage/product/${product.image}`}
+          alt={product.name || "Product image"}
+          className="w-full h-auto transition-transform duration-300 ease-in-out hover:scale-105"
+        />
+      </Link>
+    </div>
+  ))}
+</div>
+
 
           {/* View More Button */}
           <div className="text-center my-5">
@@ -317,90 +359,10 @@ const Singleproduct = () => {
           </div>
         </div>
 
-        {/* Cart Modal */}
-        {isModalOpen && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-end items-start z-50 overflow-y-auto">
-            <div className="bg-white w-full sm:w-[400px] p-6 rounded-sm    ">
-              <div className="flex justify-between">
-                <h3 className="text-base md:text-lg font-bold">
-                  Shopping Cart
-                </h3>
-                <button
-                  className="fas fa-close text-base md:text-xl hover:text-gray-500"
-                  onClick={closeCart}
-                ></button>
-              </div>
-              <p className="mt-3 text-sm md:text-base">
-                Only $714.00 away from Free Shipping
-              </p>
-
-              <div className="flex items-start mt-4">
-                <img
-                  src="/assets/Images/Rectangle 41 (1).png"
-                  alt="Product"
-                  className="w-24 h-24 mr-4 sm:w-32 sm:h-28"
-                />
-                <div className="flex flex-col justify-between text-xs md:text-sm">
-                  <span className="block font-semibold">
-                    (Product 1) Sample - Clothing And Accessory Boutiques For
-                    Sale
-                  </span>
-                  <span>Gray / XS</span>
-                  <span className="font-semibold">৳188</span>
-                  <div className="flex items-center mt-2">
-                    <Count
-                      initialValue={count}
-                      onCountChange={handleCountChange}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex items-start mt-4 mb-8">
-                <img
-                  src="/assets/Images/Rectangle 41 (1).png"
-                  alt="Product"
-                  className="w-24 h-24 mr-4 sm:w-32 sm:h-28"
-                />
-                <div className="flex flex-col justify-between text-xs md:text-sm">
-                  <span className="block font-semibold">
-                    (Product 2) Sample - Clothing And Accessory Boutiques For
-                    Sale
-                  </span>
-                  <span>Gray / XS</span>
-                  <span className="font-semibold">৳188</span>
-                  <div className="flex items-center mt-2">
-                    <Count
-                      initialValue={count}
-                      onCountChange={handleCountChange}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="border-t border-gray-300 mt-4 mb-4"></div>
-              <div className="flex justify-between font-medium  text-sm md:text-base">
-                <p>Subtotal:</p>
-                <p>$180</p>
-              </div>
-              <div className="flex justify-between font-medium text-sm md:text-base">
-                <p>Total:</p>
-                <p>$180</p>
-              </div>
-
-              <div className="flex justify-center mt-6 md:mt-9 md:mb-3 text-sm md:text-base">
-                <Link to="/order">
-                  <button className="px-12 py-1 md:px-16 md:py-2 text-nowrap text-white bg-gradient-to-b from-teal-500 to-teal-700 rounded-md hover:scale-105">
-                    Check Out
-                  </button>
-                </Link>
-              </div>
-            </div>
-          </div>
-        )}
+       
       </div>
-    <Footer/>
-  </div>
+      <Footer />
+    </div>
   );
 };
 

@@ -3,6 +3,8 @@ import "bootstrap-icons/font/bootstrap-icons.css"; // Import Bootstrap Icons
 import "@fortawesome/fontawesome-free/css/all.min.css"; // Import Font Awesome CSS
 import { Link } from "react-router-dom";
 import Count from "./Count";
+import AddToCart from "./AddToCart";
+
 
 
 const Navbar = () => {
@@ -17,13 +19,12 @@ const Navbar = () => {
   };
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [count, setCount] = useState(1);
+  const handleViewCart = () => {
+    setIsModalOpen(true); // Open the modal
+  };
 
-  const handleViewCart = () => setIsModalOpen(true);
-  const closeCart = () => setIsModalOpen(false);
-
-  const handleCountChange = (newCount) => {
-    setCount(newCount);
+  const handleCloseCart = () => {
+    setIsModalOpen(false); // Close the modal
   };
 
   return (
@@ -112,10 +113,10 @@ const Navbar = () => {
                 className="relative text-black text-2xl hover:text-gray-500 focus:outline-none"
               >
                 <i className="bi bi-cart text-lg md:text-xl lg:text-2xl"></i>
-                <span className="absolute top-2 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-600 text-white rounded-full size-4 flex items-center justify-center text-xs font-bold">
-                  2{" "}
-                </span>
+              
               </button>
+              {isModalOpen && <AddToCart onClose={handleCloseCart} />}
+
              <Link to="/admin/category">
              <button>
               <i className="bi bi-person text-lg"></i>
@@ -126,85 +127,7 @@ const Navbar = () => {
         </nav>
       </div>
 
-      {/* Cart Modal */}
-      {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-end items-start z-50 overflow-y-auto">
-          <div className="bg-white w-full sm:w-[400px] p-6 rounded-sm">
-            <div className="flex justify-between">
-              <h3 className="text-base md:text-lg font-bold">Shopping Cart</h3>
-              <button
-                className="fas fa-close text-base md:text-xl hover:text-gray-500"
-                onClick={closeCart}
-              ></button>
-            </div>
-            <p className="mt-3 text-sm md:text-base">
-              Only $714.00 away from Free Shipping
-            </p>
-
-            {/* Product Item */}
-            <div className="flex items-start mt-4">
-              <img
-                src="/assets/Images/Rectangle 41 (1).png"
-                alt="Product"
-                className="w-24 h-24 mr-4 sm:w-32 sm:h-28"
-              />
-              <div className="flex flex-col justify-between text-xs md:text-sm">
-                <span className="block font-semibold">
-                  (Product 1) Sample - Clothing And Accessory Boutiques For Sale
-                </span>
-                <span>Gray / XS</span>
-                <span className="font-semibold">৳188</span>
-                <div className="flex items-center mt-2">
-                  <Count
-                    initialValue={count}
-                    onCountChange={handleCountChange}
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Additional Product Items */}
-            <div className="flex items-start mt-4 mb-8">
-              <img
-                src="/assets/Images/Rectangle 41 (1).png"
-                alt="Product"
-                className="w-24 h-24 mr-4 sm:w-32 sm:h-28"
-              />
-              <div className="flex flex-col justify-between text-xs md:text-sm">
-                <span className="block font-semibold">
-                  (Product 2) Sample - Clothing And Accessory Boutiques For Sale
-                </span>
-                <span>Gray / XS</span>
-                <span className="font-semibold">৳188</span>
-                <div className="flex items-center mt-2">
-                  <Count
-                    initialValue={count}
-                    onCountChange={handleCountChange}
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="border-t border-gray-300 mt-4 mb-4"></div>
-            <div className="flex justify-between text-sm md:text-base">
-              <p>Subtotal:</p>
-              <p>$180</p>
-            </div>
-            <div className="flex justify-between text-sm md:text-base">
-              <p>Total:</p>
-              <p>$180</p>
-            </div>
-
-            <div className="flex justify-center mt-6 md:mt-9 md:mb-3 text-sm md:text-base">
-              <Link to="/order">
-                <button className="px-12 py-1 md:px-16 md:py-2 text-white text-nowrap rounded bg-gradient-to-b from-teal-500 to-teal-700 hover:scale-105">
-                  Check Out
-                </button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      )}
+      
     </div>
   );
 };

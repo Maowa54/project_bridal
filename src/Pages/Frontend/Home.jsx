@@ -24,6 +24,52 @@ const Home = () => {
 
   const [products, setProducts] = useState([]);
 
+  const [categories, setCategories] = useState([]);
+
+  const fetchCategories = async () => {
+    try {
+      const cacheKey = "allCategories";
+      const cacheTimeKey = "allCategories_timestamp";
+      const cacheValidityDuration = 60 * 60 * 1000; // 1 hour
+
+      const cachedData = localStorage.getItem(cacheKey);
+      const cachedTimestamp = localStorage.getItem(cacheTimeKey);
+      const now = Date.now();
+
+      if (cachedData && cachedTimestamp && (now - parseInt(cachedTimestamp) < cacheValidityDuration)) {
+        // Use cached data if it's still valid
+        setCategories(JSON.parse(cachedData));
+        console.log("Using cached data:", JSON.parse(cachedData)); // Debug log
+        return;
+      }
+
+      // Fetch data if cache is not valid
+      const response = await axios.get("https://expressitplus.co.uk/api/all/category/get");
+
+      if (response.data.status) {
+        const fetchedCategories = response.data.data;
+
+        // Cache fetched data and timestamp
+        localStorage.setItem(cacheKey, JSON.stringify(fetchedCategories));
+        localStorage.setItem(cacheTimeKey, now.toString());
+
+        setCategories(fetchedCategories);
+        console.log("Fetched new data:", fetchedCategories); // Debug log
+      }
+    } catch (error) {
+      console.error("Error fetching API data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []); // Empty dependency array ensures it runs only once on mount
+
+  // Optionally log categories when they change
+  useEffect(() => {
+    console.log("Categories updated:", categories);
+  }, [categories]);
+
   const fetchApiData = async () => {
     try {
       const cacheKey = 'allProducts';

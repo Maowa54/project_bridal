@@ -106,6 +106,8 @@ const SingleProduct = () => {
 
     localStorage.setItem("products", JSON.stringify(existingProducts));
   };
+
+  
   // Assuming product_variation is part of the product object
   const variations = product.product_variation;
 
