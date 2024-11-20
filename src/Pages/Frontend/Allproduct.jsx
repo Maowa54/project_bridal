@@ -3,11 +3,10 @@ import RangeSlider from "../../Component/Frontend/Allproduct/RangeSlider";
 import SocialMedia from "../../Component/Frontend/SocialMedia";
 import Footer from "../../Component/Frontend/Footer";
 import Navbar from "../../Component/Frontend/Navbar";
-
 const AllProduct = () => {
   return (
     <div>
-      <Navbar />
+     <Navbar/>
 
       <div className="container mx-auto ">
         <div className="w-[90%] mx-auto mt-5">
@@ -208,7 +207,7 @@ const AllProduct = () => {
           </div>
         </div>
       </div>
-      <Footer />
+      <Footer/>
     </div>
   );
 };

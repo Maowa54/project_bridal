@@ -1,28 +1,49 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import Count from "../../Component/Frontend/Count";
 import SocialMedia from "../../Component/Frontend/SocialMedia";
-import Footer from "../../Component/Frontend/Footer";
 import Navbar from "../../Component/Frontend/Navbar";
+import Footer from "../../Component/Frontend/Footer";
 
 const Singleproduct = () => {
+
+   const [products, setProducts] = useState([]);
+
+   useEffect(() => {
+    const storedProducts = localStorage.getItem('allProducts');
+    if (storedProducts) {
+      setProducts(JSON.parse(storedProducts)); 
+      
+      console.log(products);
+    }
+  }, []);
+   
+
+  const location = useLocation();
+  const { product } = location.state || {}; // Get the product passed from ProductsPage
+  if (!product) {
+    return <p>Product not found</p>;
+  }
+
+  console.log(product);
+
   const [mainImage, setMainImage] = useState("/assets/Images/bride-5.png");
   const thumbnails = ["bride-6.png", "bride-7.png", "bride-8.png"];
 
-  const product = {
-    name: "EMERALD ROSE",
-    description:
-      "Minimalistic, sophisticated color combinations will give you an elegant look with this intricate piece. Very quality full stone work and fine jardosi is the main work pattern for this one with bit of self color sequence .",
-    price: "9750 BDT",
-    details: {
-      color: "Green",
-      fabric: "Maslin",
-      kamiz: "Maslin",
-      dupatta: "Maslin",
-      inner: "Silk",
-      pant: "Silk",
-    },
-  };
+  // const product = {
+  //   name: "EMERALD ROSE",
+  //   description:
+  //     "Minimalistic, sophisticated color combinations will give you an elegant look with this intricate piece. Very quality full stone work and fine jardosi is the main work pattern for this one with bit of self color sequence .",
+  //   price: "9750 BDT",
+  //   details: {
+  //     color: "Green",
+  //     fabric: "Maslin",
+  //     kamiz: "Maslin",
+  //     dupatta: "Maslin",
+  //     inner: "Silk",
+  //     pant: "Silk",
+  //   },
+  // };
 
   const [showModal, setShowModal] = useState(false);
   const handleAddToCart = () => setShowModal(true);
@@ -46,16 +67,16 @@ const Singleproduct = () => {
 
   return (
     <div>
-      <Navbar />
-      <div className="container mx-auto flex">
+    <Navbar/>
+    <div className="container mx-auto flex">
         <SocialMedia />
         <div className="w-[90%] mx-auto">
           <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Image Section */}
             <div className="text-center">
               <img
-                src={mainImage}
-                alt="Dress Picture"
+                src={`https://expressitplus.co.uk/public/storage/product/${product.image}`}
+                alt={product.name}
                 className="max-h-[560px] w-[90%] transition-transform duration-300 ease-in-out hover:scale-105 mx-auto object-cover"
               />
               <div className="mt-5 grid grid-cols-3 gap-4">
@@ -80,16 +101,16 @@ const Singleproduct = () => {
                   Price - {product.price}
                 </p>
                 <p className="py-2 text-justify text-sm md:text-base">
-                  {product.description}
+                  {product.short_desc}
                 </p>
               </div>
-              <div className="mt-4">
+              {/* <div className="mt-4">
                 {Object.entries(product.details).map(([key, value]) => (
                   <p key={key} className="mb-1 md:text-lg text-base">
                     {key.charAt(0).toUpperCase() + key.slice(1)} - {value}
                   </p>
                 ))}
-              </div>
+              </div> */}
               {/* Buttons */}
               <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 mt-8">
                 <button
@@ -236,13 +257,13 @@ const Singleproduct = () => {
               </div>
 
               <div className="mt-6">
-                <p className="py-2 text-justify text-sm md:text-base">
-                  Care: Dry Clean Only Preserve: in air tight poly.{" "}
+                <p className="py-2 text-justify text-sm md:text-base ">
+                <span className="font-semibold"> Care : </span>  Dry Clean Only Preserve: in air tight poly.{" "}
                 </p>
               </div>
               <div className="">
                 <p className="py-2 text-justify text-sm md:text-base">
-                  Disclaimer: Product colour may slightly vary due to
+                 <span className="font-semibold"> Disclaimer:</span> Product colour may slightly vary due to
                   photographic lighting sources or your monitor setting. Lace
                   and/or Embellishments and Fabric or Material may vary
                   depending on availability.
@@ -378,9 +399,8 @@ const Singleproduct = () => {
           </div>
         )}
       </div>
-
-      <Footer />
-    </div>
+    <Footer/>
+  </div>
   );
 };
 

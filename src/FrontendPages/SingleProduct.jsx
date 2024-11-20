@@ -73,6 +73,9 @@ const SingleProduct = () => {
   );
   console.log(CategoryProducts);
 
+
+
+  //count starts
   const [count, setCount] = useState(1);
 
   const increment = () => setCount(count + 1);
@@ -80,6 +83,10 @@ const SingleProduct = () => {
   const decrement = () => {
     if (count > 1) setCount(count - 1);
   };
+  
+  //count ends
+
+  
 
   const handleCart = () => {
     const existingProducts = JSON.parse(localStorage.getItem("products")) || [];
@@ -102,80 +109,6 @@ const SingleProduct = () => {
   // Assuming product_variation is part of the product object
   const variations = product.product_variation;
 
-  // const MoreToLove = [
-  //   {
-  //     id: 1,
-  //     image: "/component/Bag.png",
-  //     title:
-  //       "Korean Style Girl Princess Bag Cute Linen Crossbody Bags for Girls Bowknot Hand Bags Toddler Purses and Handbags Gift",
-  //     price: "৳1200",
-  //     oldPrice: "৳1750",
-  //   },
-  //   {
-  //     id: 2,
-  //     image: "/component/Ring.png",
-  //     title: "Diamond Cut Ring Blue Color SI1-SI2 Clarity",
-  //     price: "৳600",
-  //     oldPrice: "৳900",
-  //   },
-  //   {
-  //     id: 3,
-  //     image: "/component/hairclip.png",
-  //     title:
-  //       "Baby Girl Cute Plush Cartoon Flower Bow Hair Clips Children Pink Color",
-  //     price: "৳300",
-  //     oldPrice: "৳550",
-  //   },
-  //   {
-  //     id: 4,
-  //     image: "/component/earing.png",
-  //     title: "Fashion freshwater stone earrings for girls",
-  //     price: "৳550",
-  //     oldPrice: "৳950",
-  //   },
-  //   {
-  //     id: 5,
-  //     image: "/component/shoe.png",
-  //     title: "Sairah Floral Embroideried Jutti Online Pastels & Pop",
-  //     price: "৳1100",
-  //     oldPrice: "৳1400",
-  //   },
-  //   {
-  //     id: 6,
-  //     image: "/component/Churi.png",
-  //     title: "Red Plastic Rajasthani Traditioanl Churi For Girls",
-  //     price: "৳650",
-  //     oldPrice: "৳900",
-  //   },
-  //   {
-  //     id: 7,
-  //     image: "/component/necklace.png",
-  //     title: "Hexagonal Quartz Crystal Pendant Necklaces for Women and Girls ",
-  //     price: "৳400",
-  //     oldPrice: "৳650",
-  //   },
-  //   {
-  //     id: 8,
-  //     image: "/component/Bracelet.png",
-  //     title: "Exclusive Design Diamond Cut Bracelet For Women",
-  //     price: "৳1200",
-  //     oldPrice: "৳1700",
-  //   },
-  //   {
-  //     id: 9,
-  //     image: "/component/jhumka.png",
-  //     title: "Kundon Traditioanl Exclusive Earings For Girls",
-  //     price: "৳500",
-  //     oldPrice: "৳750",
-  //   },
-  //   {
-  //     id: 10,
-  //     image: "/component/watch.png",
-  //     title: "Floral Design Cute Ladies Watch",
-  //     price: "৳800",
-  //     oldPrice: "৳1100",
-  //   },
-  // ];
   const [activeSection, setActiveSection] = useState("description");
 
   // State to manage the modal visibility
@@ -523,10 +456,10 @@ const SingleProduct = () => {
                     className="relative border rounded-lg overflow-hidden shadow"
                   >
                     <Link
-                    to={{
-                      pathname: "/singleProduct",
-                    }}
-                    state={{ product }}
+                      to={{
+                        pathname: "/singleProduct",
+                      }}
+                      state={{ product }}
                     >
                       <img
                         src={`https://expressitplus.co.uk/public/storage/product/${product.image}`}
