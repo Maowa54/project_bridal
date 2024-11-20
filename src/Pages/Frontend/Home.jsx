@@ -72,7 +72,7 @@ const Home = () => {
   console.log(products);
 
   return (
-    <div>
+    <div className=" ">
       <Navbar/>
       <div className="container mx-auto">
         <div className="w-[90%] mx-auto overflow-hidden relative">
@@ -115,7 +115,7 @@ const Home = () => {
 
           {/* Buttons Section */}
           <div className="mt-8">
-            <div className="w-full text-gray-800 md:w-[45%] mx-auto mt-4 flex flex-col md:flex-row justify-center gap-5 text-sm md:text-base">
+            <div className="w-full md:w-[45%] mx-auto mt-4 flex flex-col md:flex-row justify-center gap-5 text-sm md:text-base">
               <Link
                 to="/allproduct"
                 className="w-full  md:flex-1 px-4 py-1 border border-gray-800 font-medium hover:bg-gradient-to-b from-teal-500 to-teal-700 hover:text-white hover:border-teal-400 rounded text-center transition"
@@ -142,7 +142,7 @@ const Home = () => {
             <div className="w-full">
               <Link
                 to="/allproduct"
-                className="w-full font-medium px-4 py-1 border border-gray-800 text-gray-800 hover:bg-gradient-to-b from-teal-500 to-teal-700 hover:text-white hover:border-teal-400 rounded block text-center transition"
+                className="w-full font-medium px-4 py-1 border border-gray-800 hover:bg-gradient-to-b from-teal-500 to-teal-700 hover:text-white hover:border-teal-400 rounded block text-center transition"
               >
                 Bridal
               </Link>
