@@ -11,7 +11,7 @@ const EditSingleProduct = () => {
     const fetchProduct = async () => {
       try {
         // Fetch the product using the ID and token
-        const response = await axios.get(`https://expressitplus.co.uk/api/product/${id}`, {
+        const response = await axios.get(`https://admin.attireidyll.com/api/product/${id}`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },

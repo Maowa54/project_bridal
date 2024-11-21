@@ -36,7 +36,7 @@ const LowStock = () => {
     }
     setLoading(true); // Start loading
     try {
-      const response = await axios.post('https://expressitplus.co.uk/api/sms/default/set', formData, {
+      const response = await axios.post('https://admin.attireidyll.com/api/sms/default/set', formData, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -84,7 +84,7 @@ const [stock, setStock] = useState({ low_stock: '' }); // Set default structure
 const fetchApiData = async () => {
   try {
     const response = await axios.get(
-      `https://expressitplus.co.uk/api/sms/default/get/${clientId}`,
+      `https://admin.attireidyll.com/api/sms/default/get/${clientId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

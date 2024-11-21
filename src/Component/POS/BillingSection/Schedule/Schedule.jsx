@@ -150,7 +150,7 @@ const Schedule = ({ totalPrice, singleQuantity, variationQuantity, removeAllProd
 
     setLoading(true); // Start loading
     try {
-      const response = await axios.post('https://expressitplus.co.uk/api/order/schedule/create', formData, {
+      const response = await axios.post('https://admin.attireidyll.com/api/order/schedule/create', formData, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },

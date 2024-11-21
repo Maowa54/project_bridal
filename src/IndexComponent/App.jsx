@@ -25,6 +25,7 @@ import Singleproduct from "../Pages/Frontend/Singleproduct";
 import ThankYou from "../Pages/Frontend/ThankYou";
 import Navbar from "../Component/Frontend/Navbar";
 import Footer from "../Component/Frontend/Footer";
+import PreOrder from "../Pages/Frontend/PreOrder";
 
 // Scroll to top component to ensure page scrolls to top on route change
 const ScrollToTop = () => {
@@ -57,7 +58,7 @@ function App() {
             return;
           }
           const response = await axios.get(
-            `https://expressitplus.co.uk/api/dashboard/${clientId}`,
+            `https://admin.attireidyll.com/api/dashboard/${clientId}`,
             {
               headers: { Authorization: `Bearer ${token}` },
             }
@@ -97,6 +98,8 @@ function App() {
           <Route path="/" element={<Home/>} />
           <Route path="/allProduct" element={<AllProduct />} />
           <Route path="/singleProduct" element={<Singleproduct />} />
+          <Route path="/preorder" element={<PreOrder />} />
+
           <Route path="/Order" element={<Order />} />
           <Route path="/thankyou" element={<ThankYou />} />
 

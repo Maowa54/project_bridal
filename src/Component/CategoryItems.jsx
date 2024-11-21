@@ -13,7 +13,7 @@ const CategoryItems = ({ categoryId, onCategoryIdChange }) => {
   // useEffect(() => {
   //   const fetchCategories = async () => {
   //     try {
-  //       const response = await axios.get(`https://expressitplus.co.uk/api/category/get_all/${clientId}`, {
+  //       const response = await axios.get(`https://admin.attireidyll.com/api/category/get_all/${clientId}`, {
   //         headers: {
   //           'Authorization': `Bearer ${token}`,
   //         },
@@ -48,7 +48,7 @@ const CategoryItems = ({ categoryId, onCategoryIdChange }) => {
         }
     
         // Otherwise, make the API call
-        const response = await axios.get(`https://expressitplus.co.uk/api/category/get_all`, {
+        const response = await axios.get(`https://admin.attireidyll.com/api/category/get_all`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },

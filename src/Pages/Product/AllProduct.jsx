@@ -20,7 +20,7 @@ const AllProduct = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get(`https://expressitplus.co.uk/api/products/get`, {
+      const response = await axios.get(`https://admin.attireidyll.com/api/products/get`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -87,7 +87,7 @@ const AllProduct = () => {
   
     if (result.isConfirmed) {
       try {
-        const response = await axios.get(`https://expressitplus.co.uk/api/product/delete/${id}`, {
+        const response = await axios.get(`https://admin.attireidyll.com/api/product/delete/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -191,7 +191,7 @@ const AllProduct = () => {
       <th className="text-[15px]">{startIndex + index + 1}</th>
       <td>
         <img
-          src={`https://expressitplus.co.uk/public/storage/product/${product.image}`}
+          src={`https://admin.attireidyll.com/public/storage/product/${product.image}`}
           alt="Logo"
           className="h-12 w-12"
         />

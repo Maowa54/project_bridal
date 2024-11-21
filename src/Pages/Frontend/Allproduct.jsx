@@ -1,12 +1,43 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import RangeSlider from "../../Component/Frontend/Allproduct/RangeSlider";
 import SocialMedia from "../../Component/Frontend/SocialMedia";
 import Footer from "../../Component/Frontend/Footer";
 import Navbar from "../../Component/Frontend/Navbar";
+import { useEffect, useState } from "react";
 const AllProduct = () => {
+  const location = useLocation();
+  const { category } = location.state || {};
+  if (!category) {
+    return <p>Category not found</p>;
+  }
+  console.log(category);
+
+  const [products, setProducts] = useState([]);
+  const [CategoryProducts, setCategoryProducts] = useState([]);
+
+  useEffect(() => {
+    const storedProducts = localStorage.getItem("allProducts");
+    if (storedProducts) {
+      setProducts(JSON.parse(storedProducts));
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log("Updated products state:", products);
+  }, [products]);
+
+  useEffect(() => {
+    if (category) {
+      const filtered = products.filter((p) => p.category_id === category.id);
+      setCategoryProducts(filtered);
+    }
+  }, [products, category]);
+
+  console.log(CategoryProducts);
+
   return (
     <div>
-     <Navbar/>
+      <Navbar />
 
       <div className="container mx-auto ">
         <div className="w-[90%] mx-auto mt-5">
@@ -26,7 +57,7 @@ const AllProduct = () => {
                   href="#"
                   className="ml-2 text-gray-800 text-base md:text-lg no-underline hover:text-gray-400 transition-colors font-medium duration-300"
                 >
-                  Women
+                 {category.name}
                 </a>
               </div>
 
@@ -108,90 +139,17 @@ const AllProduct = () => {
             {/* Product Images Section */}
             <div className="lg:col-span-9 col-span-12">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {/* Products Grid */}
-                <div>
-                  <Link to="/singleProduct">
-                    <img
-                      src="/assets/Images/bride-16.png"
-                      alt="Bride-1"
-                      className="w-full h-auto transition-transform duration-300 ease-in-out hover:scale-105"
-                    />
-                  </Link>
-                </div>
-                <div>
-                  <Link to="/singleProduct">
-                    <img
-                      src="/assets/Images/bride-15.png"
-                      alt="Bride-2"
-                      className="w-full h-auto transition-transform duration-300 ease-in-out hover:scale-105"
-                    />
-                  </Link>
-                </div>
-                <div>
-                  <Link to="/singleProduct">
-                    <img
-                      src="/assets/Images/bride-16.png"
-                      alt="Bride-3"
-                      className="w-full h-auto transition-transform duration-300 ease-in-out hover:scale-105"
-                    />
-                  </Link>
-                </div>
-
-                <div>
-                  <Link to="/singleProduct">
-                    <img
-                      src="/assets/Images/bride-15.png"
-                      alt="Bride-4"
-                      className="w-full h-auto transition-transform duration-300 ease-in-out hover:scale-105"
-                    />
-                  </Link>
-                </div>
-                <div>
-                  <Link to="/singleProduct">
-                    <img
-                      src="/assets/Images/bride-16.png"
-                      alt="Bride-5"
-                      className="w-full h-auto transition-transform duration-300 ease-in-out hover:scale-105"
-                    />
-                  </Link>
-                </div>
-                <div>
-                  <Link to="/singleProduct">
-                    <img
-                      src="/assets/Images/bride-15.png"
-                      alt="Bride-6"
-                      className="w-full h-auto transition-transform duration-300 ease-in-out hover:scale-105"
-                    />
-                  </Link>
-                </div>
-
-                <div>
-                  <Link to="/singleProduct">
-                    <img
-                      src="/assets/Images/bride-16.png"
-                      alt="Bride-7"
-                      className="w-full h-auto transition-transform duration-300 ease-in-out hover:scale-105"
-                    />
-                  </Link>
-                </div>
-                <div>
-                  <Link to="/singleProduct">
-                    <img
-                      src="/assets/Images/bride-15.png"
-                      alt="Bride-8"
-                      className="w-full h-auto transition-transform duration-300 ease-in-out hover:scale-105"
-                    />
-                  </Link>
-                </div>
-                <div>
-                  <Link to="/singleProduct">
-                    <img
-                      src="/assets/Images/bride-16.png"
-                      alt="Bride-9"
-                      className="w-full h-auto transition-transform duration-300 ease-in-out hover:scale-105"
-                    />
-                  </Link>
-                </div>
+                {CategoryProducts.map((product) => (
+                  <div className="mb-2" key={product.id}>
+                    <Link to="/singleProduct" state={{ product }}>
+                      <img
+                        src={`https://admin.attireidyll.com/public/storage/product/${product.image}`}
+                        alt={product.name || "Product image"}
+                        className="w-full h-auto transition-transform duration-300 ease-in-out hover:scale-105"
+                        />
+                    </Link>
+                  </div>
+                ))}
               </div>
 
               {/* View More Button */}
@@ -207,7 +165,7 @@ const AllProduct = () => {
           </div>
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 };

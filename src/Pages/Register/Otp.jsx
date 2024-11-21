@@ -30,7 +30,7 @@ const Otp = () => {
       NProgress.start(); // Start the progress bar
 
       const otpString = otpValues.join("");
-      const response = await axios.post("https://expressitplus.co.uk/api/phone_verify", {
+      const response = await axios.post("https://admin.attireidyll.com/api/phone_verify", {
         phone: localStorage.getItem("phone"),
         otp: otpString,
       });

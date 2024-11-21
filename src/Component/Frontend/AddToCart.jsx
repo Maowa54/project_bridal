@@ -44,7 +44,7 @@ const AddToCart = ({ onClose }) => {
           products.map((product) => (
             <div key={product.id} className="relative flex items-start mt-4">
               <img
-                src={`https://expressitplus.co.uk/public/storage/product/${product.image}`} 
+                src={`https://admin.attireidyll.com/public/storage/product/${product.image}`} 
                 alt={product.title}
                 className="w-24 h-24 mr-4 sm:w-32 sm:h-28"
               />

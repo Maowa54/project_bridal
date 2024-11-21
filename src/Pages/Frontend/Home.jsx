@@ -23,10 +23,10 @@ const Home = () => {
   }, [images.length]);
 
   const [products, setProducts] = useState([]);
-
   const [categories, setCategories] = useState([]);
 
-  const fetchCategories = async () => {
+  //For categories
+  const fetchCategoryData = async () => {
     try {
       const cacheKey = "allCategories";
       const cacheTimeKey = "allCategories_timestamp";
@@ -36,15 +36,20 @@ const Home = () => {
       const cachedTimestamp = localStorage.getItem(cacheTimeKey);
       const now = Date.now();
 
-      if (cachedData && cachedTimestamp && (now - parseInt(cachedTimestamp) < cacheValidityDuration)) {
+      if (
+        cachedData &&
+        cachedTimestamp &&
+        now - parseInt(cachedTimestamp) < cacheValidityDuration
+      ) {
         // Use cached data if it's still valid
         setCategories(JSON.parse(cachedData));
-        console.log("Using cached data:", JSON.parse(cachedData)); // Debug log
         return;
       }
 
       // Fetch data if cache is not valid
-      const response = await axios.get("https://expressitplus.co.uk/api/all/category/get");
+      const response = await axios.get(
+        "https://admin.attireidyll.com/api/all/category/get"
+      );
 
       if (response.data.status) {
         const fetchedCategories = response.data.data;
@@ -54,48 +59,49 @@ const Home = () => {
         localStorage.setItem(cacheTimeKey, now.toString());
 
         setCategories(fetchedCategories);
-        console.log("Fetched new data:", fetchedCategories); // Debug log
       }
     } catch (error) {
-      console.error("Error fetching API data:", error);
+      console.error("Error fetching category data:", error);
     }
   };
 
   useEffect(() => {
-    fetchCategories();
-  }, []); // Empty dependency array ensures it runs only once on mount
+    fetchCategoryData();
+  }, []);
 
-  // Optionally log categories when they change
-  useEffect(() => {
-    console.log("Categories updated:", categories);
-  }, [categories]);
+  console.log(categories);
 
+  //For Products
   const fetchApiData = async () => {
     try {
-      const cacheKey = 'allProducts';
-      const cacheTimeKey = 'allProducts_timestamp';
+      const cacheKey = "allProducts";
+      const cacheTimeKey = "allProducts_timestamp";
       const cacheValidityDuration = 60 * 60 * 1000; // 1 hour
-  
+
       const cachedData = localStorage.getItem(cacheKey);
       const cachedTimestamp = localStorage.getItem(cacheTimeKey);
       const now = Date.now();
-  
-      if (cachedData && cachedTimestamp && (now - parseInt(cachedTimestamp) < cacheValidityDuration)) {
+
+      if (
+        cachedData &&
+        cachedTimestamp &&
+        now - parseInt(cachedTimestamp) < cacheValidityDuration
+      ) {
         // Use cached data if it's still valid
         setProducts(JSON.parse(cachedData));
         return;
       }
       // Fetch data if cache is not valid
       const response = await axios.get(
-        "https://expressitplus.co.uk/api/all/product/get"
+        "https://admin.attireidyll.com/api/all/product/get"
       );
 
       if (response.data.status) {
         const fetchedProducts = response.data.data.data;
 
-         // Cache fetched data and timestamp
-         localStorage.setItem(cacheKey, JSON.stringify(fetchedProducts));
-         localStorage.setItem(cacheTimeKey, now.toString());
+        // Cache fetched data and timestamp
+        localStorage.setItem(cacheKey, JSON.stringify(fetchedProducts));
+        localStorage.setItem(cacheTimeKey, now.toString());
 
         setProducts(fetchedProducts);
       }
@@ -107,6 +113,7 @@ const Home = () => {
   useEffect(() => {
     fetchApiData();
   }, []);
+  console.log(products);
 
   const [visibleCount, setVisibleCount] = useState(3); // Initially display 3 products
   const batchSize = 3; // Number of products to show per "View More"
@@ -115,11 +122,9 @@ const Home = () => {
     setVisibleCount((prev) => Math.min(prev + batchSize, products.length)); // Show next batch
   };
 
-  console.log(products);
-
   return (
     <div className=" ">
-      <Navbar/>
+      <Navbar />
       <div className="container mx-auto">
         <div className="w-[90%] mx-auto overflow-hidden relative">
           <SocialMedia />
@@ -161,36 +166,33 @@ const Home = () => {
 
           {/* Buttons Section */}
           <div className="mt-8">
+            {/* Top Row: First Three Buttons */}
             <div className="w-full md:w-[45%] mx-auto mt-4 flex flex-col md:flex-row justify-center gap-5 text-sm md:text-base">
-              <Link
-                to="/allproduct"
-                className="w-full  md:flex-1 px-4 py-1 border border-gray-800 font-medium hover:bg-gradient-to-b from-teal-500 to-teal-700 hover:text-white hover:border-teal-400 rounded text-center transition"
-              >
-                WOMAN
-              </Link>
-              <Link
-                to="/allproduct"
-                className="w-full md:flex-1 px-4 py-1 border border-gray-800 font-medium hover:bg-gradient-to-b from-teal-500 to-teal-700 hover:text-white hover:border-teal-400 rounded text-center transition"
-              >
-                MAN
-              </Link>
-              <Link
-                to="/allproduct"
-                className="w-full text-nowrap md:flex-1 px-4 py-1 border border-gray-800 font-medium hover:bg-gradient-to-b from-teal-500 to-teal-700 hover:text-white hover:border-teal-400 rounded text-center transition"
-              >
-                KIDS & FAMILY
-              </Link>
+              {categories.slice(0, 3).map((category) => (
+                <Link
+                  to={{
+                    pathname: "/allProduct",
+                  }}
+                  state={{ category }}
+                  key={category.id}
+                  className="w-full md:flex-1 px-4 py-1 border border-gray-800 font-medium hover:bg-gradient-to-b from-teal-500 to-teal-700 hover:text-white hover:border-teal-400 rounded text-center transition"
+                >
+                  {category.name}
+                </Link>
+              ))}
             </div>
-          </div>
 
-          {/* Bridal Button */}
-          <div className="w-full md:w-[60%] mx-auto mt-4 flex justify-center text-sm md:text-base">
-            <div className="w-full">
+            {/* Bottom Row: Bridal Button */}
+            <div className="w-full md:w-[60%] mx-auto mt-4 flex justify-center text-sm md:text-base">
               <Link
-                to="/allproduct"
-                className="w-full font-medium px-4 py-1 border border-gray-800 hover:bg-gradient-to-b from-teal-500 to-teal-700 hover:text-white hover:border-teal-400 rounded block text-center transition"
+                to={{
+                  pathname: "/allProduct",
+                }}
+                state={{ category: categories[3] }} // Assuming "Bridal" is the 4th category
+                key={categories[3]?.id}
+                className="w-full px-4 py-1 border border-gray-800 font-medium hover:bg-gradient-to-b from-teal-500 to-teal-700 hover:text-white hover:border-teal-400 rounded text-center transition"
               >
-                Bridal
+                {categories[3]?.name}
               </Link>
             </div>
           </div>
@@ -274,7 +276,7 @@ const Home = () => {
                   state={{ product }}
                 >
                   <img
-                    src={`https://expressitplus.co.uk/public/storage/product/${product.image}`}
+                    src={`https://admin.attireidyll.com/public/storage/product/${product.image}`}
                     className="w-full h-auto transition-transform duration-300 ease-in-out hover:scale-105"
                     alt={product.name || "Product"}
                   />
@@ -296,7 +298,7 @@ const Home = () => {
           )}
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 };

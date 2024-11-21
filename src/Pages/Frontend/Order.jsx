@@ -79,7 +79,7 @@ const Order = () => {
                       <tr key={index} className="hover:bg-gray-50  border-b">
                         <td className="p-2 flex items-center w-[200px]">
                           <img
-                            src={`https://expressitplus.co.uk/public/storage/product/${product?.image}`}
+                            src={`https://admin.attireidyll.com/public/storage/product/${product?.image}`}
                             className="size-20"
                             alt={product?.name}
                           />

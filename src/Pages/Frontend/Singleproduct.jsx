@@ -107,7 +107,7 @@ const handleCart = () => {
             {/* Image Section */}
             <div className="text-center">
               <img
-                src={`https://expressitplus.co.uk/public/storage/product/${product.image}`}
+                src={`https://admin.attireidyll.com/public/storage/product/${product.image}`}
                 alt={product.name}
                 className="max-h-[560px] w-[90%] transition-transform duration-300 ease-in-out hover:scale-105 mx-auto object-cover"
               />
@@ -338,7 +338,7 @@ const handleCart = () => {
     <div className="mb-2" key={product.id}>
       <Link to="/singleProduct" state={{ product }}>
         <img
-          src={`https://expressitplus.co.uk/public/storage/product/${product.image}`}
+          src={`https://admin.attireidyll.com/public/storage/product/${product.image}`}
           alt={product.name || "Product image"}
           className="w-full h-auto transition-transform duration-300 ease-in-out hover:scale-105"
         />

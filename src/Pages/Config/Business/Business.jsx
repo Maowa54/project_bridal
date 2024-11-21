@@ -43,7 +43,7 @@ const Business = () => {
 
   const fetchBusinesses = async () => { 
     try {
-      const response = await axios.get(`https://expressitplus.co.uk/api/business/index/${clientId}`, {
+      const response = await axios.get(`https://admin.attireidyll.com/api/business/index/${clientId}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -82,7 +82,7 @@ const Business = () => {
     formData.append('outside_dhaka', courierOutsideDhaka);
     setLoading(true);
     try {
-        const response = await axios.post('https://expressitplus.co.uk/api/business/store', formData, {
+        const response = await axios.post('https://admin.attireidyll.com/api/business/store', formData, {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'multipart/form-data',
@@ -404,7 +404,7 @@ console.log(businesses)
             <tr key={business.id} className="hover:bg-gray-100">
               <td className="text-[15px] whitespace-nowrap">{index + 1}</td>
               <td className="whitespace-nowrap">
-                <img src={`https://expressitplus.co.uk/public/storage/business/logo/${business.logo}`} alt="Logo" className="h-8 w-8" />
+                <img src={`https://admin.attireidyll.com/public/storage/business/logo/${business.logo}`} alt="Logo" className="h-8 w-8" />
               </td>
               <td className="text-[15px] whitespace-nowrap">{business.name}</td>
               <td className="text-[15px] whitespace-nowrap">{business.address}</td>

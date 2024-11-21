@@ -85,7 +85,7 @@ const FollowUp = () => {
         // If not using cache or forced refresh, fetch fresh data
         if (fetchedOrders.length === 0) {
             const response = await axios.get(
-                `https://expressitplus.co.uk/api/schedule/orders/get/${clientId}`,
+                `https://admin.attireidyll.com/api/schedule/orders/get/${clientId}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -236,7 +236,7 @@ const FollowUp = () => {
 
   const updatePaymentDate = async (orderId, newDate) => {
     try {
-      const response = await axios.post('https://expressitplus.co.uk/api/order/change/payment_date', {
+      const response = await axios.post('https://admin.attireidyll.com/api/order/change/payment_date', {
         order_id: orderId,
         payment_date: newDate
       },
@@ -286,7 +286,7 @@ const FollowUp = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('https://expressitplus.co.uk/api/order/note/create', {
+      const response = await axios.post('https://admin.attireidyll.com/api/order/note/create', {
         order_id: selectedOrder.id,
         body: note,
         created_by: userId,
@@ -332,7 +332,7 @@ const FollowUp = () => {
   const [notes, setNotes] = useState([]);
   const fetchNotes = async (orderId) => {
     try {
-      const response = await axios.get(`https://expressitplus.co.uk/api/order/note/get/${orderId}`, {
+      const response = await axios.get(`https://admin.attireidyll.com/api/order/note/get/${orderId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -370,7 +370,7 @@ const FollowUp = () => {
 
   const fetchConfirmOrder = async (orderId) => {
     try {
-      const response = await axios.get(`https://expressitplus.co.uk/api/order/schedule/confirm/${orderId}`, {
+      const response = await axios.get(`https://admin.attireidyll.com/api/order/schedule/confirm/${orderId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -434,7 +434,7 @@ const FollowUp = () => {
 
     setLoading(true); // Start loading
     try {
-        const response = await axios.post('https://expressitplus.co.uk/api/order/update', formData, {
+        const response = await axios.post('https://admin.attireidyll.com/api/order/update', formData, {
             headers: {
                 'Authorization': `Bearer ${token}`,
             },
@@ -709,7 +709,7 @@ console.log(orders)
               {selectedOrderForEdit?.order_variable_products?.map((product) => (
   <div key={product.id} className="flex gap-3 items-center mb-4">
     <img
-      src={`https://expressitplus.co.uk/public/storage/product/${product.product.image}`}
+      src={`https://admin.attireidyll.com/public/storage/product/${product.product.image}`}
       alt={product.product.name}
       className="w-24 h-24 object-cover rounded-md"
     />

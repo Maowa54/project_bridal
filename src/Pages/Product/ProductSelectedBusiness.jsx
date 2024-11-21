@@ -19,7 +19,7 @@ const ProductSelectedBusiness = ({ onBusinessIdChange }) => {
   useEffect(() => {
     const fetchBusinesses = async () => {
       try {
-        const response = await axios.get(`https://expressitplus.co.uk/api/business/index/${clientId}`, {
+        const response = await axios.get(`https://admin.attireidyll.com/api/business/index/${clientId}`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },

@@ -67,7 +67,7 @@ export default function ImageDrawer({ isOpen, toggleDrawer, productImage }) {
 
     try {
       const response = await axios.post(
-        "https://expressitplus.co.uk/api/product/image/upload",
+        "https://admin.attireidyll.com/api/product/image/upload",
         formData,
         {
           headers: {
@@ -107,7 +107,7 @@ export default function ImageDrawer({ isOpen, toggleDrawer, productImage }) {
   const fetchImages = async () => {
     try {
       const response = await axios.get(
-        `https://expressitplus.co.uk/api/product/images/get`,
+        `https://admin.attireidyll.com/api/product/images/get`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -167,7 +167,7 @@ export default function ImageDrawer({ isOpen, toggleDrawer, productImage }) {
     onClick={() => handleImageSelect(image.id)} // Pass image.id to handleImageSelect
   >
     <img
-      src={`https://expressitplus.co.uk/public/storage/product/${image.name}`}
+      src={`https://admin.attireidyll.com/public/storage/product/${image.name}`}
       alt="img"
       className="h-full w-full object-cover"
     />
@@ -266,7 +266,7 @@ export default function ImageDrawer({ isOpen, toggleDrawer, productImage }) {
                       onClick={() => handleImageSelect(image.id)} // Pass image.id to handleImageSelect
                     >
                       <img
-                        src={`https://expressitplus.co.uk/public/storage/product/${image.name}`}
+                        src={`https://admin.attireidyll.com/public/storage/product/${image.name}`}
                         alt="img"
                         className="h-full w-full object-cover"
                       />

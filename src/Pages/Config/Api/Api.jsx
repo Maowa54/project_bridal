@@ -43,7 +43,7 @@ const Api = () => {
 
     try {
       const response = await axios.post(
-        "https://expressitplus.co.uk/api/api/set",
+        "https://admin.attireidyll.com/api/api/set",
         formData,
         {
           headers: {
@@ -85,7 +85,7 @@ const Api = () => {
   const fetchApiData = async () => {
     try {
       const response = await axios.get(
-        `https://expressitplus.co.uk/api/api/get/${clientId}`,
+        `https://admin.attireidyll.com/api/api/get/${clientId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

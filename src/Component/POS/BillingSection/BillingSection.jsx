@@ -114,7 +114,7 @@ const BillingSection = ({
                   <div className="flex gap-6">
                     <div>
                       <img
-                        src={`https://expressitplus.co.uk/public/storage/product/${product.image}`}
+                        src={`https://admin.attireidyll.com/public/storage/product/${product.image}`}
                         className="md:w-20 lg:w-24 w-20 rounded-lg"
                         alt={product.name}
                       />

@@ -28,7 +28,7 @@ const SelectedBusiness = ({ onSelectBusinesses, businessId , setAddedProducts })
         }
     
         // Otherwise, make the API call
-        const response = await axios.get(`https://expressitplus.co.uk/api/business/index/${clientId}`, {
+        const response = await axios.get(`https://admin.attireidyll.com/api/business/index/${clientId}`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },

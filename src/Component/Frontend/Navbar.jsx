@@ -1,13 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "bootstrap-icons/font/bootstrap-icons.css"; // Import Bootstrap Icons
 import "@fortawesome/fontawesome-free/css/all.min.css"; // Import Font Awesome CSS
 import { Link } from "react-router-dom";
-import Count from "./Count";
+
 import AddToCart from "./AddToCart";
 
-
-
 const Navbar = () => {
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const storedCategories = localStorage.getItem("allCategories");
+    if (storedCategories) {
+      setCategories(JSON.parse(storedCategories));
+    }
+  }, []);
+
   const [isOpen, setIsOpen] = useState(false);
 
   const openPanel = () => {
@@ -52,47 +59,21 @@ const Navbar = () => {
                   &times;
                 </button>
                 <ul className="mt-10 space-y-2">
-                  <li>
-                    <Link
-                      to="/allproduct"
-                      className="block px-8 py-2 text-lg md:text-xl text-gray-800 hover:bg-teal-700 hover:text-white transition-colors hover:bg-gradient-to-b from-teal-400 to-teal-700  transform hover:scale-105 duration-300"
-                    >
-                      Men
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/allproduct"
-                      className="block px-8 py-2 text-lg md:text-xl text-gray-800 hover:bg-teal-700 hover:text-white transition-colors hover:bg-gradient-to-b from-teal-300 to-teal-700  transform hover:scale-105 duration-300"
-                    >
-                      Women
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/allproduct"
-                      className="block px-8 py-2 text-lg md:text-xl text-gray-800 hover:bg-teal-700 hover:text-white transition-colors hover:bg-gradient-to-b from-teal-300 to-teal-600  transform hover:scale-105 duration-300"
-                    >
-                      Kids & Family
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/allproduct"
-                      className="block px-8 py-2 text-lg md:text-xl text-gray-800 hover:bg-teal-700 hover:text-white transition-colors hover:bg-gradient-to-b from-teal-300 to-teal-700 transform hover:scale-105 duration-300"
-                    >
-                      Bridal
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/preorder"
-                      className="block px-8 py-2 text-lg md:text-xl text-gray-800 hover:bg-teal-700 hover:text-white transition-colors hover:bg-gradient-to-b from-teal-300 to-teal-700 transform hover:scale-105 duration-300"
-                    >
-                      Pre Order
-                    </Link>
-                  </li>
-                </ul>
+  {categories.map((category) => (
+    <li key={category.id}>
+      <Link
+        to={{
+          pathname: "/allProduct",
+        }}
+        state={{ category }}
+        className="block px-8 py-2 text-lg md:text-xl text-gray-800 hover:bg-teal-700 hover:text-white transition-colors hover:bg-gradient-to-b from-teal-400 to-teal-700 transform hover:scale-105 duration-300"
+      >
+        {category.name}
+      </Link>
+    </li>
+  ))}
+</ul>
+
               </div>
             </div>
 
@@ -113,21 +94,18 @@ const Navbar = () => {
                 className="relative text-black text-2xl hover:text-gray-500 focus:outline-none"
               >
                 <i className="bi bi-cart text-lg md:text-xl lg:text-2xl"></i>
-              
               </button>
               {isModalOpen && <AddToCart onClose={handleCloseCart} />}
 
-             <Link to="/admin/category">
-             <button>
-              <i className="bi bi-person text-lg"></i>
-             </button>
-             </Link>
+              <Link to="/admin/category">
+                <button>
+                  <i className="bi bi-person text-lg"></i>
+                </button>
+              </Link>
             </div>
           </div>
         </nav>
       </div>
-
-      
     </div>
   );
 };

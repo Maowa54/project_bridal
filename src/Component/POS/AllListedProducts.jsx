@@ -209,7 +209,7 @@ const ProductList = ({
                       className="flex  md:flex-row xl:flex-row  items-center gap-1 p-1 shadow-lg bg-white    rounded-lg cursor-pointer"
                     >
                       <img
-                        src={`https://expressitplus.co.uk/public/storage/product/${product.image}`}
+                        src={`https://admin.attireidyll.com/public/storage/product/${product.image}`}
                         alt={product.name}
                         className="w-[50%] rounded-md"
                       />
@@ -240,7 +240,7 @@ const ProductList = ({
                       className="flex p-1  md:flex-row xl:flex-row  items-center gap-1 shadow-lg bg-white    rounded-lg cursor-pointer"
                     >
                       <img
-                        src={`https://expressitplus.co.uk/public/storage/product/${product.image}`}
+                        src={`https://admin.attireidyll.com/public/storage/product/${product.image}`}
                         alt={product.name}
                         className="w-[50%] rounded-md"
                       />
@@ -305,7 +305,7 @@ const ProductList = ({
               <div className="flex gap-5 mt-4">
                 <div>
                   <img
-                    src={`https://expressitplus.co.uk/public/storage/product/${selectedProduct.image}`}
+                    src={`https://admin.attireidyll.com/public/storage/product/${selectedProduct.image}`}
                     alt={selectedProduct.name}
                     className="w-full h-40 object-cover rounded-lg"
                   />

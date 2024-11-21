@@ -15,7 +15,7 @@ const UserInfo = () => {
       }
 
       try {
-        const response = await axios.get(`https://expressitplus.co.uk/api/dashboard/${clientId}`);
+        const response = await axios.get(`https://admin.attireidyll.com/api/dashboard/${clientId}`);
         if (response.data.status) {
           setUserInfo(response.data.data);
         } else {

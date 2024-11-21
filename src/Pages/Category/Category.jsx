@@ -40,7 +40,7 @@ const Category = () => {
            
 
             // Make API call to fetch categories
-            const response = await axios.get(`https://expressitplus.co.uk/api/category/get_all`, {
+            const response = await axios.get(`https://admin.attireidyll.com/api/category/get_all`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },
@@ -158,7 +158,7 @@ const Category = () => {
 
     try {
         const response = await axios.post(
-            "https://expressitplus.co.uk/api/category/update",
+            "https://admin.attireidyll.com/api/category/update",
             formData,
             {
                 headers: { Authorization: `Bearer ${token}` },

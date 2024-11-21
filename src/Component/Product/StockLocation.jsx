@@ -29,7 +29,7 @@ const StockLocation = ({ locationId, onLocationIdChange }) => {
         }
 
         // Otherwise, make the API call
-        const response = await axios.get(`https://expressitplus.co.uk/api/stock_location/get`, {
+        const response = await axios.get(`https://admin.attireidyll.com/api/stock_location/get`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },

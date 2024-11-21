@@ -20,7 +20,7 @@ const Log = () => {
     useEffect(() => {
       const fetchStockLogs = async () => {
         try {
-            const response = await axios.get(`https://expressitplus.co.uk/api/stock/log/get/${product_id}`, {
+            const response = await axios.get(`https://admin.attireidyll.com/api/stock/log/get/${product_id}`, {
                 headers: {
                   'Authorization': `Bearer ${token}`,
                 },

@@ -30,7 +30,7 @@ const Customer = () => {
         }
   
         // Otherwise, make the API call
-        const response = await axios.get(`https://expressitplus.co.uk/api/customer/get/${clientId}`, {
+        const response = await axios.get(`https://admin.attireidyll.com/api/customer/get/${clientId}`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },

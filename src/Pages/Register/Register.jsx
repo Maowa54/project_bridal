@@ -51,7 +51,7 @@ const Register = ({pkg}) => {
 
     try {
       const response = await axios.post(
-        "https://expressitplus.co.uk/api/register",
+        "https://admin.attireidyll.com/api/register",
         {
           name: formData.name,
           phone: formData.phone,

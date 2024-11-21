@@ -44,7 +44,7 @@ const AllStock = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get(`https://expressitplus.co.uk/api/product/get/${clientId}`, {
+      const response = await axios.get(`https://admin.attireidyll.com/api/product/get/${clientId}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -166,7 +166,7 @@ const AllStock = () => {
               <th className="text-[15px]">{index + 1}</th>
               <td>
               <img
-                                    src={`https://expressitplus.co.uk/public/storage/product/${product.image}`}// Update the path as necessary
+                                    src={`https://admin.attireidyll.com/public/storage/product/${product.image}`}// Update the path as necessary
                                     alt={product.name}
                                     className="h-16 w-16 object-cover"
                                 />

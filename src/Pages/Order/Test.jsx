@@ -65,7 +65,7 @@ const FollowUp = () => {
       }
 
       // Otherwise, make the API call
-      const response = await axios.get(`https://expressitplus.co.uk/api/orders/all/get/${clientId}`, {
+      const response = await axios.get(`https://admin.attireidyll.com/api/orders/all/get/${clientId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
