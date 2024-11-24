@@ -1,15 +1,54 @@
 import { useState, useEffect } from "react";
 import Navbar from "../../Component/Frontend/Navbar";
 import Footer from "../../Component/Frontend/Footer";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 const Order = () => {
+  const [errors, setErrors] = useState({});
+
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
+
+  const [productIds, setProductIds] = useState("");
+
+  const [productQty, setProductQty] = useState("");
+
+
+
+  const [loading, setLoading] = useState(false);
+
+  // console.log(name);
+
+  // console.log(phone);
+  // console.log(address);
+  // console.log(codAmount);
+
   const [products, setProducts] = useState([]);
   const [deliveryCharge, setDeliveryCharge] = useState(0);
 
+  // useEffect(() => {
+  //   const storedProducts = JSON.parse(localStorage.getItem("products")) || [];
+  //   setProducts(storedProducts);
+  // }, []);
+
   useEffect(() => {
     const storedProducts = JSON.parse(localStorage.getItem("products")) || [];
+    
+    // Assuming each product in storedProducts is an object like { product_id: 1, quantity: 2 }
+    const productIds = storedProducts.map((product) => product.id);
+    const quantities = storedProducts.map((product) => product.quantity);
+  
+    setProductIds(productIds);
+
+    setProductQty(quantities);
+    console.log("Product IDs:", productIds); // Example output: [2, 1, 3]
+    console.log("Quantities:", quantities); // Example output: [2, 3, 1]
+  
     setProducts(storedProducts);
   }, []);
+  
 
   const increment = (index) => {
     const updatedProducts = [...products];
@@ -44,6 +83,74 @@ const Order = () => {
     const updatedProducts = products.filter((_, i) => i !== index);
     setProducts(updatedProducts);
     localStorage.setItem("products", JSON.stringify(updatedProducts));
+  };
+
+  const handleSave = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+
+    formData.append("product_ids", productIds);
+    formData.append("s_product_qty", '5');
+    formData.append("c_name", name);
+    formData.append("c_phone", phone);
+    // formData.append('courier', courier);
+    // formData.append('note', note);
+    formData.append("source", "online");
+    formData.append("address", address);
+    formData.append("discount_amount", 200);
+    formData.append("delivery_charge", deliveryCharge);
+    formData.append("cod_amount", totalAmountWithDelivery);
+
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}: ${value}`);
+    }
+    +setLoading(true); // Start loading
+    try {
+      const response = await axios.post(
+        "https://admin.attireidyll.com/api/public/order/create",
+        formData,
+        {}
+      );
+
+      console.log(response);
+      if (response.data.status) {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: response.data.message || "Order created successfully!",
+          showConfirmButton: false,
+          timer: 2000,
+        });
+
+        // Reset form fields
+        setName("");
+        setPhone("");
+        setAddress("");
+        setErrors({});
+        setDeliveryCharge("");
+      }
+
+      //  else if (response.data.type === 'invalid') {
+      //     toast.error(response.data.message);
+      //   }
+      else {
+        const newErrors = response.data.error || {};
+
+        console.log(newErrors);
+        setErrors(newErrors);
+        // handleErrors(newErrors);
+
+        // toast.error(Object.keys(response.data.error).map((field) => ` ${response.data.error[field][0]}`));
+      }
+    } catch (error) {
+      console.error(
+        "Error saving Order:",
+        error.response ? error.response.data : error.message
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -107,16 +214,16 @@ const Order = () => {
                           <div className="flex items-center justify-center">
                             <button
                               onClick={() => decrement(index)}
-                              className="h-7 w-7 text-base font-semibold bg-black text-white hover:bg-gray-800 flex items-center justify-center"
+                              className="h-7 w-7 text-base font-semibold bg-teal-700 text-white hover:bg-gray-800 flex items-center justify-center"
                             >
                               -
                             </button>
-                            <span className="h-7 w-7 text-base font-medium flex items-center justify-center border border-black">
+                            <span className="h-7 w-7 text-base font-medium flex items-center justify-center border border-teal-700">
                               {product.count}
                             </span>
                             <button
                               onClick={() => increment(index)}
-                              className="h-7 w-7 text-base font-semibold bg-black text-white hover:bg-gray-800 flex items-center justify-center"
+                              className="h-7 w-7 text-base font-semibold bg-teal-700 text-white hover:bg-gray-800 flex items-center justify-center"
                             >
                               +
                             </button>
@@ -142,7 +249,10 @@ const Order = () => {
 
             {/* Responsive form */}
             <div className="w-full lg:w-[30%] mb-2 text-sm md:text-base">
-              <form className="bg-white shadow-md rounded-lg px-2 py-2">
+              <form
+                onSubmit={handleSave}
+                className="bg-white shadow-md rounded-lg px-2 py-2"
+              >
                 <h2 className="text-sm md:text-base font-bold mb-1">
                   Order Delivery Details
                 </h2>
@@ -153,13 +263,18 @@ const Order = () => {
                   >
                     Name
                   </label>
-                  <input
+                  <input value={name}
+                    onChange={(e) => setName(e.target.value)}
                     type="text"
                     id="recipientName"
                     placeholder="Enter recipient's name"
                     className="shadow appearance-none border md:text-sm text-xs rounded w-full py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    required
+                    
                   />
+
+                  {errors.c_name && (
+                    <p className="text-red-500 text-sm">{errors.c_name[0]}</p>
+                  )}
                 </div>
                 <div className="mb-2">
                   <label
@@ -168,13 +283,19 @@ const Order = () => {
                   >
                     Phone No
                   </label>
-                  <input
+                  <input 
+                  value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
                     type="tel"
                     id="phoneNumber"
                     placeholder="Enter phone number"
                     className="shadow appearance-none border md:text-sm text-xs rounded w-full py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    required
+                    
                   />
+
+{errors.c_phone && (
+                    <p className="text-red-500 text-sm">{errors.c_phone[0]}</p>
+                  )}
                 </div>
                 <div className="mb-1">
                   <label
@@ -184,12 +305,18 @@ const Order = () => {
                     Delivery Address
                   </label>
                   <textarea
+                  value={address}
+                    onChange={(e) => setAddress(e.target.value)}
                     id="address"
                     placeholder="Enter delivery address"
                     className="shadow appearance-none border md:text-sm text-xs rounded w-full py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     required
                   ></textarea>
                 </div>
+
+                {errors.address && (
+                    <p className="text-red-500 text-sm">{errors.address[0]}</p>
+                  )}
 
                 {/* Delivery Charge Selection */}
                 <div className="mb-2">
@@ -264,7 +391,6 @@ const Order = () => {
                 {/* Action Buttons */}
                 <div className="text-center mt-4">
                   <button
-                  
                     type="submit"
                     className="bg-gradient-to-r from-teal-500 to-teal-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                   >

@@ -4,23 +4,11 @@ import axios from "axios";
 import SocialMedia from "../../Component/Frontend/SocialMedia";
 import Navbar from "../../Component/Frontend/Navbar";
 import Footer from "../../Component/Frontend/Footer";
+import ImageCarousel from "../../Component/Frontend/Home/ImageCarousel";
+
 
 const Home = () => {
-  const images = [
-    "/assets/Images/Bride-1.png",
-    "/assets/Images/bride-12.png",
-    "/assets/Images/bride-13.png",
-    "/assets/Images/bride-14.png",
-  ];
-  const [currentIndex, setCurrentIndex] = useState(0);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 2000); // Change slide every 3 seconds
-
-    return () => clearInterval(interval); // Cleanup on unmount
-  }, [images.length]);
 
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -128,42 +116,7 @@ const Home = () => {
       <div className="container mx-auto">
         <div className="w-[90%] mx-auto overflow-hidden relative">
           <SocialMedia />
-
-          {/* Carousel Inner */}
-          <div className="relative flex">
-            {images.map((image, index) => (
-              <div
-                key={index}
-                className={`w-full flex-shrink-0 transition-transform duration-700 ease-in-out ${
-                  index === currentIndex ? "block" : "hidden"
-                }`}
-              >
-                <img
-                  src={image}
-                  alt={`Bride Slide ${index + 1}`}
-                  className="w-full object-cover"
-                />
-              </div>
-            ))}
-
-            {/* Indicators inside the carousel images */}
-            <div className="absolute bottom-2 md:bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-              {images.map((_, index) => (
-                <button
-                  key={index}
-                  className={`border-2 size-2 md:size-3  rounded-full transition duration-300 ease-in-out 
-                ${
-                  index === currentIndex
-                    ? "bg-teal-900 border-teal-900"
-                    : "bg-white"
-                }`}
-                  onClick={() => setCurrentIndex(index)} // Change slide on click
-                  aria-label={`Slide ${index + 1}`}
-                ></button>
-              ))}
-            </div>
-          </div>
-
+            <ImageCarousel/>
           {/* Buttons Section */}
           <div className="mt-8">
             {/* Top Row: First Three Buttons */}

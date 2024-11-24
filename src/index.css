@@ -118,21 +118,3 @@ body {
   height: 40px; /* Adjust spinner size */
   top: 50%; /* Center the spinner vertically */
 }
-/* Carousel.css */
-.custom-next-arrow,
-.custom-prev-arrow {
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-}
-
-.custom-next-arrow::before,
-.custom-prev-arrow::before {
-  content: '';
-  display: none; /* Hide default arrow icons */
-}
