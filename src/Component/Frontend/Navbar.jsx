@@ -5,8 +5,12 @@ import { Link } from "react-router-dom";
 
 import AddToCart from "./AddToCart";
 
-const Navbar = () => {
+const Navbar = (  ) => {
   const [categories, setCategories] = useState([]);
+  const [products, setProducts] = useState([]);
+
+
+
 
   useEffect(() => {
     const storedCategories = localStorage.getItem("allCategories");
@@ -14,6 +18,39 @@ const Navbar = () => {
       setCategories(JSON.parse(storedCategories));
     }
   }, []);
+
+  useEffect(() => {
+    const storedProducts = localStorage.getItem("allProducts");
+    if (storedProducts) {
+      setProducts(JSON.parse(storedProducts));
+    }
+  }, []);
+
+
+
+
+  useEffect(() => {
+    const storedProducts = localStorage.getItem("cart");
+    if (storedProducts) {
+      setProducts(JSON.parse(storedProducts)); // Set state with parsed JSON
+    }
+  }, []);
+
+  // Function to handle product removal
+
+
+  // Calculate subtotal and total
+
+  const [totalProductCount, setTotalProductCount] = useState(0);
+
+  useEffect(() => {
+    // Recalculate the total product count whenever products change
+    const newTotal = products.reduce((sum, product) => sum + product.count, 0);
+    setTotalProductCount(newTotal);
+  }, [products]); // Dependency array ensures this runs when products change
+
+
+// console.log(products)
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -34,10 +71,11 @@ const Navbar = () => {
     setIsModalOpen(false); // Close the modal
   };
 
+
   return (
     <div className="shadow">
       <div className="container mx-auto">
-        <nav className="w-[90%] mx-auto bg-white mt-3">
+        <nav className="w-[90%] mx-auto  py-2">
           <div className="flex flex-wrap items-center justify-between mx-auto py-3">
             <div className="text-center">
               <button
@@ -88,16 +126,25 @@ const Navbar = () => {
             </div>
 
             <div className="flex items-center space-x-4">
+     <div className="relative">
+    
+  <div className="bottom-5 absolute left-4">
+    <p className="flex size-2 items-center justify-center rounded-full bg-red-500 p-2 text-xs text-white">
+ {totalProductCount}
+    </p>
+  </div>
+
               <button
                 aria-label="View Cart"
                 onClick={handleViewCart}
-                className="relative text-black text-2xl hover:text-gray-500 focus:outline-none"
+                className=" text-black text-2xl hover:text-gray-500 focus:outline-none"
               >
                 <i className="bi bi-cart text-lg md:text-xl lg:text-2xl"></i>
               </button>
+     </div>
               {isModalOpen && <AddToCart onClose={handleCloseCart} />}
 
-              <Link to="/admin/category">
+              <Link to="/login">
                 <button>
                   <i className="bi bi-person text-lg"></i>
                 </button>

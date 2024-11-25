@@ -428,7 +428,6 @@ const CreateProduct = () => {
         setStock("");
         setDiscountAmount("");
 
-        setBusinessId("");
         setCategoryId("");
         setShort_desc("");
 

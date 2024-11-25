@@ -141,7 +141,7 @@ const AllProduct = () => {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {CategoryProducts.map((product) => (
                   <div className="mb-2" key={product.id}>
-                    <Link to="/singleProduct" state={{ product }}>
+                    <Link   to= {`/singleproduct/${product.name}-${product.id}`} state={{ product }}>
                       <img
                         src={`https://admin.attireidyll.com/public/storage/product/${product.image}`}
                         alt={product.name || "Product image"}

@@ -223,10 +223,7 @@ const Home = () => {
             {products.slice(0, visibleCount).map((product) => (
               <div className="mb-2" key={product.id}>
                 <Link
-                  to={{
-                    pathname: "/singleProduct",
-                  }}
-                  state={{ product }}
+                to= {`/singleproduct/${product.name}-${product.id}`}
                 >
                   <img
                     src={`https://admin.attireidyll.com/public/storage/product/${product.image}`}

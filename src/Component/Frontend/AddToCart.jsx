@@ -6,7 +6,7 @@ const AddToCart = ({ onClose }) => {
 
   // Fetch products from localStorage when the component mounts
   useEffect(() => {
-    const storedProducts = localStorage.getItem("products");
+    const storedProducts = localStorage.getItem("cart");
     if (storedProducts) {
       setProducts(JSON.parse(storedProducts)); // Set state with parsed JSON
     }
@@ -22,6 +22,8 @@ const AddToCart = ({ onClose }) => {
   // Calculate subtotal and total
   const subtotal = products.reduce((total, product) => total + product.price, 0);
   const total = subtotal; // Additional costs can be added if needed
+ 
+
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-end items-start z-50 overflow-y-auto">
@@ -81,7 +83,7 @@ const AddToCart = ({ onClose }) => {
         </div>
 
         <div className="flex justify-center mt-6 md:mt-9 md:mb-3 text-sm md:text-base">
-          <Link to="/order">
+          <Link to="/checkout">
             <button className="px-12 py-1 md:px-16 md:py-2 text-nowrap text-white bg-gradient-to-b from-teal-500 to-teal-700 rounded-md hover:scale-105">
               Check Out
             </button>

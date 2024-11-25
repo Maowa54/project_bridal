@@ -28,25 +28,15 @@ const Order = () => {
   const [products, setProducts] = useState([]);
   const [deliveryCharge, setDeliveryCharge] = useState(0);
 
-  // useEffect(() => {
-  //   const storedProducts = JSON.parse(localStorage.getItem("products")) || [];
-  //   setProducts(storedProducts);
-  // }, []);
+  useEffect(() => {
+    const storedProducts = JSON.parse(localStorage.getItem("cart")) || [];
+    setProducts(storedProducts);
+  }, []);
 
   useEffect(() => {
-    const storedProducts = JSON.parse(localStorage.getItem("products")) || [];
-    
-    // Assuming each product in storedProducts is an object like { product_id: 1, quantity: 2 }
-    const productIds = storedProducts.map((product) => product.id);
-    const quantities = storedProducts.map((product) => product.quantity);
-  
-    setProductIds(productIds);
 
-    setProductQty(quantities);
-    console.log("Product IDs:", productIds); // Example output: [2, 1, 3]
-    console.log("Quantities:", quantities); // Example output: [2, 3, 1]
-  
-    setProducts(storedProducts);
+    console.log(products);
+ 
   }, []);
   
 
@@ -54,7 +44,7 @@ const Order = () => {
     const updatedProducts = [...products];
     updatedProducts[index].count += 1;
     setProducts(updatedProducts);
-    localStorage.setItem("products", JSON.stringify(updatedProducts)); // Update localStorage
+    localStorage.setItem("cart", JSON.stringify(updatedProducts)); // Update localStorage
   };
 
   const decrement = (index) => {
@@ -62,7 +52,7 @@ const Order = () => {
     if (updatedProducts[index].count > 1) {
       updatedProducts[index].count -= 1;
       setProducts(updatedProducts);
-      localStorage.setItem("products", JSON.stringify(updatedProducts)); // Update localStorage
+      localStorage.setItem("cart", JSON.stringify(updatedProducts)); // Update localStorage
     }
   };
 
@@ -82,7 +72,7 @@ const Order = () => {
   const handleRemoveProduct = (index) => {
     const updatedProducts = products.filter((_, i) => i !== index);
     setProducts(updatedProducts);
-    localStorage.setItem("products", JSON.stringify(updatedProducts));
+    localStorage.setItem("cart", JSON.stringify(updatedProducts));
   };
 
   const handleSave = async (e) => {
@@ -90,8 +80,8 @@ const Order = () => {
 
     const formData = new FormData();
 
-    formData.append("product_ids", productIds);
-    formData.append("s_product_qty", '5');
+    formData.append("product_ids", products.map((product) => product.id));
+    formData.append("s_product_qty", products.map((product) => product.quantity));
     formData.append("c_name", name);
     formData.append("c_phone", phone);
     // formData.append('courier', courier);

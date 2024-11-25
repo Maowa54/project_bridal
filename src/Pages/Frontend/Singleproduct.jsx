@@ -1,34 +1,100 @@
 import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link ,useParams} from "react-router-dom";
 import SocialMedia from "../../Component/Frontend/SocialMedia";
 import Navbar from "../../Component/Frontend/Navbar";
 import Footer from "../../Component/Frontend/Footer";
 import AddToCart from "../../Component/Frontend/AddToCart";
+import axios from "axios";
 
 
 const Singleproduct = () => {
   const [products, setProducts] = useState([]);
   const [CategoryProducts, setCategoryProducts] = useState([]);
+  const [product, setProduct] = useState([]);
 
+
+  const {product_info} = useParams();
+
+  const lastIndex = product_info.lastIndexOf('-');
+  const product_name = product_info.substring(0, lastIndex); 
+  const product_id = product_info.substring(lastIndex + 1);
+
+  console.log(product_info);
+
+  const fetchApiData = async () => {
+    try {
+      const cacheKey = "allProducts";
+      const cacheTimeKey = "allProducts_timestamp";
+      const cacheValidityDuration = 60 * 60 * 1000; // 1 hour
+
+      const cachedData = localStorage.getItem(cacheKey);
+      const cachedTimestamp = localStorage.getItem(cacheTimeKey);
+      const now = Date.now();
+
+      if (
+        cachedData &&
+        cachedTimestamp &&
+        now - parseInt(cachedTimestamp) < cacheValidityDuration
+      ) {
+        // Use cached data if it's still valid
+        setProducts(JSON.parse(cachedData));
+        return;
+      }
+      // Fetch data if cache is not valid
+      const response = await axios.get(
+        "https://admin.attireidyll.com/api/all/product/get"
+      );
+
+      if (response.data.status) {
+        const fetchedProducts = response.data.data.data;
+
+        // Cache fetched data and timestamp
+        localStorage.setItem(cacheKey, JSON.stringify(fetchedProducts));
+        localStorage.setItem(cacheTimeKey, now.toString());
+
+        setProducts(fetchedProducts);
+      }
+    } catch (error) {
+      console.error("Error fetching API data:", error);
+    }
+  };
 
   useEffect(() => {
-   const storedProducts = localStorage.getItem('allProducts');
-   if (storedProducts) {
-     setProducts(JSON.parse(storedProducts));
-     
-   }
- }, []);
+    fetchApiData();
+  }, []);
+  console.log(products);
+
+
+
+ useEffect(() => {
+  if (products.length > 0 && product_id) {
+    // Filter the products by matching id
+    const filtered = products.filter((p) => p.id === Number(product_id)); 
+    if (filtered.length > 0) {
+      setProduct(filtered[0]); 
+    } else {
+      console.log("Product not found"); 
+      setProduct(null); 
+    }
+  }
+}, [products, product_id]); 
+console.log(product_id);
+console.log(product); 
+
+
+useEffect(() => {
+console.log(product);
+}, [product_id]);
+
+
+
 
  useEffect(() => {
    console.log('Updated products state:', products);
  }, [products]);
   
 
- const location = useLocation();
- const { product } = location.state || {};
- if (!product) {
-   return <p>Product not found</p>;
- }
+ 
 
  useEffect(() => {
    if (product) {
@@ -60,7 +126,7 @@ const decrement = () => {
 
 
 const handleCart = () => {
-  const existingProducts = JSON.parse(localStorage.getItem("products")) || [];
+  const existingProducts = JSON.parse(localStorage.getItem("cart")) || [];
 
   // Check if product already exists in cart
   const productIndex = existingProducts.findIndex(
@@ -75,7 +141,7 @@ const handleCart = () => {
     existingProducts.push({ ...product, count });
   }
 
-  localStorage.setItem("products", JSON.stringify(existingProducts));
+  localStorage.setItem("cart", JSON.stringify(existingProducts));
 };
 
   // State to manage the modal visibility
@@ -150,16 +216,16 @@ const handleCart = () => {
                 <div className="flex items-center ">
                   <button
                     onClick={decrement}
-                    className="size-8 md:text-lg font-semibold bg-black text-white hover:bg-gray-800"
+                    className="size-8 md:text-lg font-semibold bg-teal-700 text-white hover:bg-teal-800"
                   >
                     -
                   </button>
-                  <span className="text-sm md:text-base pt-1 text-center border border-black size-8 font-medium">
+                  <span className="text-sm md:text-base pt-1 text-center border border-teal-700 size-8 font-medium">
                     {count}
                   </span>
                   <button
                     onClick={increment}
-                    className="size-8 md:text-lg font-semibold bg-black text-white hover:bg-gray-800"
+                    className="size-8 md:text-lg font-semibold bg-teal-700 text-white hover:bg-teal-800"
                   >
                     +
                   </button>
@@ -219,7 +285,7 @@ const handleCart = () => {
                   </div>
                 )}
 
-                <Link to="/order" onClick={handleCart}>
+                <Link to="/checkout" onClick={handleCart}>
                   <button className="inline-flex justify-center items-center w-full text-nowrap sm:w-auto px-8 py-2 text-sm md:text-base bg-gradient-to-r from-teal-500 to-teal-700 border border-teal-200 text-white font-semibold rounded-lg transform transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-2xl">
                     <i className="fas fa-shopping-bag mr-2"></i>Buy Now
                   </button>
@@ -336,7 +402,7 @@ const handleCart = () => {
   {CategoryProducts.filter((item) => item.id !== product.id) // Exclude the selected product
                 .map((product) => (
     <div className="mb-2" key={product.id}>
-      <Link to="/singleProduct" state={{ product }}>
+      <Link  to= {`/singleproduct/${product.name}-${product.id}`} state={{ product }}>
         <img
           src={`https://admin.attireidyll.com/public/storage/product/${product.image}`}
           alt={product.name || "Product image"}
