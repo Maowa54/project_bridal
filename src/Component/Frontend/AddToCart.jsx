@@ -11,19 +11,33 @@ const AddToCart = ({ onClose }) => {
       setProducts(JSON.parse(storedProducts)); // Set state with parsed JSON
     }
   }, []);
-
-  // Function to handle product removal
-  const handleRemoveProduct = (productId) => {
-    const updatedProducts = products.filter(product => product.id !== productId);
+  const handleRemoveProduct = (index) => {
+    const updatedProducts = products.filter((_, i) => i !== index);
     setProducts(updatedProducts);
-    localStorage.setItem("products", JSON.stringify(updatedProducts)); // Update localStorage
+    localStorage.setItem("cart", JSON.stringify(updatedProducts));
+  };
+  // Calculate subtotal and total
+  const subtotal = products.reduce(
+    (total, product) => total + product.price,
+    0
+  );
+  const total = subtotal; // Additional costs can be added if needed
+
+  const increment = (index) => {
+    const updatedProducts = [...products];
+    updatedProducts[index].count += 1;
+    setProducts(updatedProducts);
+    localStorage.setItem("cart", JSON.stringify(updatedProducts)); // Update localStorage
   };
 
-  // Calculate subtotal and total
-  const subtotal = products.reduce((total, product) => total + product.price, 0);
-  const total = subtotal; // Additional costs can be added if needed
- 
-
+  const decrement = (index) => {
+    const updatedProducts = [...products];
+    if (updatedProducts[index].count > 1) {
+      updatedProducts[index].count -= 1;
+      setProducts(updatedProducts);
+      localStorage.setItem("cart", JSON.stringify(updatedProducts)); // Update localStorage
+    }
+  };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-end items-start z-50 overflow-y-auto">
@@ -34,8 +48,7 @@ const AddToCart = ({ onClose }) => {
             className="fas fa-close text-base md:text-xl hover:text-gray-500"
             onClick={onClose} // Close the modal on clicking this button
             aria-label="Close"
-          >
-          </button>
+          ></button>
         </div>
         <p className="mt-3 text-sm md:text-base">
           Only $714.00 away from Free Shipping
@@ -43,24 +56,43 @@ const AddToCart = ({ onClose }) => {
 
         {/* Product List */}
         {products.length > 0 ? (
-          products.map((product) => (
-            <div key={product.id} className="relative flex items-start mt-4">
+          products.map((product, index) => (
+            <div key={index} className="relative flex  mt-4">
               <img
-                src={`https://admin.attireidyll.com/public/storage/product/${product.image}`} 
+                src={`https://admin.attireidyll.com/public/storage/product/${product.image}`}
                 alt={product.title}
                 className="w-24 h-24 mr-4 sm:w-32 sm:h-28"
               />
-              <div className="flex flex-col justify-between text-xs md:text-sm">
+              <div className="flex flex-col space-y-2  text-xs md:text-sm">
                 <span className="block font-semibold">{product.title}</span>
                 {/* <span>{product.color} / {product.size}</span> */}
-                <span className="font-semibold ">{product.name} x {product.count}</span>
+                <span className="font-semibold ">
+                  {product.name} x {product.count}
+                </span>
 
                 <span className="font-semibold">৳{product.price}</span>
+                <div className="flex ">
+                  <button
+                    onClick={() => decrement(index)}
+                    className="h-7 w-7 text-base font-semibold bg-teal-700 text-white hover:bg-gray-800 flex items-center justify-center"
+                  >
+                    -
+                  </button>
+                  <span className="h-7 w-7 text-base font-medium flex items-center justify-center border border-teal-700">
+                    {product.count}
+                  </span>
+                  <button
+                    onClick={() => increment(index)}
+                    className="h-7 w-7 text-base font-semibold bg-teal-700 text-white hover:bg-gray-800 flex items-center justify-center"
+                  >
+                    +
+                  </button>
+                </div>
               </div>
               {/* Close button */}
-              <button 
+              <button
                 className="absolute top-0 right-0 text-gray-500 hover:text-gray-800 focus:outline-none"
-                onClick={() => handleRemoveProduct(product.id)}
+                onClick={() => handleRemoveProduct(index)}
                 aria-label="Remove product"
               >
                 &times;
@@ -84,7 +116,10 @@ const AddToCart = ({ onClose }) => {
 
         <div className="flex justify-center mt-6 md:mt-9 md:mb-3 text-sm md:text-base">
           <Link to="/checkout">
-            <button className="px-12 py-1 md:px-16 md:py-2 text-nowrap text-white bg-gradient-to-b from-teal-500 to-teal-700 rounded-md hover:scale-105">
+            <button
+              className="px-12 py-1 md:px-16 md:py-2 text-nowrap text-white bg-gradient-to-b from-teal-500 to-teal-700 rounded-md hover:scale-105"
+              onClick={onClose}
+            >
               Check Out
             </button>
           </Link>

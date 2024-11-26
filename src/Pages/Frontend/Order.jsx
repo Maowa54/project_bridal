@@ -3,6 +3,7 @@ import Navbar from "../../Component/Frontend/Navbar";
 import Footer from "../../Component/Frontend/Footer";
 import axios from "axios";
 import Swal from "sweetalert2";
+import CustomSelect from "../../Component/Frontend/Checkout/CustomSelect";
 
 const Order = () => {
   const [errors, setErrors] = useState({});
@@ -11,9 +12,7 @@ const Order = () => {
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
 
-  const [productIds, setProductIds] = useState("");
 
-  const [productQty, setProductQty] = useState("");
 
 
 
@@ -37,24 +36,10 @@ const Order = () => {
 
     console.log(products);
  
-  }, []);
+  }, [products]);
   
 
-  const increment = (index) => {
-    const updatedProducts = [...products];
-    updatedProducts[index].count += 1;
-    setProducts(updatedProducts);
-    localStorage.setItem("cart", JSON.stringify(updatedProducts)); // Update localStorage
-  };
 
-  const decrement = (index) => {
-    const updatedProducts = [...products];
-    if (updatedProducts[index].count > 1) {
-      updatedProducts[index].count -= 1;
-      setProducts(updatedProducts);
-      localStorage.setItem("cart", JSON.stringify(updatedProducts)); // Update localStorage
-    }
-  };
 
   const totalPrice = products.reduce((acc, product) => {
     const productTotalPrice =
@@ -81,7 +66,7 @@ const Order = () => {
     const formData = new FormData();
 
     formData.append("product_ids", products.map((product) => product.id));
-    formData.append("s_product_qty", products.map((product) => product.quantity));
+    formData.append("s_product_qty", products.map((product) => product.count));
     formData.append("c_name", name);
     formData.append("c_phone", phone);
     // formData.append('courier', courier);
@@ -146,11 +131,11 @@ const Order = () => {
   return (
     <div>
       <Navbar />
-      <div className="container mx-auto px-4">
-        <div className="w-[90%] mx-auto">
+      <div className="md:container mx-auto md:px-4">
+        <div className="md:w-[90%] mx-auto">
           <div className="flex flex-col lg:flex-row mt-5 space-y-5 lg:space-y-0 lg:space-x-8">
             {/* Responsive table */}
-            <div className="overflow-x-auto w-full lg:w-[70%]">
+            <div className="overflow-x-auto w-full md:w-[65%]">
               <table className="min-w-full bg-white  rounded overflow-hidden text-sm md:text-base text-nowrap shadow-md">
                 <thead className="">
                   <tr className="bg-gray-100 text-gray-700  border-b">
@@ -159,7 +144,6 @@ const Order = () => {
                     </th>
                     <th className="py-2 px-4 text-center">Price</th>
                     <th className="py-2 px-4  text-center">Discount</th>
-                    <th className="py-2 px-4  text-center">Quantity</th>
                     <th className="py-2 px-4 text-center">Total</th>
                     <th className="py-2 px-4  text-center rounded-tr-lg">
                       Actions
@@ -175,11 +159,18 @@ const Order = () => {
                     return (
                       <tr key={index} className="hover:bg-gray-50  border-b">
                         <td className="p-2 flex items-center w-[200px]">
-                          <img
+                        <div className="relative">
+                        <div className="bottom-16 absolute left-16">
+    <p className="flex size-2 items-center justify-center rounded-full bg-red-500 p-2 md:p-3 text-xs md:text-sm text-white">
+ {product.count}
+    </p>
+  </div>
+                        <img
                             src={`https://admin.attireidyll.com/public/storage/product/${product?.image}`}
                             className="size-20"
                             alt={product?.name}
                           />
+                        </div>
                           <div className="text-xs md:text-sm">
                             <span className="mb-1 text-sm md:text-base font-semibold pl-2">
                               {product.name}
@@ -200,7 +191,7 @@ const Order = () => {
                             ? `${product.discount_amount}৳`
                             : "N/A"}
                         </td>
-                        <td>
+                        {/* <td>
                           <div className="flex items-center justify-center">
                             <button
                               onClick={() => decrement(index)}
@@ -218,9 +209,9 @@ const Order = () => {
                               +
                             </button>
                           </div>
-                        </td>
+                        </td> */}
                         <td className="py-2 px-4 border-b text-center">
-                          {productTotalPrice}৳
+                          {productTotalPrice}৳ 
                         </td>
                         <td className="py-2 px-4 border-b text-center">
                           <button>
@@ -238,10 +229,10 @@ const Order = () => {
             </div>
 
             {/* Responsive form */}
-            <div className="w-full lg:w-[30%] mb-2 text-sm md:text-base">
+            <div className="w-full md:w-[35%] mb-2 text-sm md:text-base ">
               <form
                 onSubmit={handleSave}
-                className="bg-white shadow-md rounded-lg px-2 py-2"
+                className="bg-white shadow-md rounded-lg px-4 py-2"
               >
                 <h2 className="text-sm md:text-base font-bold mb-1">
                   Order Delivery Details
@@ -314,7 +305,7 @@ const Order = () => {
                     Delivery Charge
                   </span>
                   <div className="text-nowrap grid grid-cols-1 md:grid-cols-2 md:text-sm text-xs">
-                    <label className="inline-flex items-center mr-4">
+                    <label className="inline-flex items-center mr-4 mb-2">
                       <input
                         type="radio"
                         className="form-radio required"
@@ -346,17 +337,7 @@ const Order = () => {
                   >
                     Payment Method
                   </label>
-                  <select
-                    id="paymentMethod"
-                    className="shadow border md:text-sm text-xs rounded w-full py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    required
-                  >
-                    <option value="" disabled selected>
-                      Select an option
-                    </option>
-                    <option value="cashOnDelivery">Cash on Delivery</option>
-                    <option value="prepaid">Prepaid</option>
-                  </select>
+              <CustomSelect/>
                 </div>
 
                 {/* Summary Section */}
@@ -382,7 +363,7 @@ const Order = () => {
                 <div className="text-center mt-4">
                   <button
                     type="submit"
-                    className="bg-gradient-to-r from-teal-500 to-teal-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    className="bg-gradient-to-r from-teal-500 to-teal-700 text-white font-bold py-2 px-4 text-sm md:text-base rounded focus:outline-none focus:shadow-outline"
                   >
                     Place Order
                   </button>

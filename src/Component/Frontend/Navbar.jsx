@@ -36,18 +36,8 @@ const Navbar = (  ) => {
     }
   }, []);
 
-  // Function to handle product removal
-
-
-  // Calculate subtotal and total
-
-  const [totalProductCount, setTotalProductCount] = useState(0);
-
-  useEffect(() => {
-    // Recalculate the total product count whenever products change
-    const newTotal = products.reduce((sum, product) => sum + product.count, 0);
-    setTotalProductCount(newTotal);
-  }, [products]); // Dependency array ensures this runs when products change
+ 
+  const totalProductCount = products.reduce((total, product) => total + product.count, 0);
 
 
 // console.log(products)
@@ -130,7 +120,7 @@ const Navbar = (  ) => {
     
   <div className="bottom-5 absolute left-4">
     <p className="flex size-2 items-center justify-center rounded-full bg-red-500 p-2 text-xs text-white">
- {totalProductCount}
+    {totalProductCount || 0}
     </p>
   </div>
 

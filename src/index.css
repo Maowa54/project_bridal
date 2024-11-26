@@ -118,3 +118,39 @@ body {
   height: 40px; /* Adjust spinner size */
   top: 50%; /* Center the spinner vertically */
 }
+
+
+@keyframes flyToCart {
+  0% {
+    transform: translateX(0) translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(calc(100vw - 4rem), -calc(100vh - 5rem)) scale(0.3);
+    opacity: 0;
+  }
+}
+
+@keyframes shakeCart {
+  25% {
+    transform: translateX(6px);
+  }
+  50% {
+    transform: translateX(4px);
+  }
+  75% {
+    transform: translateX(2px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.animate-fly-to-cart {
+  animation: flyToCart 1s forwards cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.animate-shake {
+  animation: shakeCart 0.4s ease-in-out forwards;
+}
+
