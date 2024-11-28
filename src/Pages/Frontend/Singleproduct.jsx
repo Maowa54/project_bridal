@@ -8,24 +8,41 @@ import Footer from "../../Component/Frontend/Footer";
 const Singleproduct = () => {
 
    const [products, setProducts] = useState([]);
+   const [CategoryProducts, setCategoryProducts] = useState([]);
+
 
    useEffect(() => {
     const storedProducts = localStorage.getItem('allProducts');
     if (storedProducts) {
-      setProducts(JSON.parse(storedProducts)); 
+      setProducts(JSON.parse(storedProducts));
       
-      console.log(products);
     }
   }, []);
+
+  useEffect(() => {
+    console.log('Updated products state:', products);
+  }, [products]);
    
 
   const location = useLocation();
-  const { product } = location.state || {}; // Get the product passed from ProductsPage
+  const { product } = location.state || {};
   if (!product) {
     return <p>Product not found</p>;
   }
 
-  console.log(product);
+  useEffect(() => {
+    if (product) {
+      const filtered = products.filter(
+        (p) => p.category_id === product.category_id
+      );
+      setCategoryProducts(filtered);
+    }
+  }, [products, product]);
+
+
+
+
+  console.log(CategoryProducts);
 
   const [mainImage, setMainImage] = useState("/assets/Images/bride-5.png");
   const thumbnails = ["bride-6.png", "bride-7.png", "bride-8.png"];

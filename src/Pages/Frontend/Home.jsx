@@ -35,7 +35,6 @@ const Home = () => {
       const now = Date.now();
   
       if (cachedData && cachedTimestamp && (now - parseInt(cachedTimestamp) < cacheValidityDuration)) {
-        // Use cached data if it's still valid
         setProducts(JSON.parse(cachedData));
         return;
       }
@@ -48,6 +47,7 @@ const Home = () => {
         const fetchedProducts = response.data.data.data;
 
          // Cache fetched data and timestamp
+
          localStorage.setItem(cacheKey, JSON.stringify(fetchedProducts));
          localStorage.setItem(cacheTimeKey, now.toString());
 
@@ -60,6 +60,9 @@ const Home = () => {
 
   useEffect(() => {
     fetchApiData();
+    const storedProducts = localStorage.getItem('allProducts');
+
+    console.log()
   }, []);
 
   const [visibleCount, setVisibleCount] = useState(3); // Initially display 3 products
