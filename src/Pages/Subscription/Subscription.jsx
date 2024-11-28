@@ -14,7 +14,7 @@ const Subscription = () => {
   const fetchApiData = async () => {
     try {
       const response = await axios.get(
-        `https://expressitplus.co.uk/api/package/all/get`,
+        `https://admin.attireidyll.com/api/package/all/get`,
       
       );
       if (response.data.status) {

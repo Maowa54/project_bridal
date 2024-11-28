@@ -64,7 +64,7 @@ const AddCategory = () => {
   useEffect(() => {
     const fetchBusinesses = async () => {
       try {
-        const response = await axios.get(`https://expressitplus.co.uk/api/business/index/${clientId}`, {
+        const response = await axios.get(`https://admin.attireidyll.com/api/business/index/${clientId}`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
@@ -134,7 +134,7 @@ const AddCategory = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        "https://expressitplus.co.uk/api/category/store",
+        "https://admin.attireidyll.com/api/category/store",
         formData,
         {
           headers: {

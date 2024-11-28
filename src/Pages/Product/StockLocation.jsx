@@ -35,7 +35,7 @@ const handleSave = async (e) => {
   
     setLoading(true); // Start loading
     try {
-      const response = await axios.post('https://expressitplus.co.uk/api/stock_location/create', formData, {
+      const response = await axios.post('https://admin.attireidyll.com/api/stock_location/create', formData, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -78,7 +78,7 @@ const handleSave = async (e) => {
   // Separate function to refetch stock locations
   const fetchStockLocations = async () => {
     try {
-      const response = await axios.get(`https://expressitplus.co.uk/api/stock_location/get`, {
+      const response = await axios.get(`https://admin.attireidyll.com/api/stock_location/get`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -149,7 +149,7 @@ const handleEditSave = async (e) => {
   setLoading(true);
   try {
     const response = await axios.post(
-      "https://expressitplus.co.uk/api/stock_location/update",
+      "https://admin.attireidyll.com/api/stock_location/update",
       formData,
       {
         headers: {

@@ -38,7 +38,7 @@ const AddStock = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get(`https://expressitplus.co.uk/api/product/get/${clientId}`, {
+      const response = await axios.get(`https://admin.attireidyll.com/api/product/get/${clientId}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -54,7 +54,7 @@ const AddStock = () => {
 
   const fetchLocations = async () => {
     try {
-      const response = await axios.get(`https://expressitplus.co.uk/api/stock_location/get/${clientId}`, {
+      const response = await axios.get(`https://admin.attireidyll.com/api/stock_location/get/${clientId}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -173,7 +173,7 @@ const AddStock = () => {
     }
 
     try {
-      const response = await axios.post('https://expressitplus.co.uk/api/stock/adjust', formData, {
+      const response = await axios.post('https://admin.attireidyll.com/api/stock/adjust', formData, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
@@ -272,7 +272,7 @@ const AddStock = () => {
               <td className="text-center p-5 border-b">
                 <div className="w-16 h-16 mx-auto">
                   <img
-                    src={`https://expressitplus.co.uk/public/storage/product/${selectedProduct.image}`}
+                    src={`https://admin.attireidyll.com/public/storage/product/${selectedProduct.image}`}
                     alt={selectedProduct.name}
                     className="object-cover rounded-md"
                   />
@@ -324,7 +324,7 @@ const AddStock = () => {
               <td className="text-center p-5 border-b">
                 <div className="w-16 h-16 mx-auto">
                   <img
-                    src={`https://expressitplus.co.uk/public/storage/product/${selectedProduct.image}`}
+                    src={`https://admin.attireidyll.com/public/storage/product/${selectedProduct.image}`}
                     alt={selectedProduct.name}
                     className="object-cover rounded-md"
                   />

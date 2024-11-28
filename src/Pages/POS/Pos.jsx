@@ -43,7 +43,7 @@ const Pos = () => {
           return;
         }
     
-        const response = await axios.get(`https://expressitplus.co.uk/api/category/get_all/${clientId}`, {
+        const response = await axios.get(`https://admin.attireidyll.com/api/category/get_all/${clientId}`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
@@ -103,7 +103,7 @@ const Pos = () => {
           return;
         }
   
-        const response = await fetch(`https://expressitplus.co.uk/api/product/get/${clientId}`, {
+        const response = await fetch(`https://admin.attireidyll.com/api/product/get/${clientId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

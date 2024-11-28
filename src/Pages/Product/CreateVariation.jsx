@@ -60,7 +60,7 @@ const CreateVariation = () => {
     console.log(variationData);
   
     try {
-      const response = await axios.post(`https://expressitplus.co.uk/api/variation_add`, variationData, {
+      const response = await axios.post(`https://admin.attireidyll.com/api/variation_add`, variationData, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },

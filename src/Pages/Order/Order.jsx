@@ -58,7 +58,7 @@ useEffect(() => {
 
     try {
       setIsLoading(true);
-      const response = await axios.get(`https://expressitplus.co.uk/api/orders/all/get/${clientId}`, {
+      const response = await axios.get(`https://admin.attireidyll.com/api/online/orders/get`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -271,7 +271,6 @@ console.log(orders)
                   <input type="checkbox" checked={selectAll} onChange={handleSelectAll} />
                 </th>
                 <th className="">Placed On</th>
-                <th className="">Order By</th>
                 <th className="">Order ID</th>
                 <th className="">Customer Id</th>
                 <th className=" ">Tracking Id</th>
@@ -311,7 +310,6 @@ console.log(orders)
           <span>{formatDate(order.created_at)}</span>
           <span>{formatTime(order.created_at)}</span>
         </td>
-        <td className="text-center">{order.creator.name}</td>
         <td>{order.unique_id}</td>
         <td className="flex flex-col">
           <span>{order.c_name}</span>

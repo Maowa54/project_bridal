@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 
 import { ImSpinner10 } from "react-icons/im";
 
-
 import { IoClose } from "react-icons/io5";
 import { Link, useLocation } from "react-router-dom";
 import CategoryItems from "../../Component/CategoryItems";
@@ -13,7 +12,10 @@ import ImageDrawer from "../../Component/Product/ImageDrawer";
 
 import axios from "axios";
 import toast from "react-hot-toast";
+// import ProductSelectedBusiness from "./ProductSelectedBusiness";
 import StockLocation from "../../Component/Product/StockLocation";
+
+import { LuImagePlus } from "react-icons/lu";
 
 const CreateProduct = () => {
   const [image, setImage] = useState("");
@@ -39,21 +41,26 @@ const CreateProduct = () => {
 
   const [loading, setLoading] = useState(false);
 
-
   const [name, setName] = useState("");
   const [short_desc, setShort_desc] = useState("");
   const [category_id, setCategoryId] = useState("");
 
   const [stockLocationId, setStockLocationId] = useState("");
 
-
+  // const [businessId, setBusinessId] = useState("");
   const [price, setPrice] = useState("");
   const [stock, setStock] = useState("");
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState(0);
+
+  const [orderStatus, setOrderStatus] = useState(0);
+
 
   const [code, setCode] = useState("");
   const [buyingPrice, setBuyingPrice] = useState("");
   const [discountAmount, setDiscountAmount] = useState("");
+
+  const [discountType, setDiscountType] = useState("fixed");
+
 
   const [discountDate, setDiscountDate] = useState("");
 
@@ -79,11 +86,13 @@ const CreateProduct = () => {
   const handleLocationIdChange = (id) => {
     setStockLocationId(id);
 
-
     console.log(stockLocationId);
   };
 
-
+  // const handleBusinessIdChange = (id) => {
+  //   setBusinessId(id);
+  //   // console.log('Updated category_id:', id);
+  // };
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -111,7 +120,7 @@ const CreateProduct = () => {
     const fetchVariation = async () => {
       try {
         const response = await axios.get(
-          `https://expressitplus.co.uk/api/product/variation/values`,
+          `https://admin.attireidyll.com/api/product/variation/values`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -161,40 +170,6 @@ const CreateProduct = () => {
     setHasVariation(e.target.checked ? 1 : 0);
   };
 
-  // const handleVariationChange = (selectedOption, index) => {
-  //   const updatedVariations = [...variations];
-  //   updatedVariations[index].selectedVariation = selectedOption;
-  //   updatedVariations[index].options = getOptionsForVariation(
-  //     selectedOption.value
-  //   );
-  //   updatedVariations[index].selectedValues = []; // Reset selected values when changing variation
-  //   setVariations(updatedVariations);
-
-  //   setVariationIds((prevVariationId) => {
-  //     if (!prevVariationId.includes(selectedOption.id)) {
-  //       return [...prevVariationId, selectedOption.id]; // Append new id
-  //     }
-  //     return prevVariationId; // If already present, return unchanged
-  //   });
-  // };
-
-  // const handleValuesChange = (selectedOptions, index) => {
-  //   const updatedVariations = [...variations];
-  //   updatedVariations[index].selectedValues = selectedOptions;
-  //   setVariations(updatedVariations);
-
-  //   const selectedValues = selectedOptions
-  //     ? selectedOptions.map((option) => option.value)
-  //     : [];
-
-  //   setVariationValuesIds((prevVariationValuesId) => {
-  //     const updatedVariationValues = [...prevVariationValuesId];
-  //     updatedVariationValues[index] = selectedValues; // Replace or add the values for the specific index
-  //     return updatedVariationValues;
-  //   });
-  // };
-
-
 
 
   const handleVariationChange = (selectedOption, index) => {
@@ -205,29 +180,29 @@ const CreateProduct = () => {
     );
     updatedVariations[index].selectedValues = []; // Reset selected values when changing variation
     setVariations(updatedVariations);
-  
+
     // Do not setVariationIds yet. Only set it after values are selected.
   };
-  
+
   const handleValuesChange = (selectedOptions, index) => {
     const updatedVariations = [...variations];
     updatedVariations[index].selectedValues = selectedOptions;
     setVariations(updatedVariations);
-  
+
     const selectedValues = selectedOptions
       ? selectedOptions.map((option) => option.value)
       : [];
-  
+
     setVariationValuesIds((prevVariationValuesId) => {
       const updatedVariationValues = [...prevVariationValuesId];
       updatedVariationValues[index] = selectedValues; // Replace or add the values for the specific index
       return updatedVariationValues;
     });
-  
+
     // Once values are selected, we add the variation ID
     setVariationIds((prevVariationId) => {
       const variationId = updatedVariations[index].selectedVariation.id;
-  
+
       // Ensure the variationId is only added after selecting values
       if (!prevVariationId.includes(variationId) && selectedValues.length > 0) {
         return [...prevVariationId, variationId]; // Append new id if values are selected
@@ -235,11 +210,6 @@ const CreateProduct = () => {
       return prevVariationId; // If already present or no values selected, return unchanged
     });
   };
-  
-
-
-
-
 
   // Handle input change for price, stock, discount, and code in combinations
   const handleInputChange = (e, index, field) => {
@@ -269,6 +239,7 @@ const CreateProduct = () => {
         price: "",
         stock: "",
         discount_date: "",
+        discount_type: "fixed",
         discount: "",
         code: "",
       },
@@ -308,6 +279,7 @@ const CreateProduct = () => {
             buying_price: "",
             price: "",
             stock: "",
+            discount_type: "fixed",
 
             discount_date: "",
 
@@ -323,7 +295,8 @@ const CreateProduct = () => {
 
               price: existingCombination.price || "",
               stock: existingCombination.stock || "",
-              discount_date: existingCombination.discount || "",
+              discount_date: existingCombination.discount_date || "",
+              discount_type: existingCombination.discount_type || "",
 
               discount: existingCombination.discount || "",
               code: code,
@@ -342,11 +315,11 @@ const CreateProduct = () => {
     setCombinations(generateCombinations());
   }, [variations]);
 
-  console.log('variationIds:' + variationIds);
+  // console.log('variationIds:' + variationIds);
 
-  console.log('variationValuesIds:' + variationValuesIds);
+  // console.log('variationValuesIds:' + variationValuesIds);
 
-  console.log(combinations);
+  // console.log(combinations);
 
   const cacheKey = `products_${clientId}`;
   const cacheTimeKey = `products_${clientId}_timestamp`;
@@ -362,6 +335,11 @@ const CreateProduct = () => {
     formData.append("created_by", userId);
 
     formData.append("name", name);
+
+
+    formData.append("pre_order", orderStatus);
+
+
     formData.append("short_desc", short_desc);
     formData.append("category_id", category_id);
     formData.append("image", image);
@@ -401,7 +379,7 @@ const CreateProduct = () => {
 
 
       const response = await axios.post(
-        "https://expressitplus.co.uk/api/product/create",
+        "https://admin.attireidyll.com/api/product/create",
         formData,
         {
           headers: {
@@ -428,7 +406,6 @@ const CreateProduct = () => {
         setStock("");
         setDiscountAmount("");
 
-        setBusinessId("");
         setCategoryId("");
         setShort_desc("");
 
@@ -461,32 +438,67 @@ const CreateProduct = () => {
 
   return (
     <div id="section-1" className="mx-4 md:mx-10">
-      <div className="w-full shadow py-4 flex pe-4 mb-4">
-        <h2 className="px-4 text-xl font-semibold">Create Product</h2>
+      <div className="w-full shadow-sm py-4 flex items-center pe-4 mb-4 rounded-md border border-gray-300">
+        <h2 className="px-4 text-xl font-semibold ">Create Product</h2>
       </div>
 
       <div id="section-1">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* "Select Option" Div */}
           <div className="md:col-span-1 order-1 md:order-2">
-         
+            {/* <div className="mb-4 p-4 rounded-md shadow-sm transition duration-300 ease-in-out hover:border-blue-500 border border-gray-300">
+              <label
+                htmlFor="dropdown"
+                className="block text-sm font-semibold text-gray-800 mb-2"
+              >
+                Select Business
+              </label>
+              <ProductSelectedBusiness
+                onBusinessIdChange={handleBusinessIdChange}
+                className="rounded-lg border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500 py-2 px-3 transition duration-150 ease-in-out hover:border-blue-400"
+              />
 
+              {errors.business_ids && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.business_ids[0]}
+                </p>
+              )}
+            </div> */}
 
-            
-            <div className="mb-3 px-4 py-2 h-28 bg-white flex flex-col shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
+             <div className="mb-2 px-4 py-3 h-28 bg-white flex flex-col border border-gray-300 rounded-md shadow-sm transition duration-300 ease-in-out hover:border-blue-400 ">
                   <label
-                    htmlFor="category_id"
-                    className="block text-sm font-medium text-gray-700 required"
+                    htmlFor="product_status"
+                    className="block text-base font-semibold text-gray-800 mb-4"
                   >
-                    Stock Location
+                    Pre Order
                   </label>
-                  <StockLocation onLocationIdChange={handleLocationIdChange} />
-                  {errors.stock_location_id && ( <p className="text-red-500 text-sm">{errors.stock_location_id[0]}</p> )}
+                  <select
+                    name="product_status"
+                    id="product_status"
+                    className="form-select rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 py-2 px-3  focus:outline-none"
+                    onChange={(e) => setOrderStatus(e.target.value)}
+                  >
+                    <option value="0">Off</option>
+                    <option value="1">On</option>
 
+                  </select>
+                  <span className="text-red-600 text-sm error-text product_status_error"></span>
                 </div>
 
-
-
+            <div className=" p-4 rounded-md shadow-sm transition duration-300 ease-in-out hover:border-blue-500 border border-gray-300">
+              <label
+                htmlFor="category_id"
+                className="block text-sm font-semibold text-gray-800 mb-2"
+              >
+                Warehouse Location
+              </label>
+              <StockLocation onLocationIdChange={handleLocationIdChange} />
+              {errors.stock_location_id && (
+                <p className="text-red-500 text-sm">
+                  {errors.stock_location_id[0]}
+                </p>
+              )}
+            </div>
           </div>
 
           {/* Left Side Content */}
@@ -502,15 +514,27 @@ const CreateProduct = () => {
               >
                 Product Name
               </label>
-              <input
+              {/* <input
                 name="name"
                 type="text"
-                className="mt-1 block w-full rounded-3 shadow-[0_3px_10px_rgb(0,0,0,0.2)] border-gray-300 p-2"
+                className="mt-1 block w-full rounded-3 shadow-[0_3px_10px_rgb(0,0,0,0.2)] hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 
+             0"
                 id="Product_name"
                 value={name}
                 placeholder="Product Name"
                 onChange={(e) => setName(e.target.value)}
+              /> */}
+
+              <input
+                name="name"
+                type="text"
+                id="Product_name"
+                value={name}
+                placeholder="Product Name"
+                onChange={(e) => setName(e.target.value)}
+                className="mt-1 block w-full rounded-md border border-gray-300 p-3 shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition hover:border-blue-500 placeholder-gray-400"
               />
+
               {errors.name && (
                 <p className="text-red-500 text-sm">{errors.name[0]}</p>
               )}
@@ -524,17 +548,28 @@ const CreateProduct = () => {
               >
                 Short Description
               </label>
+              {/* <textarea
+                value={short_desc}
+                onChange={(e) => setShort_desc(e.target.value)}
+                name="short_desc"
+                id="short_desc"
+                className="mt-1 w-full rounded-3 h-36 p-2 shadow-[0_3px_10px_rgb(0,0,0,0.2)] hover:border-blue-500 focus:outline-none  focus:ring-blue-500"
+              /> */}
+
               <textarea
                 value={short_desc}
                 onChange={(e) => setShort_desc(e.target.value)}
                 name="short_desc"
                 id="short_desc"
-                className="mt-1 w-full rounded-3 h-36 p-2 shadow-[0_3px_10px_rgb(0,0,0,0.2)]"
+                placeholder="Enter a brief description..."
+                className="mt-1 w-full h-36 p-3 border border-gray-300 rounded-lg shadow-sm hover:border-blue-500 focus:outline-none focus:ring-blue-500 transition duration-200 ease-in-out"
               />
             </div>
             {/* {errors.short_desc && (
               <p className="text-red-500 text-sm">{errors.short_desc[0]}</p>
             )} */}
+
+            {/* Image Upload Start */}
 
             <div className="mb-4 " id="">
               <label
@@ -549,7 +584,7 @@ const CreateProduct = () => {
                 <button
                   type="button"
                   onClick={toggleDrawer}
-                  className="rounded w-full flex flex-col items-center cursor-pointer bg-white shadow-[0_3px_10px_rgb(0,0,0,0.2)] py-3"
+                  className="rounded w-full flex flex-col items-center cursor-pointer bg-white shadow-[0_3px_10px_rgb(0,0,0,0.2)] hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 py-3"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -561,9 +596,9 @@ const CreateProduct = () => {
                   >
                     {image ? (
                       <image
-                        href={`https://expressitplus.co.uk/public/storage/product/${image}`}
+                        href={`https://admin.attireidyll.com/public/storage/product/${image}`}
                         width="90"
-                        height="70"
+                        height="90"
                       />
                     ) : (
                       <svg
@@ -602,21 +637,25 @@ const CreateProduct = () => {
                 <p className="text-red-500 text-sm mx-4">{errors.image[0]}</p>
               )}
             </div>
+
+            {/* Image Upload End */}
+
+            {/* Product Category & Product Status Start*/}
             <div
               className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"
               id="section-3"
             >
               <div>
-                <div className="mb-3 px-4 py-2 h-28 bg-white flex flex-col shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
+                <div className="mb-2 px-4 py-3 h-28 bg-white flex flex-col border border-gray-300 rounded-md shadow-sm transition duration-300 ease-in-out hover:border-blue-400 ">
                   <label
                     htmlFor="category_id"
-                    className="block text-sm font-medium text-gray-700 required"
+                    className="block text-base font-semibold text-gray-800 mb-4"
                   >
                     Product Category
                   </label>
                   <CategoryItems onCategoryIdChange={handleCategoryIdChange} />
                   {errors.category_id && (
-                    <p className="text-red-500 text-sm">
+                    <p className="text-red-600 text-sm ">
                       {errors.category_id[0]}
                     </p>
                   )}
@@ -624,92 +663,36 @@ const CreateProduct = () => {
               </div>
 
               <div>
-                <div className="mb-3 px-4 py-2 h-28 bg-white flex flex-col shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
+                <div className="mb-2 px-4 py-3 h-28 bg-white flex flex-col border border-gray-300 rounded-md shadow-sm transition duration-300 ease-in-out hover:border-blue-400 ">
                   <label
                     htmlFor="product_status"
-                    className="block text-sm font-medium text-gray-700 required"
+                    className="block text-base font-semibold text-gray-800 mb-4"
                   >
                     Product Status
                   </label>
                   <select
                     name="product_status"
                     id="product_status"
-                    className="form-select rounded-lg shadow border-gray-300 py-1 px-2"
+                    className="form-select rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 py-2 px-3  focus:outline-none"
                     onChange={(e) => setStatus(e.target.value)}
                   >
                     <option value="1">On</option>
                     <option value="0">Off</option>
                   </select>
-                  <span className="text-danger error-text product_status_error"></span>
+                  <span className="text-red-600 text-sm error-text product_status_error"></span>
                 </div>
               </div>
             </div>
+            {/* Product Category & Product Status End */}
 
             {/* variation code start */}
 
-            <div className="col-span-12 mb-4 shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
-
-            {!hasVariations && (
-              <div className="mb-4 my-4 shadow-[0_3px_10px_rgb(0,0,0,0.2)] bg-white">
-                <div className="card-body p-4" id="section-7">
-                  <h5 className="mb-4 text-lg font-semibold">
-                    Product Costing / Discount
-                  </h5>
-
-                  <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
-                   
-                   
-                  <div className="col-span-1">
-                      <div className="mb-3">
-                        <label className="form-label">Costing Price</label>
-                        <input
-                          type="number"
-                          className="form-control rounded-lg shadow border border-gray-300 p-2 w-full"
-                          id="price"
-                          placeholder="Enter costing price"
-                          aria-label="Price"
-                          onChange={(e) => setBuyingPrice(e.target.value)}
-                        />
-
-                      {errors.buying_price && ( <p className="text-red-500 text-sm">{errors.buying_price[0]}</p> )}
-
-                      </div>
-                    </div>
-                   
-                    <div className="col-span-1">
-                      <div className="mb-3">
-                        <label className="form-label">Discount Amount</label>
-                        <input
-                          type="number"
-                          name="discount_value"
-                          defaultValue=""
-                          className="form-control rounded-lg shadow border border-gray-300 p-2 w-full"
-                          onChange={(e) => setDiscountAmount(e.target.value)}
-                        />
-                      </div>
-                    </div>
-                    <div className="col-span-1">
-                      <div className="mb-3">
-                        <label className="form-label">Discount Date</label>
-                        <input
-                          type="date" onClick={(e) => e.target.showPicker()} 
-                          className="form-control rounded-lg shadow border border-gray-300 p-2 w-full"
-                          placeholder="Enter discount"
-                          onChange={(e) => setDiscountDate(e.target.value)}
-
-                        />
-                      </div>
-                    </div>
-
-                   
-
-                  </div>
-                </div>
-              </div>
-            )}
-              <div className="mb-3 py-2 pb-3 shadow bg-white flex-shrink-0">
+            <div className="col-span-12 shadow-sm border border-gray-300 rounded-md transition duration-300 ease-in-out hover:border-blue-400 ">
+              <div className="mb-3 py-4 shadow bg-white flex-shrink-0">
                 <div className="flex justify-between mb-2">
-                  <div className="mx-4 my-2">Price, Stock, Code</div>
+                  <div className="mx-4 my-2 text-lg font-semibold">
+                    Price, Stock, Code
+                  </div>
                   <div className="mx-4 my-2 flex items-center">
                     <input
                       type="checkbox"
@@ -724,27 +707,25 @@ const CreateProduct = () => {
 
                 {!hasVariations && (
                   <div className="container-fluid">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 mx-5">
-                      <div className="mb-2">
-                        <label
-                          htmlFor="Selling price"
-                          className="block text-sm font-medium text-gray-700"
-                        >
-                         Selling Price
-                        </label>
-                        <input
-                          type="number"
-                          className="form-control rounded-lg shadow border border-gray-300 p-2 w-full"
-                          id="price"
-                          placeholder="Enter price"
-                          aria-label="Price"
-                          onChange={(e) => setPrice(e.target.value)}
-                        />
-                        {errors.price && (
-                          <p className="text-red-500 text-sm">
-                            {errors.price[0]}
-                          </p>
-                        )}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 mx-5 items-center">
+                      <div className="col-span-1">
+                        <div className="mb-3">
+                          <label className="form-label">Cost Price</label>
+                          <input
+                            type="number"
+                            className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
+                            id="price"
+                            placeholder="Enter cost price"
+                            aria-label="Price"
+                            onChange={(e) => setBuyingPrice(e.target.value)}
+                          />
+
+                          {errors.buying_price && (
+                            <p className="text-red-500 text-sm">
+                              {errors.buying_price[0]}
+                            </p>
+                          )}
+                        </div>
                       </div>
 
                       <div className="mb-2">
@@ -756,7 +737,7 @@ const CreateProduct = () => {
                         </label>
                         <input
                           type="number"
-                          className="form-control rounded-lg shadow border border-gray-300 p-2 w-full"
+                          className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
                           id="stock"
                           placeholder="Enter stock"
                           aria-label="Stock"
@@ -778,7 +759,7 @@ const CreateProduct = () => {
                         </label>
                         <input
                           type="text"
-                          className="form-control rounded-lg shadow border border-gray-300 p-2 w-full"
+                          className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
                           id="code"
                           placeholder="Enter code"
                           aria-label="Code"
@@ -804,7 +785,7 @@ const CreateProduct = () => {
                               </label>
                               <Select
                                 options={variationOptions}
-                                className="rounded-lg shadow border border-gray-300"
+                                className="rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300"
                                 placeholder="Select a variation"
                                 isSearchable
                                 onChange={(selectedOption) =>
@@ -821,7 +802,7 @@ const CreateProduct = () => {
                               <Select
                                 id="variation_value_ids"
                                 options={variation.options || []}
-                                className="rounded-lg shadow border border-gray-300"
+                                className="rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300"
                                 placeholder="Select values"
                                 isSearchable
                                 isMulti
@@ -853,16 +834,19 @@ const CreateProduct = () => {
                               Variation & Value
                             </th>
                             <th className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                             Costing Price
+                              Costing Price
                             </th>
                             <th className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                             selling Price
+                              selling Price
                             </th>
                             <th className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                               Stock
                             </th>
                             <th className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                               Discount
+                            </th>
+                            <th className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Fixed or %
                             </th>
 
                             <th className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -893,12 +877,15 @@ const CreateProduct = () => {
                                   type="number"
                                   value={combination.buying_price || ""}
                                   onChange={(e) =>
-                                    handleInputChange(e, combIndex, "buying_price")
+                                    handleInputChange(
+                                      e,
+                                      combIndex,
+                                      "buying_price"
+                                    )
                                   }
-                                  className="form-control rounded-lg shadow border border-gray-300 p-2  w-[120px]"
+                                  className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2  w-[120px]"
                                   placeholder="cost price"
                                 />
-
                               </td>
 
                               <td className="px-2 py-4 whitespace-nowrap">
@@ -909,7 +896,7 @@ const CreateProduct = () => {
                                   onChange={(e) =>
                                     handleInputChange(e, combIndex, "price")
                                   }
-                                  className="form-control rounded-lg shadow border border-gray-300 p-2  w-[120px]"
+                                  className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2  w-[120px]"
                                   placeholder="price"
                                 />
                               </td>
@@ -921,11 +908,10 @@ const CreateProduct = () => {
                                   onChange={(e) =>
                                     handleInputChange(e, combIndex, "stock")
                                   }
-                                  className="form-control rounded-lg shadow border border-gray-300 p-2 w-[120px]"
+                                  className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-[120px]"
                                   placeholder="stock"
                                 />
                               </td>
-
 
                               <td className="px-2 py-4 whitespace-nowrap">
                                 <input
@@ -934,17 +920,28 @@ const CreateProduct = () => {
                                   onChange={(e) =>
                                     handleInputChange(e, combIndex, "discount")
                                   }
-                                  className="form-control rounded-lg shadow border border-gray-300 p-2 w-[120px]"
+                                  className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-[120px]"
                                   placeholder="discount"
                                 />
+                              </td>
+
+                              <td className="px-2 py-4 whitespace-nowrap">
+                                    <select
+                                  name=""
+                                  className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-[120px]"
+                                  onChange={(e) =>  handleInputChange(e, combIndex, "discount_type")}
+                                >
+                                  <option selected value="fixed">Fixed</option>
+                                  <option value="percent">Percent</option>
+
+                                </select>
                               </td>
 
                               <td className="px-2 py-4 whitespace-nowrap">
                                 <input
                                   type="date"
                                   value={combination.discount_date || ""}
-
-                                  onClick={(e) => e.target.showPicker()} 
+                                  onClick={(e) => e.target.showPicker()}
                                   onChange={(e) =>
                                     handleInputChange(
                                       e,
@@ -952,19 +949,19 @@ const CreateProduct = () => {
                                       "discount_date"
                                     )
                                   }
-                                  className="form-control rounded-lg shadow border border-gray-300 p-2 w-[120px]"
+                                  className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-[120px]"
                                   placeholder="date"
                                 />
                               </td>
 
                               <td className="px-2 py-4 whitespace-nowrap">
                                 <input
-                                  type="text"  
+                                  type="text"
                                   value={code}
                                   onChange={(e) =>
                                     handleInputChange(e, combIndex, "code")
                                   }
-                                  className="form-control rounded-lg shadow border border-gray-300 p-2 w-[120px]"
+                                  className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-[120px]"
                                   placeholder="Enter code"
                                 />
                               </td>
@@ -984,29 +981,102 @@ const CreateProduct = () => {
                   </div>
                 </div>
               )}
+
+              {!hasVariations && (
+                <div className=" shadow-sm rounded-md hover:border-blue-500 focus:outline-none  focus:ring-blue-500 bg-white">
+                  <div className="card-body p-4" id="section-7">
+                    <h5 className="mb-4 text-lg font-semibold">
+                      Product Costing / Discount
+                    </h5>
+
+                    <div className="grid grid-cols-1 gap-3 md:grid-cols-4 items-center">
+                      <div className="mb-2">
+                        <label
+                          htmlFor="Selling price"
+                          className="block text-sm font-medium text-gray-700"
+                        >
+                          Selling Price
+                        </label>
+                        <input
+                          type="number"
+                          className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
+                          id="price"
+                          placeholder="Enter price"
+                          aria-label="Price"
+                          onChange={(e) => setPrice(e.target.value)}
+                        />
+                        {errors.price && (
+                          <p className="text-red-500 text-sm">
+                            {errors.price[0]}
+                          </p>
+                        )}
+                      </div>
+
+                     
+
+                      <div className="col-span-1">
+                        <div className="mb-3">
+                          <label className="form-label">Discount Amount</label>
+                          <input
+                            type="number"
+                            name="discount_value"
+                            defaultValue=""
+                            className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
+                            onChange={(e) => setDiscountAmount(e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="col-span-1">
+                        <div className="mb-3">
+                          <label className="form-label">Percent Or Fixed</label>
+                          <select
+                            name="discount_type"
+                            className="py-[9px] rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
+                            onChange={(e) => setDiscountType(e.target.value)}
+                          >
+                            <option selected value="fixed">Fixed</option>
+                            <option  value="percent">Percent</option>
+
+                          </select>
+                        </div>
+                      </div>
+                      <div className="col-span-1">
+                        <div className="mb-3">
+                          <label className="form-label">Discount Date</label>
+                          <input
+                            type="date"
+                            onClick={(e) => e.target.showPicker()}
+                            className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
+                            placeholder="Enter discount"
+                            onChange={(e) => setDiscountDate(e.target.value)}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* variation code end */}
 
-            
-
             <div className="flex justify-end mt-4">
               <button
-                className="btn bg-[#444CB4] hover:bg-[#28DEFC] text-white px-5 text-lg"
+                className="btn hover:bg-[#444CB4] bg-[#28DEFC] text-white px-5 text-lg"
                 type="submit"
               >
-                
-                
                 {loading ? (
-      <div className='flex justify-center w-full'>
-        <ImSpinner10 className='animate-spin text-white' size={20} />
-        <span className='px-2'>Saving...</span>
-      </div>
-    ) : (
-      <>
-       save
-      </>
-    )}
+                  <div className="flex justify-center w-full">
+                    <ImSpinner10
+                      className="animate-spin text-white"
+                      size={20}
+                    />
+                    <span className="px-2">Uploading...</span>
+                  </div>
+                ) : (
+                  <>Upload</>
+                )}
               </button>
             </div>
           </form>

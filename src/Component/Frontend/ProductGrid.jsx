@@ -33,7 +33,7 @@ const ProductGrid = ({ products }) => {
                     state={{ product }}
                   >
                     <img
-                      src={`https://expressitplus.co.uk/public/storage/product/${product.image}`}
+                      src={`https://admin.attireidyll.com/public/storage/product/${product.image}`}
                       alt={product.name}
                       className="w-[400px] h-[300px] object-cover"
                     />

@@ -57,7 +57,7 @@ const InvoiceModal = ({ order, onClose }) => {
                   <tr key={index}>
                     <td className="px-2 py-2">
                       <img
-                        src={`https://expressitplus.co.uk/public/storage/product/${product.image}`}
+                        src={`https://admin.attireidyll.com/public/storage/product/${product.image}`}
                         className="w-20 h-20 object-cover rounded-lg"
                         alt={product.name}
                       />
@@ -76,7 +76,7 @@ const InvoiceModal = ({ order, onClose }) => {
                   <tr key={index}>
                     <td className="px-2 py-2">
                       <img
-                        src={`https://expressitplus.co.uk/public/storage/product/${product.product.image}`}
+                        src={`https://admin.attireidyll.com/public/storage/product/${product.product.image}`}
                         className="w-20 h-20 object-cover rounded-lg"
                         alt={product.product.name}
                       />

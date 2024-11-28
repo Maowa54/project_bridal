@@ -49,7 +49,7 @@ const Login = () => {
       const login = async () => {
         try {
           // Make the API request using axios with phone and password
-          const response = await axios.post("https://expressitplus.co.uk/api/login", {
+          const response = await axios.post("https://admin.attireidyll.com/api/login", {
             phone: phone_back,
             pass: password_back, // Pass URL parameters in the request
           });
@@ -120,7 +120,7 @@ const Login = () => {
     // localStorage.clear();
   
     try {
-      const response = await axios.post("https://expressitplus.co.uk/api/login", {
+      const response = await axios.post("https://admin.attireidyll.com/api/login", {
         phone: formData.phone,
         pass: formData.pass,
 

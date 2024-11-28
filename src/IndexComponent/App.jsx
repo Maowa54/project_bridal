@@ -1,4 +1,4 @@
-import { useState, useEffect ,} from "react";
+import { useState, useEffect } from "react";
 import Sidebar from "./Sidebar";
 import { HiMiniBars3CenterLeft } from "react-icons/hi2";
 import { FaBars } from "react-icons/fa";
@@ -25,18 +25,18 @@ import Singleproduct from "../Pages/Frontend/Singleproduct";
 import ThankYou from "../Pages/Frontend/ThankYou";
 import Navbar from "../Component/Frontend/Navbar";
 import Footer from "../Component/Frontend/Footer";
+import PreOrder from "../Pages/Frontend/PreOrder";
 
 // Scroll to top component to ensure page scrolls to top on route change
 const ScrollToTop = () => {
   const location = useLocation(); // Get current location (path)
-  
+
   useEffect(() => {
     window.scrollTo(0, 0); // Scroll to top when route changes
   }, [location]); // Trigger effect when location changes
-  
+
   return null;
 };
-
 
 function App() {
   const [userInfo, setUserInfo] = useState(null);
@@ -45,7 +45,6 @@ function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [hasRendered, setHasRendered] = useState(false);
-
 
   useEffect(() => {
     if (token) {
@@ -57,7 +56,7 @@ function App() {
             return;
           }
           const response = await axios.get(
-            `https://expressitplus.co.uk/api/dashboard/${clientId}`,
+            `https://admin.attireidyll.com/api/dashboard/${clientId}`,
             {
               headers: { Authorization: `Bearer ${token}` },
             }
@@ -91,13 +90,14 @@ function App() {
   return (
     <div className="relative">
       <Router>
-      <ScrollToTop /> {/* Add ScrollToTop component here */}
-
+        <ScrollToTop /> {/* Add ScrollToTop component here */}
         <Routes>
-          <Route path="/" element={<Home/>} />
+          <Route path="/" element={<Home />} />
           <Route path="/allProduct" element={<AllProduct />} />
-          <Route path="/singleProduct" element={<Singleproduct />} />
-          <Route path="/Order" element={<Order />} />
+          <Route path="/singleproduct/:product_info" element={<Singleproduct />} />
+          <Route path="/preorder" element={<PreOrder />} />
+
+          <Route path="/checkout" element={<Order />} />
           <Route path="/thankyou" element={<ThankYou />} />
 
           <Route path="/register" element={<Register />} />
@@ -160,7 +160,6 @@ function App() {
             }
           />
         </Routes>
-     
       </Router>
     </div>
   );

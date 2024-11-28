@@ -38,7 +38,7 @@ const SingleProduct = () => {
 
       // Fetch data if cache is not valid
       const response = await axios.get(
-        "https://expressitplus.co.uk/api/all/product/get"
+        "https://admin.attireidyll.com/api/all/product/get"
       );
 
       if (response.data.status) {
@@ -106,6 +106,8 @@ const SingleProduct = () => {
 
     localStorage.setItem("products", JSON.stringify(existingProducts));
   };
+
+  
   // Assuming product_variation is part of the product object
   const variations = product.product_variation;
 
@@ -162,7 +164,7 @@ const SingleProduct = () => {
             {/* Image Section */}
             <div className="">
               <img
-                src={`https://expressitplus.co.uk/public/storage/product/${product.image}`}
+                src={`https://admin.attireidyll.com/public/storage/product/${product.image}`}
                 alt={product.name}
                 className=" w-[450px] h-[500px]"
               />
@@ -462,7 +464,7 @@ const SingleProduct = () => {
                       state={{ product }}
                     >
                       <img
-                        src={`https://expressitplus.co.uk/public/storage/product/${product.image}`}
+                        src={`https://admin.attireidyll.com/public/storage/product/${product.image}`}
                         alt={product.title}
                         className="w-[400px] h-[300px] object-cover"
                       />
@@ -531,7 +533,7 @@ const SingleProduct = () => {
                       state={{ product }}
                     >
                       <img
-                        src={`https://expressitplus.co.uk/public/storage/product/${product.image}`}
+                        src={`https://admin.attireidyll.com/public/storage/product/${product.image}`}
                         alt={product.title}
                         className="w-[400px] h-[300px] object-cover"
                       />

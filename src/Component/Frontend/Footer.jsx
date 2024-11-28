@@ -27,13 +27,13 @@ const Footer = () => {
               </a>
               <a
                 href="tel:+8801622185353"
-                className="flex items-center mt-1 text-gray-600 hover:underline"
+                className="flex items-center mt-1 text-gray-600 hover:underline text-sm md:text-base "
               >
                 <FaPhoneAlt className="mr-2" /> +880 1622185353
               </a>
               <a
                 href="mailto:help@gmail.com"
-                className="flex items-center mt-1 text-gray-600 hover:underline"
+                className="flex items-center mt-1 text-gray-600 hover:underline text-sm md:text-base "
               >
                 <FaEnvelope className="mr-2" /> help@gmail.com
               </a>

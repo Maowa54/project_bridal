@@ -4,52 +4,92 @@ import axios from "axios";
 import SocialMedia from "../../Component/Frontend/SocialMedia";
 import Navbar from "../../Component/Frontend/Navbar";
 import Footer from "../../Component/Frontend/Footer";
+import ImageCarousel from "../../Component/Frontend/Home/ImageCarousel";
+
 
 const Home = () => {
-  const images = [
-    "/assets/Images/Bride-1.png",
-    "/assets/Images/bride-12.png",
-    "/assets/Images/bride-13.png",
-    "/assets/Images/bride-14.png",
-  ];
-  const [currentIndex, setCurrentIndex] = useState(0);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 2000); // Change slide every 3 seconds
-
-    return () => clearInterval(interval); // Cleanup on unmount
-  }, [images.length]);
 
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
 
-  const fetchApiData = async () => {
+  //For categories
+  const fetchCategoryData = async () => {
     try {
-      const cacheKey = 'allProducts';
-      const cacheTimeKey = 'allProducts_timestamp';
+      const cacheKey = "allCategories";
+      const cacheTimeKey = "allCategories_timestamp";
       const cacheValidityDuration = 60 * 60 * 1000; // 1 hour
-  
+
       const cachedData = localStorage.getItem(cacheKey);
       const cachedTimestamp = localStorage.getItem(cacheTimeKey);
       const now = Date.now();
-  
-      if (cachedData && cachedTimestamp && (now - parseInt(cachedTimestamp) < cacheValidityDuration)) {
+
+      if (
+        cachedData &&
+        cachedTimestamp &&
+        now - parseInt(cachedTimestamp) < cacheValidityDuration
+      ) {
+        // Use cached data if it's still valid
+        setCategories(JSON.parse(cachedData));
+        return;
+      }
+
+      // Fetch data if cache is not valid
+      const response = await axios.get(
+        "https://admin.attireidyll.com/api/all/category/get"
+      );
+
+      if (response.data.status) {
+        const fetchedCategories = response.data.data;
+
+        // Cache fetched data and timestamp
+        localStorage.setItem(cacheKey, JSON.stringify(fetchedCategories));
+        localStorage.setItem(cacheTimeKey, now.toString());
+
+        setCategories(fetchedCategories);
+      }
+    } catch (error) {
+      console.error("Error fetching category data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategoryData();
+  }, []);
+
+  console.log(categories);
+
+  //For Products
+  const fetchApiData = async () => {
+    try {
+      const cacheKey = "allProducts";
+      const cacheTimeKey = "allProducts_timestamp";
+      const cacheValidityDuration = 60 * 60 * 1000; // 1 hour
+
+      const cachedData = localStorage.getItem(cacheKey);
+      const cachedTimestamp = localStorage.getItem(cacheTimeKey);
+      const now = Date.now();
+
+      if (
+        cachedData &&
+        cachedTimestamp &&
+        now - parseInt(cachedTimestamp) < cacheValidityDuration
+      ) {
+        // Use cached data if it's still valid
         setProducts(JSON.parse(cachedData));
         return;
       }
       // Fetch data if cache is not valid
       const response = await axios.get(
-        "https://expressitplus.co.uk/api/all/product/get"
+        "https://admin.attireidyll.com/api/all/product/get"
       );
 
       if (response.data.status) {
         const fetchedProducts = response.data.data.data;
 
-         // Cache fetched data and timestamp
-
-         localStorage.setItem(cacheKey, JSON.stringify(fetchedProducts));
-         localStorage.setItem(cacheTimeKey, now.toString());
+        // Cache fetched data and timestamp
+        localStorage.setItem(cacheKey, JSON.stringify(fetchedProducts));
+        localStorage.setItem(cacheTimeKey, now.toString());
 
         setProducts(fetchedProducts);
       }
@@ -64,6 +104,7 @@ const Home = () => {
 
     console.log()
   }, []);
+  console.log(products);
 
   const [visibleCount, setVisibleCount] = useState(3); // Initially display 3 products
   const batchSize = 3; // Number of products to show per "View More"
@@ -72,82 +113,42 @@ const Home = () => {
     setVisibleCount((prev) => Math.min(prev + batchSize, products.length)); // Show next batch
   };
 
-  console.log(products);
-
   return (
     <div className=" ">
-      <Navbar/>
+      <Navbar />
       <div className="container mx-auto">
         <div className="w-[90%] mx-auto overflow-hidden relative">
           <SocialMedia />
-
-          {/* Carousel Inner */}
-          <div className="relative flex">
-            {images.map((image, index) => (
-              <div
-                key={index}
-                className={`w-full flex-shrink-0 transition-transform duration-700 ease-in-out ${
-                  index === currentIndex ? "block" : "hidden"
-                }`}
-              >
-                <img
-                  src={image}
-                  alt={`Bride Slide ${index + 1}`}
-                  className="w-full object-cover"
-                />
-              </div>
-            ))}
-
-            {/* Indicators inside the carousel images */}
-            <div className="absolute bottom-2 md:bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-              {images.map((_, index) => (
-                <button
-                  key={index}
-                  className={`border-2 size-2 md:size-3  rounded-full transition duration-300 ease-in-out 
-                ${
-                  index === currentIndex
-                    ? "bg-teal-900 border-teal-900"
-                    : "bg-white"
-                }`}
-                  onClick={() => setCurrentIndex(index)} // Change slide on click
-                  aria-label={`Slide ${index + 1}`}
-                ></button>
-              ))}
-            </div>
-          </div>
-
+            <ImageCarousel/>
           {/* Buttons Section */}
           <div className="mt-8">
+            {/* Top Row: First Three Buttons */}
             <div className="w-full md:w-[45%] mx-auto mt-4 flex flex-col md:flex-row justify-center gap-5 text-sm md:text-base">
-              <Link
-                to="/allproduct"
-                className="w-full  md:flex-1 px-4 py-1 border border-gray-800 font-medium hover:bg-gradient-to-b from-teal-500 to-teal-700 hover:text-white hover:border-teal-400 rounded text-center transition"
-              >
-                WOMAN
-              </Link>
-              <Link
-                to="/allproduct"
-                className="w-full md:flex-1 px-4 py-1 border border-gray-800 font-medium hover:bg-gradient-to-b from-teal-500 to-teal-700 hover:text-white hover:border-teal-400 rounded text-center transition"
-              >
-                MAN
-              </Link>
-              <Link
-                to="/allproduct"
-                className="w-full text-nowrap md:flex-1 px-4 py-1 border border-gray-800 font-medium hover:bg-gradient-to-b from-teal-500 to-teal-700 hover:text-white hover:border-teal-400 rounded text-center transition"
-              >
-                KIDS & FAMILY
-              </Link>
+              {categories.slice(0, 3).map((category) => (
+                <Link
+                  to={{
+                    pathname: "/allProduct",
+                  }}
+                  state={{ category }}
+                  key={category.id}
+                  className="w-full md:flex-1 px-4 py-1 border border-gray-800 font-medium hover:bg-gradient-to-b from-teal-500 to-teal-700 hover:text-white hover:border-teal-400 rounded text-center transition"
+                >
+                  {category.name}
+                </Link>
+              ))}
             </div>
-          </div>
 
-          {/* Bridal Button */}
-          <div className="w-full md:w-[60%] mx-auto mt-4 flex justify-center text-sm md:text-base">
-            <div className="w-full">
+            {/* Bottom Row: Bridal Button */}
+            <div className="w-full md:w-[60%] mx-auto mt-4 flex justify-center text-sm md:text-base">
               <Link
-                to="/allproduct"
-                className="w-full font-medium px-4 py-1 border border-gray-800 hover:bg-gradient-to-b from-teal-500 to-teal-700 hover:text-white hover:border-teal-400 rounded block text-center transition"
+                to={{
+                  pathname: "/allProduct",
+                }}
+                state={{ category: categories[3] }} // Assuming "Bridal" is the 4th category
+                key={categories[3]?.id}
+                className="w-full px-4 py-1 border border-gray-800 font-medium hover:bg-gradient-to-b from-teal-500 to-teal-700 hover:text-white hover:border-teal-400 rounded text-center transition"
               >
-                Bridal
+                {categories[3]?.name}
               </Link>
             </div>
           </div>
@@ -225,13 +226,10 @@ const Home = () => {
             {products.slice(0, visibleCount).map((product) => (
               <div className="mb-2" key={product.id}>
                 <Link
-                  to={{
-                    pathname: "/singleProduct",
-                  }}
-                  state={{ product }}
+                to= {`/singleproduct/${product.name}-${product.id}`}
                 >
                   <img
-                    src={`https://expressitplus.co.uk/public/storage/product/${product.image}`}
+                    src={`https://admin.attireidyll.com/public/storage/product/${product.image}`}
                     className="w-full h-auto transition-transform duration-300 ease-in-out hover:scale-105"
                     alt={product.name || "Product"}
                   />
@@ -253,7 +251,7 @@ const Home = () => {
           )}
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 };

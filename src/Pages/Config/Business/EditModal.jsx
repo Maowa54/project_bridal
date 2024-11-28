@@ -86,7 +86,7 @@ const EditModal = ({ isOpen, onClose, business, onSave }) => {
     }
     setLoading(true); 
     try {
-      const response = await axios.post('https://expressitplus.co.uk/api/business/update', formData, {
+      const response = await axios.post('https://admin.attireidyll.com/api/business/update', formData, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
@@ -240,7 +240,7 @@ const EditModal = ({ isOpen, onClose, business, onSave }) => {
                 />
               ) : business.logo ? (
                 <img
-                  src={`https://expressitplus.co.uk/public/storage/business/logo/${business.logo}`}
+                  src={`https://admin.attireidyll.com/public/storage/business/logo/${business.logo}`}
                   alt="Current"
                   className="w-20 h-20 object-cover rounded-full"
                 />

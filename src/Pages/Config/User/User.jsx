@@ -49,7 +49,7 @@ const User = () => {
 
   const fetchBusinesses = async () => { 
     try {
-      const response = await axios.get(`https://expressitplus.co.uk/api/business/index/${clientId}`, {
+      const response = await axios.get(`https://admin.attireidyll.com/api/business/index/${clientId}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -67,7 +67,7 @@ const User = () => {
 
   const fetchUser = async () => { 
     try {
-      const response = await axios.get(`https://expressitplus.co.uk/api/user/get_all/${clientId}`, {
+      const response = await axios.get(`https://admin.attireidyll.com/api/user/get_all/${clientId}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -101,7 +101,7 @@ const User = () => {
     // }
     try {
       const response = await axios.post(
-        "https://expressitplus.co.uk/api/user/create",
+        "https://admin.attireidyll.com/api/user/create",
         formData,
         {
           headers: {
@@ -195,7 +195,7 @@ const User = () => {
     }
     try {
       const response = await axios.post(
-        "https://expressitplus.co.uk/api/user/update",
+        "https://admin.attireidyll.com/api/user/update",
         formData,
         {
           headers: {

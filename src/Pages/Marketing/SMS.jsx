@@ -53,7 +53,7 @@ const SMS = () => {
 
     const fetchSMS = async () => {
         try {
-            const response = await axios.get(`https://expressitplus.co.uk/api/sms/template/get-all/${clientId}`, {
+            const response = await axios.get(`https://admin.attireidyll.com/api/sms/template/get-all/${clientId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },
@@ -96,7 +96,7 @@ const SMS = () => {
       }
     setLoading(true); // Start loading
     try {
-      const response = await axios.post('https://expressitplus.co.uk/api/sms/send', formData, {
+      const response = await axios.post('https://admin.attireidyll.com/api/sms/send', formData, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },

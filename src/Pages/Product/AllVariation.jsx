@@ -21,7 +21,7 @@ const AllVariation = () => {
   useEffect(() => {
     const fetchAllVariations = async () => {
       try {
-        const response = await axios.get(`https://expressitplus.co.uk/api/get_all_variation`, {
+        const response = await axios.get(`https://admin.attireidyll.com/api/get_all_variation`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
@@ -84,7 +84,7 @@ const AllVariation = () => {
     };
 
     try {
-        const response = await axios.post('https://expressitplus.co.uk/api/variation/update', submitData, {
+        const response = await axios.post('https://admin.attireidyll.com/api/variation/update', submitData, {
             headers: {
                 'Authorization': `Bearer ${token}`,
             },

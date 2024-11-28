@@ -35,7 +35,7 @@ const Payment = () => {
 
       <div className="mt-6 flex justify-center">
         <Link to="/thankYou">
-          <button className="text-sm md:text-base font-semibold bg-[#82251F] hover:bg-gradient-to-t from-[#58221e] via-[#94241c] to-[#ca5340] mb-2 text-white hover:scale-105 px-12 py-1 md:px-16 md:py-2 rounded-md transition duration-300">
+          <button className="text-sm md:text-base font-semibold bg-gradient-to-r from-teal-500 to-teal-700  mb-2 text-white hover:scale-105 px-12 py-1 md:px-16 md:py-2 rounded-md transition duration-300">
             Place Order
           </button>
         </Link>

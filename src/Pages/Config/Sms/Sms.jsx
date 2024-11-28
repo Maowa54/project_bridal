@@ -48,7 +48,7 @@ const Sms = () => {
   useEffect(() => {
     const fetchDefaultMsg = async () => {
       try {
-        const response = await axios.get(`https://expressitplus.co.uk/api/sms/default/get/${clientId}`, {
+        const response = await axios.get(`https://admin.attireidyll.com/api/sms/default/get/${clientId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -74,7 +74,7 @@ const Sms = () => {
   // Fetch SMS data
   const fetchSMS = async () => { 
     try {
-      const response = await axios.get(`https://expressitplus.co.uk/api/sms/template/get-all/${clientId}`, {
+      const response = await axios.get(`https://admin.attireidyll.com/api/sms/template/get-all/${clientId}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -165,7 +165,7 @@ const Sms = () => {
   setLoading(true); // Set loading to true before making the API call
   try {
     const response = await axios.post(
-      'https://expressitplus.co.uk/api/sms/default/set',
+      'https://admin.attireidyll.com/api/sms/default/set',
       {
         sms_status: isActive ? '1' : '0',
         client_id: clientId,
@@ -195,7 +195,7 @@ const handleScheduleSubmit = async () => {
   setShLoading(true); // Start loading
   try {
     const response = await axios.post(
-      'https://expressitplus.co.uk/api/sms/default/set',
+      'https://admin.attireidyll.com/api/sms/default/set',
       {
         schedule_sms_status: isActive ? '1' : '0',
         client_id: clientId,
@@ -230,7 +230,7 @@ const handleScheduleSubmit = async () => {
 
     try {
       const response = await axios.post(
-        'https://expressitplus.co.uk/api/sms/default/set',
+        'https://admin.attireidyll.com/api/sms/default/set',
         {
           sms_status: smsStatus,
           client_id: clientId,
@@ -267,7 +267,7 @@ const handleScheduleSubmit = async () => {
 
     try {
       const response = await axios.post(
-        'https://expressitplus.co.uk/api/sms/default/set',
+        'https://admin.attireidyll.com/api/sms/default/set',
         {
           schedule_sms_status: smsStatus,
           client_id: clientId,
@@ -307,7 +307,7 @@ const handleScheduleSubmit = async () => {
 
     setLoading(true); // Start loading
     try {
-      const response = await axios.post('https://expressitplus.co.uk/api/sms/template/create', formData, {
+      const response = await axios.post('https://admin.attireidyll.com/api/sms/template/create', formData, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -381,7 +381,7 @@ const handleScheduleSubmit = async () => {
   
     setLoading(true); // Start loading
     try {
-      const response = await axios.post('https://expressitplus.co.uk/api/sms/template/update', formData, {
+      const response = await axios.post('https://admin.attireidyll.com/api/sms/template/update', formData, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -443,7 +443,7 @@ const handleScheduleSubmit = async () => {
   
     if (result.isConfirmed) {
       try {
-        const response = await axios.delete(`https://expressitplus.co.uk/api/sms/template/delete/${id}`, {
+        const response = await axios.delete(`https://admin.attireidyll.com/api/sms/template/delete/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

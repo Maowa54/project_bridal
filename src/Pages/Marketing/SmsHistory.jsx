@@ -11,7 +11,7 @@ const SmsHistory = () => {
     useEffect(() => {
       const fetchStockHistories = async () => {
         try {
-            const response = await axios.get(`https://expressitplus.co.uk/api/sms/history/get/${clientId}`, {
+            const response = await axios.get(`https://admin.attireidyll.com/api/sms/history/get/${clientId}`, {
                 headers: {
                   'Authorization': `Bearer ${token}`,
                 },

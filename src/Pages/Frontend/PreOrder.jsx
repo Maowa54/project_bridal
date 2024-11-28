@@ -43,7 +43,7 @@ const SocialMediaButtons = () => {
 };
 
 const PreOrder = () => {
-  const [mainImage, setMainImage] = useState("Images/bride-5.png");
+  const [mainImage, setMainImage] = useState("/assets/Images/bride-5.png");
   const thumbnails = ["bride-6.png", "bride-7.png", "bride-8.png"];
 
   const product = {
@@ -78,7 +78,7 @@ const PreOrder = () => {
                 {thumbnails.map((src, idx) => (
                   <img
                     key={idx}
-                    src={`Images/${src}`}
+                    src={`/assets/Images/${src}`}
                     alt={`Dress Thumbnail ${idx + 1}`}
                     className="max-h-[200px] w-full object-cover transition-transform duration-300 ease-in-out hover:scale-110 hover:shadow-lg cursor-pointer"
                     onClick={() => setMainImage(`Images/${src}`)} // Change main image on click
@@ -148,7 +148,7 @@ const PreOrder = () => {
             <div className="mb-2">
               <Link to="/singleProduct">
                 <img
-                  src="/Images/Bride-2.png"
+                  src="/assets/Images/Bride-2.png"
                   alt="Client wearing bridal attire 1"
                   className="w-full h-auto transition-transform duration-300 ease-in-out hover:scale-105"
                 />
@@ -157,7 +157,7 @@ const PreOrder = () => {
             <div className="mb-2">
               <Link to="/singleProduct">
                 <img
-                  src="/Images/Bride-3.png"
+                  src="/assets/Images/Bride-3.png"
                   alt="Client wearing bridal attire 2"
                   className="w-full h-auto transition-transform duration-300 ease-in-out hover:scale-105"
                 />
@@ -166,7 +166,7 @@ const PreOrder = () => {
             <div className="mb-2">
               <Link to="/singleProduct">
                 <img
-                  src="/Images/bride-4.png"
+                  src="/assets/Images/bride-4.png"
                   alt="Client wearing bridal attire 3"
                   className="w-full h-auto transition-transform duration-300 ease-in-out hover:scale-105"
                 />
@@ -178,7 +178,7 @@ const PreOrder = () => {
           <div className="text-center my-5">
             <Link
               to=""
-              className="inline-block btn btn-outline-dark px-7 py-1 text-sm md:text-base border hover:bg-teal-700 hover:text-white hover:border-teal-700 border-gray-800 rounded"
+              className=" px-7 py-1 text-sm md:text-base border hover:bg-teal-700 hover:text-white hover:border-teal-700 border-gray-800 rounded"
             >
               View More
             </Link>

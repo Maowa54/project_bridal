@@ -113,7 +113,7 @@ const EditProduct = () => {
     const fetchVariation = async () => {
       try {
         const response = await axios.get(
-          `https://expressitplus.co.uk/api/product/variation/values/${clientId}`,
+          `https://admin.attireidyll.com/api/product/variation/values/${clientId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -325,7 +325,7 @@ const EditProduct = () => {
     }
     try {
       const response = await axios.post(
-        "https://expressitplus.co.uk/api/product/create",
+        "https://admin.attireidyll.com/api/product/create",
         formData,
         {
           headers: {
@@ -536,7 +536,7 @@ useEffect(() => {
                   >
                     {image || editProduct?.image ? (
                       <image
-                        href={`https://expressitplus.co.uk/public/storage/product/${image}`}
+                        href={`https://admin.attireidyll.com/public/storage/product/${image}`}
                         width="90"
                         height="70"
                       />

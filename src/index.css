@@ -118,21 +118,39 @@ body {
   height: 40px; /* Adjust spinner size */
   top: 50%; /* Center the spinner vertically */
 }
-/* Carousel.css */
-.custom-next-arrow,
-.custom-prev-arrow {
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
+
+
+@keyframes flyToCart {
+  0% {
+    transform: translateX(0) translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(calc(100vw - 4rem), -calc(100vh - 5rem)) scale(0.3);
+    opacity: 0;
+  }
 }
 
-.custom-next-arrow::before,
-.custom-prev-arrow::before {
-  content: '';
-  display: none; /* Hide default arrow icons */
+@keyframes shakeCart {
+  25% {
+    transform: translateX(6px);
+  }
+  50% {
+    transform: translateX(4px);
+  }
+  75% {
+    transform: translateX(2px);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
+
+.animate-fly-to-cart {
+  animation: flyToCart 1s forwards cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.animate-shake {
+  animation: shakeCart 0.4s ease-in-out forwards;
+}
+
