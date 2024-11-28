@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Navbar from "../../Component/Frontend/Navbar";
+import Footer from "../../Component/Frontend/Footer";
 
 const ThankYou = () => {
   const [fadeIn, setFadeIn] = useState(false);
@@ -10,9 +12,11 @@ const ThankYou = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col justify-center items-center text-center px-4">
+  <div>
+    <Navbar/>
+    <div className="flex flex-col justify-center items-center text-center px-4 py-20">
       <div
-        className={`bg-white shadow-xl rounded-lg p-6 md:p-12 lg:p-16 transition-opacity duration-1000 ease-in-out ${
+        className={` p-6  transition-opacity duration-1000 ease-in-out ${
           fadeIn ? "opacity-100" : "opacity-0"
         }`}
       >
@@ -43,24 +47,21 @@ const ThankYou = () => {
       </div>
 
       {/* Footer */}
-      <div className="mt-12 text-nowrap text-gray-500 text-xs md:text-sm lg:text-base flex items-center justify-center space-x-2">
+      <div className=" text-nowrap text-gray-500 text-xs md:text-sm lg:text-base flex items-center justify-center space-x-2">
         <span>©2024</span>
         <a
-          href="https://expressitbd.net/"
+          href=""
           target="_blank"
           rel="noopener noreferrer"
-          className="text-blue-900 hover:text-blue-700  font-airstrip font-semibold"
+          className="text-teal-800 hover:text-teal-500 text-lg  font-bold"
         >
-          Express{" "}
-          <span className="relative font-sans text-white font-bold bg-pink-700 px-1 mr-1">
-            IT
-            <span className="absolute  w-0 h-0 border-l-[5px] border-l-transparent border-r-transparent border-t-[5px] border-t-pink-700 right-0 top-full"></span>
-          </span>
-          bd
+        Attire Idyll
         </a>
         <span>All rights reserved.</span>
       </div>
     </div>
+    <Footer/>
+  </div>
   );
 };
 

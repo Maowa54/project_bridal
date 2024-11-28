@@ -4,6 +4,7 @@ import Footer from "../../Component/Frontend/Footer";
 import axios from "axios";
 import Swal from "sweetalert2";
 import CustomSelect from "../../Component/Frontend/Checkout/CustomSelect";
+import { useNavigate } from "react-router-dom";
 
 const Order = () => {
   const [errors, setErrors] = useState({});
@@ -15,6 +16,7 @@ const Order = () => {
 
 
 
+  const navigate = useNavigate();  // Initialize useNavigate
 
   const [loading, setLoading] = useState(false);
 
@@ -90,13 +92,7 @@ const Order = () => {
 
       console.log(response);
       if (response.data.status) {
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: response.data.message || "Order created successfully!",
-          showConfirmButton: false,
-          timer: 2000,
-        });
+          navigate('/thankyou');
 
         // Reset form fields
         setName("");
@@ -131,7 +127,7 @@ const Order = () => {
   return (
     <div>
       <Navbar />
-      <div className="md:container mx-auto md:px-4">
+      <div className="md:container mx-auto md:px-4 pt-20">
         <div className="md:w-[90%] mx-auto">
           <div className="flex flex-col lg:flex-row mt-5 space-y-5 lg:space-y-0 lg:space-x-8">
             {/* Responsive table */}
@@ -341,7 +337,7 @@ const Order = () => {
                 </div>
 
                 {/* Summary Section */}
-                <div className="border-t border-gray-200 pt-2 mt-2">
+                <div className="border-t border-gray-200 mt-2">
                   <h3 className="font-bold mb-2">Order Summary</h3>
                   <p className="flex justify-between">
                     <span>Total Price:</span>
@@ -367,6 +363,7 @@ const Order = () => {
                   >
                     Place Order
                   </button>
+                  
                 </div>
               </form>
             </div>

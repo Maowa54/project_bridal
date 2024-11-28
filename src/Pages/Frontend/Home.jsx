@@ -113,7 +113,7 @@ const Home = () => {
   return (
     <div className=" ">
       <Navbar />
-      <div className="container mx-auto">
+      <div className="container mx-auto pt-16">
         <div className="w-[90%] mx-auto overflow-hidden relative">
           <SocialMedia />
             <ImageCarousel/>

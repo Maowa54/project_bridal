@@ -16,12 +16,7 @@ const AddToCart = ({ onClose }) => {
     setProducts(updatedProducts);
     localStorage.setItem("cart", JSON.stringify(updatedProducts));
   };
-  // Calculate subtotal and total
-  const subtotal = products.reduce(
-    (total, product) => total + product.price,
-    0
-  );
-  const total = subtotal; // Additional costs can be added if needed
+ 
 
   const increment = (index) => {
     const updatedProducts = [...products];
@@ -38,6 +33,11 @@ const AddToCart = ({ onClose }) => {
       localStorage.setItem("cart", JSON.stringify(updatedProducts)); // Update localStorage
     }
   };
+  const totalPrice = products.reduce((acc, product) => {
+    const productTotalPrice =
+      (product.price) * product.count;
+    return acc + productTotalPrice;
+  }, 0);
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-end items-start z-50 overflow-y-auto">
@@ -50,10 +50,7 @@ const AddToCart = ({ onClose }) => {
             aria-label="Close"
           ></button>
         </div>
-        <p className="mt-3 text-sm md:text-base">
-          Only $714.00 away from Free Shipping
-        </p>
-
+   
         {/* Product List */}
         {products.length > 0 ? (
           products.map((product, index) => (
@@ -106,12 +103,12 @@ const AddToCart = ({ onClose }) => {
         <div className="border-t border-gray-300 mt-4 mb-4"></div>
         <div className="flex justify-between font-medium text-sm md:text-base">
           <p>Subtotal:</p>
-          <p>৳{subtotal.toFixed(2)}</p> {/* Format subtotal */}
+          <p>{totalPrice.toFixed(2)}</p> {/* Format subtotal */}
         </div>
 
         <div className="flex justify-between font-medium text-sm md:text-base">
           <p>Total:</p>
-          <p>৳{total.toFixed(2)}</p> {/* Format total */}
+          <p>৳{totalPrice.toFixed(2)}</p> {/* Format total */}
         </div>
 
         <div className="flex justify-center mt-6 md:mt-9 md:mb-3 text-sm md:text-base">

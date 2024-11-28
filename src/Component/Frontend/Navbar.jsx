@@ -5,12 +5,9 @@ import { Link } from "react-router-dom";
 
 import AddToCart from "./AddToCart";
 
-const Navbar = (  ) => {
+const Navbar = () => {
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
-
-
-
 
   useEffect(() => {
     const storedCategories = localStorage.getItem("allCategories");
@@ -26,9 +23,6 @@ const Navbar = (  ) => {
     }
   }, []);
 
-
-
-
   useEffect(() => {
     const storedProducts = localStorage.getItem("cart");
     if (storedProducts) {
@@ -36,11 +30,12 @@ const Navbar = (  ) => {
     }
   }, []);
 
- 
-  const totalProductCount = products.reduce((total, product) => total + product.count, 0);
+  const totalProductCount = products.reduce(
+    (total, product) => total + product.count,
+    0
+  );
 
-
-// console.log(products)
+  // console.log(products)
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -61,18 +56,17 @@ const Navbar = (  ) => {
     setIsModalOpen(false); // Close the modal
   };
 
-
   return (
     <div className="shadow">
-      <div className="container mx-auto">
-        <nav className="w-[90%] mx-auto  py-2">
-          <div className="flex flex-wrap items-center justify-between mx-auto py-3">
+      <div className=" mx-auto">
+        <nav className="lg:px-20  px-4 py-3 mx-auto transition-all duration-50 ease-in-out w-full bg-white fixed top-0  z-50 shadow-md">
+          <div className="flex flex-wrap items-center justify-between mx-auto ">
             <div className="text-center">
               <button
-                className="openbtn  text-gray-800 text-2xl font-medium  hover:text-gray-500 focus:outline-none"
+                className="openbtn  text-gray-800 text-lg md:text-2xl font-medium  hover:text-gray-500 focus:outline-none"
                 onClick={openPanel}
               >
-                <i className="fas fa-bars"></i>{" "}
+                <i className="fas fa-bars "></i>{" "}
               </button>
 
               <div
@@ -87,21 +81,20 @@ const Navbar = (  ) => {
                   &times;
                 </button>
                 <ul className="mt-10 space-y-2">
-  {categories.map((category) => (
-    <li key={category.id}>
-      <Link
-        to={{
-          pathname: "/allProduct",
-        }}
-        state={{ category }}
-        className="block px-8 py-2 text-lg md:text-xl text-gray-800 hover:bg-teal-700 hover:text-white transition-colors hover:bg-gradient-to-b from-teal-400 to-teal-700 transform hover:scale-105 duration-300"
-      >
-        {category.name}
-      </Link>
-    </li>
-  ))}
-</ul>
-
+                  {categories.map((category) => (
+                    <li key={category.id} onClick={closePanel}>
+                      <Link
+                        to={{
+                          pathname: "/allProduct",
+                        }}
+                        state={{ category }}
+                        className="block px-8 py-2 text-lg md:text-xl text-gray-800 hover:bg-teal-700 hover:text-white transition-colors hover:bg-gradient-to-b from-teal-400 to-teal-700 transform hover:scale-105 duration-300"
+                      >
+                        {category.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
 
@@ -116,22 +109,21 @@ const Navbar = (  ) => {
             </div>
 
             <div className="flex items-center space-x-4">
-     <div className="relative">
-    
-  <div className="bottom-5 absolute left-4">
-    <p className="flex size-2 items-center justify-center rounded-full bg-red-500 p-2 text-xs text-white">
-    {totalProductCount || 0}
-    </p>
-  </div>
+              <div className="relative">
+                <div className="bottom-5 absolute left-4">
+                  <p className="flex size-2 items-center justify-center rounded-full bg-red-500 p-2 text-xs text-white">
+                    {totalProductCount || 0}
+                  </p>
+                </div>
 
-              <button
-                aria-label="View Cart"
-                onClick={handleViewCart}
-                className=" text-black text-2xl hover:text-gray-500 focus:outline-none"
-              >
-                <i className="bi bi-cart text-lg md:text-xl lg:text-2xl"></i>
-              </button>
-     </div>
+                <button
+                  aria-label="View Cart"
+                  onClick={handleViewCart}
+                  className=" text-black text-2xl hover:text-gray-500 focus:outline-none"
+                >
+                  <i className="bi bi-cart text-lg md:text-xl lg:text-2xl"></i>
+                </button>
+              </div>
               {isModalOpen && <AddToCart onClose={handleCloseCart} />}
 
               <Link to="/login">

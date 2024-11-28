@@ -58,9 +58,9 @@ const AllProduct = () => {
       <Navbar />
 
       <div className="container mx-auto ">
-        <div className="w-[90%] mx-auto mt-5">
+        <div className="w-[90%] mx-auto ">
           <SocialMedia />
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-4 pt-24">
             {/* Sidebar - Category and Price Filter */}
             <div className="md:col-span-3 col-span-12 hidden lg:block">
               <div className="flex items-center mb-3">

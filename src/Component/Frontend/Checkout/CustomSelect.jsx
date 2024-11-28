@@ -11,15 +11,15 @@ const CustomSelect = () => {
 
   return (
     <div className="relative inline-block w-full">
-      <button
+      <p
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full px-4 py-2 bg-white border border-gray-300 rounded-md text-xs md:text-sm text-gray-800 flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-teal-600"
+        className="cursor-pointer w-full px-4 py-2 bg-white border border-gray-300 rounded-md text-xs md:text-sm text-gray-800 flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-teal-600"
       >
         {selectedOption || 'Select an option'}
         <span className={`ml-2 transform transition-transform ${isOpen ? 'rotate-180' : 'rotate-0'}`}>
           ▼
         </span>
-      </button>
+      </p>
       {isOpen && (
         <div className="absolute w-full mt-2 bg-white border text-xs md:text-sm border-gray-300 rounded-md shadow-lg">
           <div
