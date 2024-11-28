@@ -142,7 +142,7 @@ function App() {
                               <FaBars />
                             )}
                           </button>
-                          <h1 className="text-2xl">Panda Pos</h1>
+                          <h1 className="text-2xl">Attire Idyll</h1>
                         </div>
                         <button className="text-xl">
                           <IoIosNotifications size={30} />
