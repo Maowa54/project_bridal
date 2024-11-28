@@ -100,6 +100,9 @@ const Home = () => {
 
   useEffect(() => {
     fetchApiData();
+    const storedProducts = localStorage.getItem('allProducts');
+
+    console.log()
   }, []);
   console.log(products);
 

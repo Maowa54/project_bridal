@@ -87,11 +87,6 @@
     ]
   },
   {
-    "title": "POS",
-    "path": "/pos",
-    "icon": "FaCashRegister"
-  },
-  {
     "title": "Access",
     "path": "/access",
     "icon": "FaLock"
@@ -119,12 +114,8 @@
     "title": "Customer",
     "path": "/customer",
     "icon": "FaUser"
-  },
-  {
-    "title": "Payment",
-    "path": "/payment",
-    "icon": "FaCreditCard"
   }
+
 ]
 
 

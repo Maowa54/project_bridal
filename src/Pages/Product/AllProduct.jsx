@@ -97,7 +97,11 @@ const AllProduct = () => {
           Swal.fire('Deleted!', response.data.message || 'SMS deleted successfully.', 'success');
   
           // Remove the deleted SMS from the state
-          setProductsToDisplay((prevProd) => prevProd.filter((product) => product.id !== id));
+
+
+          // setProductsToDisplay((prevProd) => prevProd.filter((product) => product.id !== id));
+
+          fetchProducts();
         } else {
           Swal.fire('Error!', response.data.message || 'Failed to delete SMS.', 'error');
         }

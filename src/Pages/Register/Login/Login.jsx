@@ -195,7 +195,6 @@ const Login = () => {
     <div>
       <section>
         <div className="flex flex-col items-center justify-center px-6 py-8 mb-5 mx-auto md:h-screen lg:py-0 mt-16">
-          <img className="my-3" src={regilogo} alt="regi" />
           <div className="w-full bg-white rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)] dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
               <form className="space-y-1 md:space-y-3" onSubmit={handleSubmit}>

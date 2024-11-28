@@ -30,12 +30,23 @@ export default function ImageDrawer({ isOpen, toggleDrawer, productImage }) {
   };
 
 
-  const clientId = localStorage.getItem("clientId");
   const token = localStorage.getItem("token");
 
 
 
- 
+  const handleImageSelect = (id) => {
+    const selectedImage = images.find((image) => image.id === id);
+
+    if (selectedImage) {
+      setSelectedImage(selectedImage.name);
+      setImageProduct(selectedImage.name);
+      console.log(selectedImage.name);
+      handleTopSelect(id); // Assuming handleTopSelect is updated to use id
+    }
+  };
+
+
+
 
   const handleFileChange = (e) => {
     if (e.target.files[0]) {
@@ -44,25 +55,17 @@ export default function ImageDrawer({ isOpen, toggleDrawer, productImage }) {
     }
   };
 
-
- 
-
   const handleImageSave = async (e) => {
     e.preventDefault();
-
-    // Validate image selection
     if (!image) {
       toast.error("Please select an image first!");
       return;
     }
-
     setLoading(true);
     const formData = new FormData();
-    formData.append("client_id", clientId);
     formData.append("image", image);
 
     try {
-      // Upload the image
       const response = await axios.post(
         "https://admin.attireidyll.com/api/product/image/upload",
         formData,
@@ -74,43 +77,34 @@ export default function ImageDrawer({ isOpen, toggleDrawer, productImage }) {
         }
       );
 
-      // Handle the response
       if (response.data.status) {
-        toast.success("Image uploaded successfully!", {
-            duration: 2000,
-            position: "top-right",
+        toast.success(response.data.message || "Image uploaded successfully!", {
+          duration: 2000,
+          position: "top-right",
         });
-    
-        const uploadedImageId = response.data.data.id;
-        console.log('Uploaded Image ID:', uploadedImageId);
-    
-        // Clear states after upload
+
         setErrors({});
         setSelectedFile(null); // Clear the selected file after upload
         setImage(null); // Clear image file
-        setImages([]); 
-    
-        document.getElementById('customFile').value = '';
-
-
-        await fetchImages(uploadedImageId); 
-
-        toggleDrawer();
-
-        console.log('trr');
+        fetchImages();
 
       } else {
         setErrors(response.data.error || {});
       }
     } catch (error) {
-      console.error("Error saving image:", error.response ? error.response.data : error.message);
-      toast.error("An error occurred while saving the image. Please try again.");
+      console.error(
+        "Error saving image:",
+        error.response ? error.response.data : error.message
+      );
+      toast.error(
+        "An error occurred while saving the image. Please try again."
+      );
     } finally {
       setLoading(false);
     }
   };
 
-  const fetchImages = async (id) => {
+  const fetchImages = async () => {
     try {
       const response = await axios.get(
         `https://admin.attireidyll.com/api/product/images/get`,
@@ -120,44 +114,19 @@ export default function ImageDrawer({ isOpen, toggleDrawer, productImage }) {
           },
         }
       );
-        setImages(response.data.data || []);
-        
-        console.log(id);
-       handleImageSelect(id ,response.data.data);
-
-        // Ensure images are always set to an array
-        console.log("Fetched images:", response.data.data); // Log fetched images
+      setImages(response.data.data || []);
     } catch (error) {
-        console.error("Error fetching images:", error.response ? error.response.data : error.message);
-    }
-};
-
-  useEffect(() => {
-    if (token) {
-      fetchImages(); // Fetch images whenever token changes
-    }
-  }, [token]);
-
-
-
-   const handleImageSelect = (id ,imagess) => {
-
-    console.log(id);
-
-    console.log(imagess);
-
-
-    const selectedImage = imagess.find((image) => image.id === id);
-
-    if (selectedImage) {
-      console.log('Image selected:', selectedImage.id);
-
-      console.log('found');
-      setSelectedImage(selectedImage.name);
-      setImageProduct(selectedImage.name);
-      handleTopSelect(id); // Call top selection handler
+      console.error(
+        "Error fetching images:",
+        error.response ? error.response.data : error.message
+      );
     }
   };
+
+  useEffect(() => {
+    fetchImages();
+  }, []);
+
 
 
   return (
@@ -186,38 +155,33 @@ export default function ImageDrawer({ isOpen, toggleDrawer, productImage }) {
                   </button>
                 </div>
               </div>
-
-
-
-
-
               <div className="flex justify-between mx-4 gap-2">
                 <div className="mb-3">
                   <div className="flex flex-wrap gap-3">
-                  {images.slice(0, 3).map((image, index) => (
-                <div
-                  key={image.id} // Use image.id as key
-                  className={`relative bg-white shadow-md h-52 w-full md:w-60 flex items-end cursor-pointer transition duration-200 ${
-                    selectedTopIndex === image.id ? "border-2 border-blue-500" : ""
-                  }`}
-                  onClick={() => handleImageSelect(image.id , images)} // Pass image.id to handleImageSelect
-                >
-                  <img
-                    src={`https://admin.attireidyll.com/public/storage/product/${image.name}`}
-                    alt="img"
-                    className="h-full w-full object-cover"
-                  />
-                  <div className="absolute w-full py-1 px-3 bottom-0 bg-white shadow-md text-sm">
-                    Image Name
-                    <div className="text-sm">jpeg</div>
-                  </div>
-                  {selectedTopIndex === image.id && (
-                    <div className="absolute flex items-center justify-center w-5 h-5 bg-green-500 text-white rounded-full top-2 right-2">
-                      ✓
-                    </div>
-                  )}
-                </div>
-          ))}
+                  {images.slice(0, 5).map((image, index) => (
+  <div
+    key={image.id} // Use image.id as key
+    className={`relative bg-white shadow-md h-52 w-60 flex items-end cursor-pointer transition duration-200 ${
+      selectedTopIndex === image.id ? "border-2 border-blue-500" : ""
+    }`}
+    onClick={() => handleImageSelect(image.id)} // Pass image.id to handleImageSelect
+  >
+    <img
+      src={`https://admin.attireidyll.com/public/storage/product/${image.name}`}
+      alt="img"
+      className="h-full w-full object-cover"
+    />
+    <div className="absolute w-full py-1 px-3 bottom-0 bg-white shadow-md text-sm">
+      Image Name
+      <div className="text-sm">jpeg</div>
+    </div>
+    {selectedTopIndex === image.id && (
+      <div className="absolute flex items-center justify-center w-5 h-5 bg-green-500 text-white rounded-full top-2 right-2">
+        ✓
+      </div>
+    )}
+  </div>
+))}
 
 
                   </div>
@@ -233,15 +197,16 @@ export default function ImageDrawer({ isOpen, toggleDrawer, productImage }) {
                     </div>
                   )}
                   <div className="flex justify-center items-center border-4 border-dashed border-[#606BD0] bg-white h-52 w-full">
-                    <form onSubmit={handleImageSave} id="imageUploadFrom">
-                      <div className="text-center px-2">
+                    <form onSubmit={handleImageSave}>
+                      <div className="text-center">
                         <input
                           type="file"
                           id="customFile"
-                          className=" block h-10 w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
+                          className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
                           accept="image/*"
                           onChange={handleFileChange}
                         />
+
 
                         <button
 
@@ -269,18 +234,18 @@ export default function ImageDrawer({ isOpen, toggleDrawer, productImage }) {
                   </div>
 
                 </div>
-                 </div>
+              </div>
             </div>
 
             <div className="px-4 my-4 text-lg font-semibold bg-gray-100 h-16 flex items-center justify-between shadow-md rounded-lg">
               <span className="text-gray-800">
                 Previously uploaded files
               </span>
-              <div className="w-1/4">
+              <div className="w-1/3">
                 <div className="flex items-center">
                   <input
                     type="text"
-                    className=" border border-gray-300 rounded-l-md py-2 px-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="border border-gray-300 rounded-l-md py-2 px-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Search for..."
                   />
                   <button className="bg-[#28DEFC] text-white rounded-r-md py-2 px-4 transition duration-200 hover:bg-[#28DEFC]">
@@ -292,35 +257,32 @@ export default function ImageDrawer({ isOpen, toggleDrawer, productImage }) {
 
             <div className="mx-4">
               <div className="w-full mb-3">
-              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-              {images.slice(3).map((image) => (
-              <div
-                key={image.id} // Use image.id as key
-                className={`relative bg-white shadow-md h-52 w-full cursor-pointer transition duration-200 ${
-                  selectedTopIndex === image.id ? "border-2 border-blue-500" : ""
-                }`}
-                onClick={() => handleImageSelect(image.id , images)} // Pass image.id to handleImageSelect
-              >
-                <img
-                  src={`https://admin.attireidyll.com/public/storage/product/${image.name}`}
-                  alt="img"
-                  className="h-full w-full object-cover"
-                />
-                <div className="absolute w-full py-1 px-3 bottom-0 bg-white shadow-md text-sm">
-                  Image Name
-                  <div className="text-sm">jpeg</div>
-                </div>
-                {selectedTopIndex === image.id && (
-                  <div className="absolute flex items-center justify-center w-5 h-5 bg-green-500 text-white rounded-full top-2 right-2">
-                    ✓
-                  </div>
-                )}
-              </div>
-            ))}
+                <div className="flex flex-wrap gap-3">
+                  {images.map((image) => (
+                    <div
+                      key={image.id} // Use image.id as key
+                      className={`relative bg-white shadow-md h-52 w-72 flex items-end cursor-pointer transition duration-200 ${selectedTopIndex === image.id ? "border-2 border-blue-500" : ""
+                        }`}
+                      onClick={() => handleImageSelect(image.id)} // Pass image.id to handleImageSelect
+                    >
+                      <img
+                        src={`https://admin.attireidyll.com/public/storage/product/${image.name}`}
+                        alt="img"
+                        className="h-full w-full object-cover"
+                      />
+                      <div className="absolute w-full py-1 px-3 bottom-0 bg-white shadow-md text-sm">
+                        Image Name
+                        <div className="text-sm">jpeg</div>
+                      </div>
+                      {selectedTopIndex === image.id && (
+                        <div className="absolute flex items-center justify-center w-5 h-5 bg-green-500 text-white rounded-full top-2 right-2">
+                          ✓
+                        </div>
+                      )}
+                    </div>
+                  ))}
 
                 </div>
-
-
               </div>
             </div>
           </div>
