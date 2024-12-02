@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Navbar from "../../Component/Frontend/Navbar";
 import Footer from "../../Component/Frontend/Footer";
 import axios from "axios";
 import Swal from "sweetalert2";
 import CustomSelect from "../../Component/Frontend/Checkout/CustomSelect";
 import { useNavigate } from "react-router-dom";
+import { CartContext } from "../../Component/Frontend/CartContext";
 
 const Order = () => {
   const [errors, setErrors] = useState({});
@@ -12,6 +13,7 @@ const Order = () => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
+  const { totalPrice ,cart, removeFromCart} = useContext(CartContext);
 
 
 
@@ -43,11 +45,7 @@ const Order = () => {
 
 
 
-  const totalPrice = products.reduce((acc, product) => {
-    const productTotalPrice =
-      (product.price - (product.discount_amount ?? 0)) * product.count;
-    return acc + productTotalPrice;
-  }, 0);
+
 
   const totalAmountWithDelivery = totalPrice + deliveryCharge;
 
@@ -56,19 +54,14 @@ const Order = () => {
     setDeliveryCharge(charge);
   };
 
-  const handleRemoveProduct = (index) => {
-    const updatedProducts = products.filter((_, i) => i !== index);
-    setProducts(updatedProducts);
-    localStorage.setItem("cart", JSON.stringify(updatedProducts));
-  };
-
+  
   const handleSave = async (e) => {
     e.preventDefault();
 
     const formData = new FormData();
 
-    formData.append("product_ids", products.map((product) => product.id));
-    formData.append("s_product_qty", products.map((product) => product.count));
+    formData.append("product_ids", cart.map((product) => product.id));
+    formData.append("s_product_qty", cart.map((product) => product.count));
     formData.append("c_name", name);
     formData.append("c_phone", phone);
     // formData.append('courier', courier);
@@ -147,7 +140,7 @@ const Order = () => {
                   </tr>
                 </thead>
                 <tbody className="text-xs md:text-sm">
-                  {products.map((product, index) => {
+                  {cart.map((product, index) => {
                     const count = product.count ?? 1; // Assume count is part of product or default to 1
                     const productTotalPrice =
                       (product.price - (product.discount_amount ?? 0)) * count; // Calculate individual product total
@@ -158,7 +151,7 @@ const Order = () => {
                         <div className="relative">
                         <div className="bottom-16 absolute left-16">
     <p className="flex size-2 items-center justify-center rounded-full bg-red-500 p-2 md:p-3 text-xs md:text-sm text-white">
- {product.count}
+ {product.quantity}
     </p>
   </div>
                         <img
@@ -213,7 +206,7 @@ const Order = () => {
                           <button>
                             <i
                               className="px-4 text-red-500 fas fa-trash"
-                              onClick={() => handleRemoveProduct(index)}
+                              onClick={() => removeFromCart(product.id)}
                             ></i>
                           </button>
                         </td>

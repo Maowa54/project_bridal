@@ -23,8 +23,7 @@ import AllProduct from "../Pages/Frontend/Allproduct";
 import Home from "../Pages/Frontend/Home";
 import Singleproduct from "../Pages/Frontend/Singleproduct";
 import ThankYou from "../Pages/Frontend/ThankYou";
-import Navbar from "../Component/Frontend/Navbar";
-import Footer from "../Component/Frontend/Footer";
+
 import PreOrder from "../Pages/Frontend/PreOrder";
 
 // Scroll to top component to ensure page scrolls to top on route change

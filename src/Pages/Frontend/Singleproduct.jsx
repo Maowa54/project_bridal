@@ -1,15 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Link, useParams } from "react-router-dom";
 import SocialMedia from "../../Component/Frontend/SocialMedia";
 import Navbar from "../../Component/Frontend/Navbar";
 import Footer from "../../Component/Frontend/Footer";
 import AddToCart from "../../Component/Frontend/AddToCart";
 import axios from "axios";
+import { CartContext } from "../../Component/Frontend/CartContext";
 
 const Singleproduct = () => {
   const [products, setProducts] = useState([]);
   const [CategoryProducts, setCategoryProducts] = useState([]);
   const [product, setProduct] = useState([]);
+  const { addToCart } = useContext(CartContext);
 
   const { product_info } = useParams();
 
@@ -106,69 +108,57 @@ const Singleproduct = () => {
     if (count > 1) setCount(count - 1);
   };
 
-  const handleCart = () => {
-    const existingProducts = JSON.parse(localStorage.getItem("cart")) || [];
+  // const handleCart = () => {
+  //   const existingProducts = JSON.parse(localStorage.getItem("cart")) || [];
 
-    // Check if product already exists in cart
-    const productIndex = existingProducts.findIndex(
-      (item) => item.id === product.id
-    );
+  //   // Check if product already exists in cart
+  //   const productIndex = existingProducts.findIndex(
+  //     (item) => item.id === product.id
+  //   );
 
-    if (productIndex >= 0) {
-      // If the product is already in cart, update the quantity
-      existingProducts[productIndex].count += count;
-    } else {
-      // Add the new product with quantity
-      existingProducts.push({ ...product, count });
-    }
+  //   if (productIndex >= 0) {
+  //     // If the product is already in cart, update the quantity
+  //     existingProducts[productIndex].count += count;
+  //   } else {
+  //     // Add the new product with quantity
+  //     existingProducts.push({ ...product, count });
+  //   }
 
-    localStorage.setItem("cart", JSON.stringify(existingProducts));
-  };
+  //   localStorage.setItem("cart", JSON.stringify(existingProducts));
+  // };
 
   // State to manage the modal visibility
-  const [showModal, setShowModal] = useState(false);
-  const handleAddToCart = () => setShowModal(true);
-  const [isPopupVisible, setPopupVisible] = useState(false);
 
-  const closeModal = () => setShowModal(false);
+  const [isPopupVisible, setPopupVisible] = useState(false);
 
   const handleButtonClick = () => setPopupVisible(true);
   const handleClosePopup = () => setPopupVisible(false);
 
-  const [isModalOpen, setIsModalOpen] = useState(false); // State to handle modal visibility
-
-  const handleViewCart = () => {
-    setIsModalOpen(true); // Open the modal
-  };
-
-  const handleCloseCart = () => {
-    setIsModalOpen(false); // Close the modal
-  };
   return (
     <div>
       <Navbar />
-      <div className="container mx-auto flex pt-20">
+      <div className="container mx-auto flex pt-14 md:pt-20">
         <SocialMedia />
         <div className="w-[90%] mx-auto">
-          <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
             {/* Image Section */}
-            <div className="text-center">
+            <div className="">
               <img
                 src={`https://admin.attireidyll.com/public/storage/product/${product.image}`}
                 alt={product.name}
-                className="max-h-[560px] w-[90%] transition-transform duration-300 ease-in-out hover:scale-105 mx-auto object-cover"
+                className="  mx-auto object-cover"
               />
             </div>
             {/* Product Info */}
             <div className="mt-1">
-              <p className="text-xl font-semibold md:text-2xl">
+              <p className="text-lg font-semibold md:text-2xl">
                 {product.name}
               </p>
-              <div className="mt-4">
-                <p className="font-semibold text-lg md:text-xl">
+              <div className="mt-2 md:mt-4">
+                <p className="font-semibold  md:text-xl">
                   Price - {product.price}
                 </p>
-                <p className="py-2 text-justify text-sm md:text-base">
+                <p className="py-2 text-justify leading-relaxed text-xs md:text-base">
                   {product.short_desc}
                 </p>
               </div>
@@ -181,21 +171,21 @@ const Singleproduct = () => {
               </div> */}
               {/* Buttons */}
 
-              <div className="flex space-x-3 mt-4  items-center  ">
-                <p className="text-sm md:text-base ">Quantity:</p>
+              <div className="flex space-x-2 md:space-x-3 mt-2 md:mt-4  items-center  ">
+                <p className="text-sm font-semibold md:text-base ">Quantity:</p>
                 <div className="flex items-center ">
                   <button
                     onClick={decrement}
-                    className="size-8 md:text-lg font-semibold bg-teal-700 text-white hover:bg-teal-800"
+                    className="size-6 md:size-8 text-sm md:text-lg font-semibold bg-teal-700 text-white hover:bg-teal-800"
                   >
                     -
                   </button>
-                  <span className="text-sm md:text-base pt-1 text-center border border-teal-700 size-8 font-medium">
+                  <span className="text-sm md:text-base md:pt-1 text-center border border-teal-700 size-6 md:size-8  font-medium">
                     {count}
                   </span>
                   <button
                     onClick={increment}
-                    className="size-8 md:text-lg font-semibold bg-teal-700 text-white hover:bg-teal-800"
+                    className="size-6 md:size-8 text-sm md:text-lg font-semibold bg-teal-700 text-white hover:bg-teal-800"
                   >
                     +
                   </button>
@@ -205,64 +195,23 @@ const Singleproduct = () => {
               <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 mt-8">
                 {product.pre_order == 0 && (
                   <button
-                    className="inline-flex justify-center text-nowrap items-center w-full sm:w-auto px-5 py-2 text-sm md:text-base bg-transparent border border-teal-700 text-teal-700 rounded-lg font-semibold hover:bg-teal-700 hover:text-white transition-colors duration-300 ease-in-out hover:scale-105 hover:shadow-2xl shadow"
+                    className=" justify-center text-nowrap items-center w-full sm:w-auto px-5 py-2 text-xs md:text-base bg-transparent border border-teal-700 text-teal-700 rounded-lg font-semibold hover:bg-teal-700 hover:text-white transition-colors duration-300 ease-in-out hover:scale-105 hover:shadow-2xl shadow"
                     onClick={() => {
-                      handleAddToCart(); // Close the modal
-                      handleCart(product);
+                      addToCart(product, count);
                     }}
                   >
                     <i className="fas fa-shopping-cart mr-2 "></i>Add To Cart
                   </button>
                 )}
 
-                {/* Modal for Add to Cart Confirmation */}
-                {showModal && (
-                  <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 overflow-y-auto">
-                    <div className="bg-white w-full max-w-md p-6 rounded-lg shadow-lg mx-4 sm:mx-0 sm:my-8">
-                      <h2 className="text-base md:text-lg font-bold text-center flex justify-center items-center">
-                        Your item has been successfully added to the cart!
-                        <span className="ml-2 inline-flex items-center">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-6 w-6 text-green-500"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M5 13l4 4L19 7"
-                            />
-                          </svg>
-                        </span>
-                      </h2>
-                      <div className="flex  justify-around mt-4 ">
-                        <button
-                          className="px-4  text-sm md:text-base font-medium hover:underline text-nowrap"
-                          onClick={closeModal}
-                        >
-                          Continue Shopping
-                        </button>
-                        <button
-                          className="px-4 py-2  text-xs md:text-sm bg-teal-700 text-white rounded hover:bg-teal-600 text-nowrap"
-                          onClick={() => {
-                            handleViewCart();
-                           
-                          }}
-                        >
-                          View Cart
-                        </button>
-                        {isModalOpen && <AddToCart onClose={handleCloseCart} />}{" "}
-                      </div>
-                    </div>
-                  </div>
-                )}
-
                 {product.pre_order == 0 ? (
-                  <Link to="/checkout" onClick={handleCart}>
-                    <button className="inline-flex justify-center items-center w-full text-nowrap sm:w-auto px-8 py-2 text-sm md:text-base bg-gradient-to-r from-teal-500 to-teal-700 border border-teal-200 text-white font-semibold rounded-lg transform transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-2xl">
+                  <Link
+                    to="/checkout"
+                    onClick={() => {
+                      addToCart(product, count);
+                    }}
+                  >
+                    <button className="inline-flex justify-center items-center w-full sm:w-auto text-xs md:text-base text-nowrap px-8 py-2 bg-gradient-to-r from-teal-500 to-teal-700 border border-teal-200 text-white font-semibold rounded-lg transform transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-2xl">
                       <i className="fas fa-shopping-bag mr-2"></i>Buy Now
                     </button>
                   </Link>
@@ -281,13 +230,13 @@ const Singleproduct = () => {
 
                 {product.pre_order == 0 && (
                   <button
-                    className="inline-flex text-nowrap justify-center items-center w-full sm:w-auto text-sm md:text-base hover:underline"
+                    className="inline-flex text-nowrap justify-center items-center sm:w-auto w-full text-xs md:text-base hover:underline"
                     onClick={handleButtonClick}
                   >
                     <img
                       src="/assets/Images/measuring-tape.svg"
                       alt="Measuring Tape"
-                      className="w-5 h-5 mr-2 "
+                      className="size-4 md:size-5 mr-2"
                     />
                     Size Guide
                   </button>
@@ -295,8 +244,8 @@ const Singleproduct = () => {
 
                 {/* Size Chart Popup */}
                 {isPopupVisible && (
-                  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-                    <div className="bg-white rounded-lg p-4 shadow-lg w-full max-w-lg relative">
+                  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 z-50">
+                    <div className="bg-white rounded p-4  relative">
                       <button
                         className="absolute top-2 right-5 text-lg text-gray-800 hover:text-gray-500"
                         onClick={handleClosePopup}
@@ -367,14 +316,14 @@ const Singleproduct = () => {
                 )}
               </div>
 
-              <div className="mt-6">
-                <p className="py-2 text-justify text-sm md:text-base ">
+              <div className="mt-3 md:mt-6">
+                <p className=" text-justify leading-relaxed text-xs md:text-base ">
                   <span className="font-semibold"> Care : </span> Dry Clean Only
                   Preserve: in air tight poly.{" "}
                 </p>
               </div>
-              <div className="">
-                <p className="py-2 text-justify text-sm md:text-base">
+              <div className="mt-2 md:mt-4">
+                <p className=" text-justify text-xs  leading-relaxed md:text-base">
                   <span className="font-semibold"> Disclaimer:</span> Product
                   colour may slightly vary due to photographic lighting sources
                   or your monitor setting. Lace and/or Embellishments and Fabric
@@ -384,7 +333,7 @@ const Singleproduct = () => {
             </div>
           </div>
 
-          <div className="text-xl md:text-2xl mt-6 font-semibold">
+          <div className="text-lg md:text-2xl mt-6 font-semibold">
             <p>You May Also Like</p>
           </div>
           {/* Client Images */}
@@ -410,7 +359,7 @@ const Singleproduct = () => {
           <div className="text-center my-5">
             <Link
               to=""
-              className=" px-7 py-1 text-sm md:text-base border hover:bg-gradient-to-b from-teal-500 to-teal-700 hover:text-white hover:border-teal-500 border-gray-800 rounded"
+              className=" px-7 py-1 text-xs md:text-base border hover:bg-gradient-to-b from-teal-500 to-teal-700 hover:text-white hover:border-teal-500 border-gray-800 rounded"
             >
               View More
             </Link>

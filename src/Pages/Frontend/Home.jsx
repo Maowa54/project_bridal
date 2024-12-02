@@ -116,14 +116,14 @@ const Home = () => {
   return (
     <div className=" ">
       <Navbar />
-      <div className="container mx-auto pt-16">
-        <div className="w-[90%] mx-auto overflow-hidden relative">
+      <div className="container mx-auto pt-14 md:pt-20 ">
+        <div className="w-full md:w-[90%] mx-auto overflow-hidden relative">
           <SocialMedia />
             <ImageCarousel/>
           {/* Buttons Section */}
           <div className="mt-8">
             {/* Top Row: First Three Buttons */}
-            <div className="w-full md:w-[45%] mx-auto mt-4 flex flex-col md:flex-row justify-center gap-5 text-sm md:text-base">
+            <div className="w-full md:w-[45%] px-4 mx-auto mt-4 flex flex-col md:flex-row justify-center gap-5 text-xs md:text-base">
               {categories.slice(0, 3).map((category) => (
                 <Link
                   to={{
@@ -131,7 +131,7 @@ const Home = () => {
                   }}
                   state={{ category }}
                   key={category.id}
-                  className="w-full md:flex-1 px-4 py-1 border border-gray-800 font-medium hover:bg-gradient-to-b from-teal-500 to-teal-700 hover:text-white hover:border-teal-400 rounded text-center transition"
+                  className="w-full md:flex-1 px-4 md:px-0 py-1 border border-gray-800 font-medium hover:bg-gradient-to-b from-teal-500 to-teal-700 hover:text-white hover:border-teal-400 rounded text-center transition"
                 >
                   {category.name}
                 </Link>
@@ -139,7 +139,7 @@ const Home = () => {
             </div>
 
             {/* Bottom Row: Bridal Button */}
-            <div className="w-full md:w-[60%] mx-auto mt-4 flex justify-center text-sm md:text-base">
+            <div className="w-full md:w-[60%] px-4 md:px-0 mx-auto mt-4 flex justify-center text-xs md:text-base">
               <Link
                 to={{
                   pathname: "/allProduct",
@@ -154,18 +154,18 @@ const Home = () => {
           </div>
 
           {/* Brand Section */}
-          <div className="mt-7">
+          <div className="mt-7 px-2 md:px-0">
             <div className="flex items-center">
               <img
                 src="/assets/Images/logo.png"
                 alt="Brand Logo"
-                className="mr-2 w-8 h-auto"
+                className="mr-2 w-6 md:w-8 h-auto"
               />
-              <h5 className="mb-0 text-lg md:text-xl font-semibold">
+              <h5 className="mb-0  md:text-xl font-semibold">
                 THE BRAND
               </h5>
             </div>
-            <p className="mt-2 text-justify text-sm md:text-base leading-relaxed">
+            <p className="mt-2 text-justify text-xs md:text-base leading-relaxed">
               The vision of our clothing brand is to inspire confidence,
               authenticity, and individuality in every person who wears our
               garments. We aim to create a diverse range of fashion pieces that
@@ -200,13 +200,13 @@ const Home = () => {
           </div>
 
           {/* Client Gallery Section */}
-          <div className="flex justify-center items-center mt-5">
+          <div className="flex justify-center items-center mt-5 ">
             <img
               src="/assets/Images/logo.png"
               alt="Brand Logo"
-              className="mr-2 w-8 h-auto"
+              className="mr-2 w-6 md:w-8 h-auto"
             />
-            <h5 className="text-lg md:text-xl font-semibold">CLIENT GALLERY</h5>
+            <h5 className="md:text-xl font-semibold">CLIENT GALLERY</h5>
             <img
               src="/assets/Images/logo.png"
               alt="Brand Logo"
@@ -214,7 +214,7 @@ const Home = () => {
             />
           </div>
           <div>
-            <p className="text-sm md:text-base text-center mt-3">
+            <p className="text-xs md:text-base text-center leading-relaxed mt-3 px-2 md:px-0">
               The vision of our clothing brand is to inspire confidence,
               authenticity,
               <br />
@@ -222,7 +222,7 @@ const Home = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-8 justify-items-center">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8 justify-items-center">
             {products.slice(0, visibleCount).map((product) => (
               <div className="mb-2" key={product.id}>
                 <Link
@@ -243,7 +243,7 @@ const Home = () => {
             <div className="text-center my-5">
               <button
                 onClick={handleViewMore}
-                className="px-7 py-1 font-medium text-sm md:text-base border hover:bg-gradient-to-b from-teal-500 to-teal-700 hover:text-white hover:border-teal-400 border-gray-800 rounded"
+                className="px-7 py-1 font-medium text-xs md:text-base border hover:bg-gradient-to-b from-teal-500 to-teal-700 hover:text-white hover:border-teal-400 border-gray-800 rounded"
               >
                 View More
               </button>

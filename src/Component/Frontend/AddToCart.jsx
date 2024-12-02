@@ -1,43 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
+import { CartContext } from "./CartContext";
 
 const AddToCart = ({ onClose }) => {
   const [products, setProducts] = useState([]); // State to store the product
 
+  const { cart,totalPrice, removeFromCart, updateCartItem, handleDecreaseQuantity ,handleIncreaseQuantity  } = useContext(CartContext);
+
   // Fetch products from localStorage when the component mounts
-  useEffect(() => {
-    const storedProducts = localStorage.getItem("cart");
-    if (storedProducts) {
-      setProducts(JSON.parse(storedProducts)); // Set state with parsed JSON
-    }
-  }, []);
-  const handleRemoveProduct = (index) => {
-    const updatedProducts = products.filter((_, i) => i !== index);
-    setProducts(updatedProducts);
-    localStorage.setItem("cart", JSON.stringify(updatedProducts));
-  };
  
 
-  const increment = (index) => {
-    const updatedProducts = [...products];
-    updatedProducts[index].count += 1;
-    setProducts(updatedProducts);
-    localStorage.setItem("cart", JSON.stringify(updatedProducts)); // Update localStorage
-  };
 
-  const decrement = (index) => {
-    const updatedProducts = [...products];
-    if (updatedProducts[index].count > 1) {
-      updatedProducts[index].count -= 1;
-      setProducts(updatedProducts);
-      localStorage.setItem("cart", JSON.stringify(updatedProducts)); // Update localStorage
-    }
-  };
-  const totalPrice = products.reduce((acc, product) => {
-    const productTotalPrice =
-      (product.price) * product.count;
-    return acc + productTotalPrice;
-  }, 0);
+
+
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-end items-start z-50 overflow-y-auto">
@@ -52,8 +27,8 @@ const AddToCart = ({ onClose }) => {
         </div>
    
         {/* Product List */}
-        {products.length > 0 ? (
-          products.map((product, index) => (
+        {cart.length > 0 ? (
+          cart.map((product, index) => (
             <div key={index} className="relative flex  mt-4">
               <img
                 src={`https://admin.attireidyll.com/public/storage/product/${product.image}`}
@@ -70,16 +45,16 @@ const AddToCart = ({ onClose }) => {
                 <span className="font-semibold">৳{product.price}</span>
                 <div className="flex ">
                   <button
-                    onClick={() => decrement(index)}
+                    onClick={() => handleDecreaseQuantity(product.id)}
                     className="h-7 w-7 text-base font-semibold bg-teal-700 text-white hover:bg-gray-800 flex items-center justify-center"
                   >
                     -
                   </button>
                   <span className="h-7 w-7 text-base font-medium flex items-center justify-center border border-teal-700">
-                    {product.count}
+                    {product.quantity}
                   </span>
                   <button
-                    onClick={() => increment(index)}
+                    onClick={() => handleIncreaseQuantity(product.id)}
                     className="h-7 w-7 text-base font-semibold bg-teal-700 text-white hover:bg-gray-800 flex items-center justify-center"
                   >
                     +
@@ -89,7 +64,7 @@ const AddToCart = ({ onClose }) => {
               {/* Close button */}
               <button
                 className="absolute top-0 right-0 text-gray-500 hover:text-gray-800 focus:outline-none"
-                onClick={() => handleRemoveProduct(index)}
+                onClick={() => removeFromCart(product.id)}
                 aria-label="Remove product"
               >
                 &times;

@@ -1,37 +1,21 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Header from "../Component/Frontend/Header";
 import Footer from "../Component/Frontend/Footer";
+import { CartContext } from "../Component/Frontend/CartContext";
 
 const Order = () => {
   const [products, setProducts] = useState([]);
   const [deliveryCharge, setDeliveryCharge] = useState(0);
+  const { totalPrice ,cart, removeFromCart, handleDecreaseQuantity, handleIncreaseQuantity} = useContext(CartContext);
 
   useEffect(() => {
     const storedProducts = JSON.parse(localStorage.getItem("products")) || [];
     setProducts(storedProducts);
   }, []);
 
-  const increment = (index) => {
-    const updatedProducts = [...products];
-    updatedProducts[index].count += 1;
-    setProducts(updatedProducts);
-    localStorage.setItem("products", JSON.stringify(updatedProducts)); // Update localStorage
-  };
 
-  const decrement = (index) => {
-    const updatedProducts = [...products];
-    if (updatedProducts[index].count > 1) {
-      updatedProducts[index].count -= 1;
-      setProducts(updatedProducts);
-      localStorage.setItem("products", JSON.stringify(updatedProducts)); // Update localStorage
-    }
-  };
 
-  const totalPrice = products.reduce((acc, product) => {
-    const productTotalPrice =
-      (product.price - (product.discount_amount ?? 0)) * product.count;
-    return acc + productTotalPrice;
-  }, 0);
+
 
   const totalAmountWithDelivery = totalPrice + deliveryCharge;
 
@@ -40,11 +24,6 @@ const Order = () => {
     setDeliveryCharge(charge);
   };
 
-  const handleRemoveProduct = (index) => {
-    const updatedProducts = products.filter((_, i) => i !== index);
-    setProducts(updatedProducts);
-    localStorage.setItem("products", JSON.stringify(updatedProducts));
-  };
 
   return (
     <div>
@@ -70,10 +49,10 @@ const Order = () => {
                   </tr>
                 </thead>
                 <tbody className="text-xs md:text-sm">
-                  {products.map((product, index) => {
-                    const count = product.count ?? 1; // Assume count is part of product or default to 1
+                  {cart.map((product, index) => {
+                    const quantity = product.quantity ?? 1; // Assume count is part of product or default to 1
                     const productTotalPrice =
-                      (product.price - (product.discount_amount ?? 0)) * count; // Calculate individual product total
+                      (product.price - (product.discount_amount ?? 0)) * quantity; // Calculate individual product total
 
                     return (
                       <tr key={index} className="hover:bg-gray-50">
@@ -106,7 +85,7 @@ const Order = () => {
                         <td>
                           <div className="flex items-center justify-center">
                             <button
-                              onClick={() => decrement(index)}
+                              onClick={() => handleDecreaseQuantity(product.id)}
                               className="h-7 w-7 text-base font-semibold bg-black text-white hover:bg-gray-800 flex items-center justify-center"
                             >
                               -
@@ -115,7 +94,7 @@ const Order = () => {
                               {product.count}
                             </span>
                             <button
-                              onClick={() => increment(index)}
+                              onClick={() =>handleIncreaseQuantity(product.id)}
                               className="h-7 w-7 text-base font-semibold bg-black text-white hover:bg-gray-800 flex items-center justify-center"
                             >
                               +
@@ -129,7 +108,7 @@ const Order = () => {
                           <button>
                             <i
                               className="px-4 text-red-500 fas fa-trash"
-                              onClick={() => handleRemoveProduct(index)}
+                              onClick={() => removeFromCart(product.id)}
                             ></i>
                           </button>
                         </td>

@@ -1,13 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState , useContext} from "react";
 import "bootstrap-icons/font/bootstrap-icons.css"; // Import Bootstrap Icons
 import "@fortawesome/fontawesome-free/css/all.min.css"; // Import Font Awesome CSS
 import { Link } from "react-router-dom";
 
 import AddToCart from "./AddToCart";
 
+import { CartContext } from "./CartContext";
+
 const Navbar = () => {
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
+
+  const { cartCount } = useContext(CartContext);
 
   useEffect(() => {
     const storedCategories = localStorage.getItem("allCategories");
@@ -57,9 +61,9 @@ const Navbar = () => {
   };
 
   return (
-    <div className="shadow">
+    <div className="shadow " >
       <div className=" mx-auto">
-        <nav className="lg:px-20  px-4 py-3 mx-auto transition-all duration-50 ease-in-out w-full bg-white fixed top-0  z-50 shadow-md">
+        <nav className="lg:px-20  px-4 py-3 md:py-4 mx-auto transition-all duration-50 ease-in-out w-full bg-white fixed top-0  z-50 shadow">
           <div className="flex flex-wrap items-center justify-between mx-auto ">
             <div className="text-center">
               <button
@@ -70,12 +74,12 @@ const Navbar = () => {
               </button>
 
               <div
-                className={`sidepanel w-full md:w-64 fixed top-0 left-0 h-full bg-white shadow-xl transition-transform duration-700 ease-in-out overflow-hidden pt-10 z-50 ${
+                className={`sidepanel w-52 md:w-64 fixed top-0 left-0 h-full bg-white shadow-xl transition-transform duration-700 ease-in-out overflow-hidden py-3 md:py-10 z-50 ${
                   isOpen ? "translate-x-0" : "-translate-x-full"
                 }`}
               >
                 <button
-                  className="absolute top-7 font-medium right-6 text-4xl text-gray-800 hover:text-gray-500  focus:outline-none"
+                  className="absolute top-4 font-medium right-6 text-2xl md:text-4xl text-gray-800 hover:text-gray-500  focus:outline-none"
                   onClick={closePanel}
                 >
                   &times;
@@ -88,7 +92,7 @@ const Navbar = () => {
                           pathname: "/allProduct",
                         }}
                         state={{ category }}
-                        className="block px-8 py-2 text-lg md:text-xl text-gray-800 hover:bg-teal-700 hover:text-white transition-colors hover:bg-gradient-to-b from-teal-400 to-teal-700 transform hover:scale-105 duration-300"
+                        className="block px-2 md:px-8 py-2 text-sm md:text-xl text-gray-800 hover:bg-teal-700 hover:text-white transition-colors hover:bg-gradient-to-b from-teal-400 to-teal-700 transform hover:scale-105 duration-300"
                       >
                         {category.name}
                       </Link>
@@ -103,25 +107,25 @@ const Navbar = () => {
                 <img
                   src="/assets/Images/Frame.png"
                   alt="Logo"
-                  className="max-w-[150px] md:max-w-[200px] lg:max-w-[240px] h-auto object-contain"
+                  className="max-w-[140px] md:max-w-[200px] lg:max-w-[240px] h-auto object-contain"
                 />
               </Link>
             </div>
 
             <div className="flex items-center space-x-4">
               <div className="relative">
-                <div className="bottom-5 absolute left-4">
-                  <p className="flex size-2 items-center justify-center rounded-full bg-red-500 p-2 text-xs text-white">
-                    {totalProductCount || 0}
+                <div className="absolute bottom-3 md:bottom-5 left-3 md:left-4">
+                  <p className="flex size-2 items-center justify-center rounded-full bg-red-500  p-2 text-[0.5rem] md:text-xs  text-white">
+                    {cartCount || 0}
                   </p>
                 </div>
 
                 <button
                   aria-label="View Cart"
                   onClick={handleViewCart}
-                  className=" text-black text-2xl hover:text-gray-500 focus:outline-none"
+                  className=" text-black  hover:text-gray-500 focus:outline-none"
                 >
-                  <i className="bi bi-cart text-lg md:text-xl lg:text-2xl"></i>
+                  <i className="bi bi-cart   md:text-xl lg:text-2xl"></i>
                 </button>
               </div>
               {isModalOpen && <AddToCart onClose={handleCloseCart} />}

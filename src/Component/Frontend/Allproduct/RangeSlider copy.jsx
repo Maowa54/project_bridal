@@ -3,10 +3,7 @@ import { useState } from "react";
 
 
 
-const RangeSlider = ({ onPriceChange }) => {
-  const MIN = 100;
-const MAX = 10000;import Slider from "react-slider";
-import { useState, useEffect } from "react";
+
 
 const RangeSlider = ({ min, max, onPriceChange, initialValues }) => {
   const [values, setValues] = useState(initialValues);

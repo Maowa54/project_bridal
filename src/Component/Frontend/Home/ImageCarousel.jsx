@@ -33,7 +33,7 @@ const ImageCarousel = () => {
       {/* Image Carousel */}
       <div id="default-carousel" className="relative w-full">
         {/* Carousel Wrapper */}
-        <div className="relative h-[200px] overflow-hidden md:h-[520px]">
+        <div className="relative h-[200px] overflow-hidden md:h-[530px]">
           {/* Slide Items */}
           {images.map((image, index) => (
             <div
