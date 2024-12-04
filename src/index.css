@@ -153,4 +153,22 @@ body {
 .animate-shake {
   animation: shakeCart 0.4s ease-in-out forwards;
 }
+/* Define the keyframe animation for forward and backward movement */
+@keyframes moveIconForwardBackward {
+  0% {
+    transform: translateX(0); /* Start at the initial position */
+  }
+  50% {
+    transform: translateX(10px); /* Move 20px to the right */
+  }
+  100% {
+    transform: translateX(0); /* Return to the initial position */
+  }
+}
+
+/* Apply the animation to the icon */
+.animate-icon {
+  display: inline-block; /* Ensure the icon is an inline-block for transformations */
+  animation: moveIconForwardBackward 1s ease-in-out infinite; /* 1s duration, smooth easing, infinite loop */
+}
 

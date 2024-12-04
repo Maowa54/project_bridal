@@ -3,7 +3,6 @@ import { Link, useParams } from "react-router-dom";
 import SocialMedia from "../../Component/Frontend/SocialMedia";
 import Navbar from "../../Component/Frontend/Navbar";
 import Footer from "../../Component/Frontend/Footer";
-import AddToCart from "../../Component/Frontend/AddToCart";
 import axios from "axios";
 import { CartContext } from "../../Component/Frontend/CartContext";
 
@@ -79,9 +78,6 @@ const Singleproduct = () => {
   console.log(product_id);
   console.log(product);
 
-  useEffect(() => {
-    console.log(product);
-  }, [product_id]);
 
   useEffect(() => {
     console.log("Updated products state:", products);
@@ -98,7 +94,6 @@ const Singleproduct = () => {
 
   console.log(CategoryProducts);
 
-  const [mainImage, setMainImage] = useState("/assets/Images/bride-5.png");
 
   const [count, setCount] = useState(1);
 
@@ -107,27 +102,6 @@ const Singleproduct = () => {
   const decrement = () => {
     if (count > 1) setCount(count - 1);
   };
-
-  // const handleCart = () => {
-  //   const existingProducts = JSON.parse(localStorage.getItem("cart")) || [];
-
-  //   // Check if product already exists in cart
-  //   const productIndex = existingProducts.findIndex(
-  //     (item) => item.id === product.id
-  //   );
-
-  //   if (productIndex >= 0) {
-  //     // If the product is already in cart, update the quantity
-  //     existingProducts[productIndex].count += count;
-  //   } else {
-  //     // Add the new product with quantity
-  //     existingProducts.push({ ...product, count });
-  //   }
-
-  //   localStorage.setItem("cart", JSON.stringify(existingProducts));
-  // };
-
-  // State to manage the modal visibility
 
   const [isPopupVisible, setPopupVisible] = useState(false);
 

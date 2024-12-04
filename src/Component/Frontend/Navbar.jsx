@@ -1,4 +1,4 @@
-import { useEffect, useState , useContext} from "react";
+import { useEffect, useState, useContext, useRef } from "react";
 import "bootstrap-icons/font/bootstrap-icons.css"; // Import Bootstrap Icons
 import "@fortawesome/fontawesome-free/css/all.min.css"; // Import Font Awesome CSS
 import { Link } from "react-router-dom";
@@ -9,7 +9,7 @@ import { CartContext } from "./CartContext";
 
 const Navbar = () => {
   const [categories, setCategories] = useState([]);
-  const [products, setProducts] = useState([]);
+  const sidepanelRef = useRef(null);
 
   const { cartCount } = useContext(CartContext);
 
@@ -19,27 +19,6 @@ const Navbar = () => {
       setCategories(JSON.parse(storedCategories));
     }
   }, []);
-
-  useEffect(() => {
-    const storedProducts = localStorage.getItem("allProducts");
-    if (storedProducts) {
-      setProducts(JSON.parse(storedProducts));
-    }
-  }, []);
-
-  useEffect(() => {
-    const storedProducts = localStorage.getItem("cart");
-    if (storedProducts) {
-      setProducts(JSON.parse(storedProducts)); // Set state with parsed JSON
-    }
-  }, []);
-
-  const totalProductCount = products.reduce(
-    (total, product) => total + product.count,
-    0
-  );
-
-  // console.log(products)
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -59,46 +38,71 @@ const Navbar = () => {
   const handleCloseCart = () => {
     setIsModalOpen(false); // Close the modal
   };
+  const handleClickOutside = (e) => {
+    if (sidepanelRef.current && !sidepanelRef.current.contains(e.target)) {
+      setIsOpen(false); // Close side panel if clicked outside
+    }
+  };
+
+  // Add event listener to document on mount and clean up on unmount
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
-    <div className="shadow " >
+    <div className="shadow ">
       <div className=" mx-auto">
-        <nav className="lg:px-20  px-4 py-3 md:py-4 mx-auto transition-all duration-50 ease-in-out w-full bg-white fixed top-0  z-50 shadow">
+        <nav className="lg:px-24  px-4 py-3 md:py-4 mx-auto transition-all duration-50 ease-in-out w-full bg-white fixed top-0  z-50 shadow">
           <div className="flex flex-wrap items-center justify-between mx-auto ">
             <div className="text-center">
               <button
                 className="openbtn  text-gray-800 text-lg md:text-2xl font-medium  hover:text-gray-500 focus:outline-none"
                 onClick={openPanel}
               >
-                <i className="fas fa-bars "></i>{" "}
+                <img
+                  src="/assets/Images/menus.png"
+                  alt=""
+                  className="size-4 md:size-5"
+                />
               </button>
 
               <div
-                className={`sidepanel w-52 md:w-64 fixed top-0 left-0 h-full bg-white shadow-xl transition-transform duration-700 ease-in-out overflow-hidden py-3 md:py-10 z-50 ${
+                ref={sidepanelRef}
+                className={`sidepanel w-40 md:w-72 fixed top-0 left-0 h-full bg-white shadow-xl  transition-transform duration-500 ease-in-out overflow-hidden py-6 px-6 z-50 ${
                   isOpen ? "translate-x-0" : "-translate-x-full"
                 }`}
+                onClick={(e) => e.stopPropagation()} // Prevent click inside panel from closing
               >
+                {/* Close button */}
                 <button
-                  className="absolute top-4 font-medium right-6 text-2xl md:text-4xl text-gray-800 hover:text-gray-500  focus:outline-none"
+                  className="absolute top-3 md:top-6 right-3 md:right-6 text-xl md:text-3xl text-gray-700 hover:text-gray-900 focus:outline-none"
                   onClick={closePanel}
                 >
                   &times;
                 </button>
-                <ul className="mt-10 space-y-2">
-                  {categories.map((category) => (
-                    <li key={category.id} onClick={closePanel}>
-                      <Link
-                        to={{
-                          pathname: "/allProduct",
-                        }}
-                        state={{ category }}
-                        className="block px-2 md:px-8 py-2 text-sm md:text-xl text-gray-800 hover:bg-teal-700 hover:text-white transition-colors hover:bg-gradient-to-b from-teal-400 to-teal-700 transform hover:scale-105 duration-300"
-                      >
-                        {category.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
+
+                {/* Side panel content */}
+                <div className="space-y-3 md:space-y-6">
+                  {/* Category links */}
+                  <ul className="mt-6 md:mt-16 space-y-2 md:space-y-4">
+                    {categories.map((category) => (
+                      <li key={category.id} onClick={closePanel}>
+                        <Link
+                          to={{
+                            pathname: "/allProduct",
+                          }}
+                          state={{ category }}
+                          className="block px-2 md:px-6 text-nowrap py-3 text-xs md:text-lg text-gray-700 hover:text-white hover:bg-gradient-to-r from-teal-400 to-teal-600 rounded-lg transition-all duration-300 transform hover:scale-105"
+                        >
+                          {category.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             </div>
 
@@ -123,12 +127,12 @@ const Navbar = () => {
                 <button
                   aria-label="View Cart"
                   onClick={handleViewCart}
-                  className=" text-black  hover:text-gray-500 focus:outline-none"
+                  className=" text-black  hover:text-gray-500 focus:outline-none "
                 >
                   <i className="bi bi-cart   md:text-xl lg:text-2xl"></i>
                 </button>
               </div>
-              {isModalOpen && <AddToCart onClose={handleCloseCart} />}
+              {isModalOpen && <AddToCart isModalOpen={isModalOpen} onClose={handleCloseCart} />}
 
               <Link to="/login">
                 <button>

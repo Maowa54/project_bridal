@@ -1,68 +1,91 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import Navbar from "../../Component/Frontend/Navbar";
 import Footer from "../../Component/Frontend/Footer";
 
-const ThankYou = () => {
-  const [fadeIn, setFadeIn] = useState(false);
-
-  // Trigger fade-in animation after page loads
-  useEffect(() => {
-    setTimeout(() => setFadeIn(true), 200); // Delay to trigger fade-in effect
-  }, []);
-
+const ThankYouPage = () => {
   return (
-  <div>
-    <Navbar/>
-    <div className="flex flex-col justify-center items-center text-center px-4 py-20">
-      <div
-        className={` p-6  transition-opacity duration-1000 ease-in-out ${
-          fadeIn ? "opacity-100" : "opacity-0"
-        }`}
-      >
-        {/* Animated Thank You Text */}
-        <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-500 via-teal-500 to-green-700 mb-4 animate-bounce">
-          Thank You!
-        </h1>
+    <div className="min-h-screen flex flex-col">
+      {/* Navbar */}
+      <div className="">
+        <Navbar />
+      </div>
 
-        {/* Animated Subtext */}
-        <p className="text-sm md:text-base lg:text-lg text-gray-600 mb-8">
-          Your order has been successfully placed
+      {/* Content */}
+      <div className="flex-grow flex flex-col items-center justify-center py-6 px-4 md:px-8 pt-16 md:pt-24">
+        {/* Shopping Bag Image */}
+        <img
+          src="/assets/Images/bag.png"
+          alt="Shopping Bag"
+          className="size-10 md:size-16 mb-6"
+        />
+
+        {/* Thank You Message */}
+        <h1 className="text-2xl md:text-4xl font-semibold text-teal-600 mb-4 text-center">
+          Thank You for Your Order!
+        </h1>
+        <p className="text-gray-700 mb-6 text-sm md:text-base text-center max-w-lg">
+          Your order has been successfully placed. We are processing it and will send you a confirmation email soon.
         </p>
 
-        {/* Buttons with Hover Effects */}
-        <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-          <Link to="/">
-            <button className="w-full sm:w-auto px-6 py-2 text-sm md:text-base bg-gradient-to-r from-green-500 via-teal-500 to-green-700 text-white rounded-lg hover:bg-gradient-to-l hover:from-teal-400 hover:to-teal-600 transition duration-300 ease-in-out transform hover:scale-105">
-              Back to Home
-            </button>
-          </Link>
+        {/* Buttons */}
+        <div className="space-x-4 mb-6 flex flex-col sm:flex-row gap-4">
+          <a
+            href="/"
+            className="inline-block px-6 py-3 text-white text-sm md:text-base bg-yellow-400 font-semibold rounded-full hover:bg-yellow-500 transition duration-300 text-center"
+          >
+            Continue Shopping
+          </a>
+          <a
+            href="/checkout"
+            className="inline-block px-6 py-2 md:py-3 text-sm md:text-base   text-white bg-teal-500 font-semibold rounded-full hover:bg-teal-600 transition duration-300 text-center"
+          >
+            Go Back
+          </a>
+        </div>
 
-          <Link to="/order">
-            <button className="w-full sm:w-auto px-6 py-2 text-sm md:text-base border border-teal-500 text-teal-500 rounded-lg hover:bg-green-100 transition duration-300 ease-in-out transform hover:scale-105">
-              View Orders
-            </button>
-          </Link>
+        {/* Social Media Icons */}
+        <div className="flex justify-center space-x-6">
+          <a
+            href="https://www.facebook.com/attireidyllbd/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="/assets/Images/icons8-facebook-circled-94.png"
+              alt="Facebook"
+              className="w-8 h-8 md:w-10 md:h-10"
+            />
+          </a>
+          <a
+            href="https://www.instagram.com/attire_idyll/channel/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="/assets/Images/icons8-instagram-94.png"
+              alt="Instagram"
+              className="w-8 h-8 md:w-10 md:h-10"
+            />
+          </a>
+          <a
+            href="https://wa.me/01632460342"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="/assets/Images/icons8-whatsapp-94.png"
+              alt="WhatsApp"
+              className="w-8 h-8 md:w-10 md:h-10"
+            />
+          </a>
         </div>
       </div>
 
       {/* Footer */}
-      <div className=" text-nowrap text-gray-500 text-xs md:text-sm lg:text-base flex items-center justify-center space-x-2">
-        <span>©2024</span>
-        <a
-          href=""
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-teal-800 hover:text-teal-500 text-lg  font-bold"
-        >
-        Attire Idyll
-        </a>
-        <span>All rights reserved.</span>
+      <div className="hidden md:block">
+        <Footer />
       </div>
     </div>
-    <Footer/>
-  </div>
   );
 };
 
-export default ThankYou;
+export default ThankYouPage;

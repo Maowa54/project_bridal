@@ -18,7 +18,7 @@ const SocialMedia = (platform) => {
   return (
     <>
       {showButtons && (
-        <div className="fixed z-50 top-1/2 right-0 transform -translate-y-1/2 flex flex-col px-2 text-sm md:text-base">
+        <div className="fixed z-40 top-1/2 right-0 transform -translate-y-1/2 flex flex-col px-2 text-sm md:text-base">
           <a
             href="https://www.facebook.com/attireidyllbd/"
             target="_blank"

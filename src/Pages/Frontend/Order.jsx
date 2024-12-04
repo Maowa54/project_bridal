@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import CustomSelect from "../../Component/Frontend/Checkout/CustomSelect";
 import { useNavigate } from "react-router-dom";
 import { CartContext } from "../../Component/Frontend/CartContext";
+import SocialMedia from "../../Component/Frontend/SocialMedia";
 
 const Order = () => {
   const [errors, setErrors] = useState({});
@@ -13,12 +14,10 @@ const Order = () => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
-  const { totalPrice ,cart, removeFromCart} = useContext(CartContext);
+  const [note, setNote] = useState("");
+  const { cart, removeFromCart } = useContext(CartContext);
 
-
-
-
-  const navigate = useNavigate();  // Initialize useNavigate
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const [loading, setLoading] = useState(false);
 
@@ -37,39 +36,50 @@ const Order = () => {
   }, []);
 
   useEffect(() => {
-
     console.log(products);
- 
   }, [products]);
-  
 
+  const totalPrice = cart.reduce((acc, product) => {
+    const count = product.quantity ?? 1;
+    const discountedPrice = product.price - (product.discount_amount ?? 0);
+    return acc + discountedPrice * count; // Accumulate discounted total
+  }, 0);
 
-
-
-
-  const totalAmountWithDelivery = totalPrice + deliveryCharge;
+  const totalAmountWithDelivery =
+    cart.reduce((acc, product) => {
+      const count = product.quantity ?? 1;
+      const discountedPrice = product.price - (product.discount_amount ?? 0);
+      return acc + discountedPrice * count;
+    }, 0) + deliveryCharge;
 
   const handleDeliveryChange = (e) => {
     const charge = e.target.value === "insideDhaka" ? 60 : 100;
     setDeliveryCharge(charge);
   };
 
-  
   const handleSave = async (e) => {
     e.preventDefault();
 
     const formData = new FormData();
 
-    formData.append("product_ids", cart.map((product) => product.id));
-    formData.append("s_product_qty", cart.map((product) => product.count));
+    formData.append(
+      "product_ids",
+      cart.map((product) => product.id)
+    );
+    formData.append(
+      "s_product_qty",
+      cart.map((product) => product.quantity)
+    );
     formData.append("c_name", name);
+    
     formData.append("c_phone", phone);
     // formData.append('courier', courier);
     // formData.append('note', note);
     formData.append("source", "online");
     formData.append("address", address);
-    formData.append("discount_amount", 200);
+    
     formData.append("delivery_charge", deliveryCharge);
+    formData.append("note", note);
     formData.append("cod_amount", totalAmountWithDelivery);
 
     for (let [key, value] of formData.entries()) {
@@ -85,7 +95,7 @@ const Order = () => {
 
       console.log(response);
       if (response.data.status) {
-          navigate('/thankyou');
+        navigate("/thankyou");
 
         // Reset form fields
         setName("");
@@ -93,6 +103,7 @@ const Order = () => {
         setAddress("");
         setErrors({});
         setDeliveryCharge("");
+        setNote("");
       }
 
       //  else if (response.data.type === 'invalid') {
@@ -120,95 +131,63 @@ const Order = () => {
   return (
     <div>
       <Navbar />
-      <div className="md:container mx-auto md:px-4 pt-20">
+
+      <div className=" mx-auto md:px-4 pt-8 md:pt-20 ">
         <div className="md:w-[90%] mx-auto">
-          <div className="flex flex-col lg:flex-row mt-5 space-y-5 lg:space-y-0 lg:space-x-8">
+          <div className="grid grid-cols-12 mt-5 space-y-5 lg:space-y-0 lg:space-x-4">
             {/* Responsive table */}
-            <div className="overflow-x-auto w-full md:w-[65%]">
-              <table className="min-w-full bg-white  rounded overflow-hidden text-sm md:text-base text-nowrap shadow-md">
-                <thead className="">
-                  <tr className="bg-gray-100 text-gray-700  border-b">
-                    <th className="py-2 px-4 min-w-[220px]  text-left ">
-                      Product
+            <div className="hidden md:block border md:rounded-md col-span-12 md:col-span-8 px-4 py-2">
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr className="border-b">
+                    <th className="text-teal-600 px-2 py-3 font-semibold text-sm md:text-xl text-left">
+                      Your Products
                     </th>
-                    <th className="py-2 px-4 text-center">Price</th>
-                    <th className="py-2 px-4  text-center">Discount</th>
-                    <th className="py-2 px-4 text-center">Total</th>
-                    <th className="py-2 px-4  text-center rounded-tr-lg">
-                      Actions
+                    <th className="text-teal-600 px-2 py-3 font-semibold text-sm md:text-xl text-right">
+                      Subtotal
                     </th>
                   </tr>
                 </thead>
-                <tbody className="text-xs md:text-sm">
-                  {cart.map((product, index) => {
-                    const count = product.count ?? 1; // Assume count is part of product or default to 1
+                <tbody>
+                  {cart.map((product) => {
+                    const count = product.quantity ?? 1; // Assume count is part of product or default to 1
                     const productTotalPrice =
                       (product.price - (product.discount_amount ?? 0)) * count; // Calculate individual product total
 
                     return (
-                      <tr key={index} className="hover:bg-gray-50  border-b">
-                        <td className="p-2 flex items-center w-[200px]">
-                        <div className="relative">
-                        <div className="bottom-16 absolute left-16">
-    <p className="flex size-2 items-center justify-center rounded-full bg-red-500 p-2 md:p-3 text-xs md:text-sm text-white">
- {product.quantity}
-    </p>
-  </div>
-                        <img
-                            src={`https://admin.attireidyll.com/public/storage/product/${product?.image}`}
-                            className="size-20"
-                            alt={product?.name}
-                          />
-                        </div>
-                          <div className="text-xs md:text-sm">
-                            <span className="mb-1 text-sm md:text-base font-semibold pl-2">
+                      <tr
+                        key={product.id}
+                        className="hover:bg-teal-50 border-b"
+                      >
+                        <td className="p-2  my-4 flex items-center">
+                          <div className="relative">
+                            <div className="absolute -top-4 -right-2">
+                              <p className="flex items-center justify-center rounded-full bg-red-500 size-2 p-2 md:p-3 text-sm text-white">
+                                {product.quantity}
+                              </p>
+                            </div>
+                            <img
+                              src={`https://admin.attireidyll.com/public/storage/product/${product?.image}`}
+                              className="size-16 md:size-20"
+                              alt={product?.name}
+                            />
+                          </div>
+                          <div className="ms-2 md:ms-4">
+                            <p className="mb-1 font-semibold">
                               {product.name}
-                            </span>
-                            <span className="block pl-2">
-                              Brand: {product.brand}
-                            </span>
-                            <span className="block pl-2">
-                              Color: {product.color}
-                            </span>
+                            </p>
+                            <p className="font-meidum text-gray-600">
+                              Price: {product.price}৳
+                            </p>
+                            {product.discount_amount && (
+                              <p className="text-red-700 text-sm md:text-sm">
+                                Discount: {product.discount_amount}৳
+                              </p>
+                            )}
                           </div>
                         </td>
-                        <td className="py-2 px-4 border-b text-center">
-                          {product.price}৳
-                        </td>
-                        <td className="py-2 px-4 border-b text-center">
-                          {product.discount_amount
-                            ? `${product.discount_amount}৳`
-                            : "N/A"}
-                        </td>
-                        {/* <td>
-                          <div className="flex items-center justify-center">
-                            <button
-                              onClick={() => decrement(index)}
-                              className="h-7 w-7 text-base font-semibold bg-teal-700 text-white hover:bg-gray-800 flex items-center justify-center"
-                            >
-                              -
-                            </button>
-                            <span className="h-7 w-7 text-base font-medium flex items-center justify-center border border-teal-700">
-                              {product.count}
-                            </span>
-                            <button
-                              onClick={() => increment(index)}
-                              className="h-7 w-7 text-base font-semibold bg-teal-700 text-white hover:bg-gray-800 flex items-center justify-center"
-                            >
-                              +
-                            </button>
-                          </div>
-                        </td> */}
-                        <td className="py-2 px-4 border-b text-center">
-                          {productTotalPrice}৳ 
-                        </td>
-                        <td className="py-2 px-4 border-b text-center">
-                          <button>
-                            <i
-                              className="px-4 text-red-500 fas fa-trash"
-                              onClick={() => removeFromCart(product.id)}
-                            ></i>
-                          </button>
+                        <td className="px-4 py-2 text-sm md:text-base text-black font-medium text-right">
+                          {productTotalPrice}৳
                         </td>
                       </tr>
                     );
@@ -218,28 +197,28 @@ const Order = () => {
             </div>
 
             {/* Responsive form */}
-            <div className="w-full md:w-[35%] mb-2 text-sm md:text-base ">
+            <div className=" col-span-12 md:col-span-4 mb-2 text-sm md:text-base ">
               <form
                 onSubmit={handleSave}
-                className="bg-white shadow-md rounded-lg px-4 py-2"
+                className="  border md:rounded-md px-4 py-2"
               >
-                <h2 className="text-sm md:text-base font-bold mb-1">
+                <h2 className="text-lg mb-2 md:text-xl font-semibold  text-teal-600">
                   Order Delivery Details
                 </h2>
                 <div className="mb-2">
                   <label
-                    className="block text-gray-700 md:text-sm text-xs font-bold mb-2"
+                    className="block text-gray-700 md:text-base text-sm font-semibold mb-2"
                     htmlFor="recipientName"
                   >
                     Name
                   </label>
-                  <input value={name}
+                  <input
+                    value={name}
                     onChange={(e) => setName(e.target.value)}
                     type="text"
-                    id="recipientName"
-                    placeholder="Enter recipient's name"
-                    className="shadow appearance-none border md:text-sm text-xs rounded w-full py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    
+                    id="customerName"
+                    placeholder="Enter your name"
+                    className="border mb-2 md:text-sm text-sm rounded w-full p-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   />
 
                   {errors.c_name && (
@@ -248,53 +227,52 @@ const Order = () => {
                 </div>
                 <div className="mb-2">
                   <label
-                    className="block text-gray-700 md:text-sm text-xs font-bold mb-2"
+                    className="block text-gray-700 md:text-base text-sm font-semibold mb-2"
                     htmlFor="phoneNumber"
                   >
                     Phone No
                   </label>
-                  <input 
-                  value={phone}
+                  <input
+                    value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     type="tel"
                     id="phoneNumber"
-                    placeholder="Enter phone number"
-                    className="shadow appearance-none border md:text-sm text-xs rounded w-full py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    
+                    placeholder="Enter your phone number"
+                    className="mb-2 border md:text-sm text-sm rounded w-full p-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   />
 
-{errors.c_phone && (
+                  {errors.c_phone && (
                     <p className="text-red-500 text-sm">{errors.c_phone[0]}</p>
                   )}
                 </div>
                 <div className="mb-1">
                   <label
-                    className="block text-gray-700 md:text-sm text-xs font-bold mb-2"
+                    className="block text-gray-700 md:text-base text-sm font-semibold mb-2"
                     htmlFor="address"
                   >
                     Delivery Address
                   </label>
                   <textarea
-                  value={address}
+                    value={address}
                     onChange={(e) => setAddress(e.target.value)}
                     id="address"
-                    placeholder="Enter delivery address"
-                    className="shadow appearance-none border md:text-sm text-xs rounded w-full py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    placeholder="Enter your delivery address"
+                    className=" border md:text-sm text-sm rounded w-full p-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     required
                   ></textarea>
                 </div>
 
                 {errors.address && (
-                    <p className="text-red-500 text-sm">{errors.address[0]}</p>
-                  )}
+                  <p className="text-red-500 text-sm">{errors.address[0]}</p>
+                )}
 
                 {/* Delivery Charge Selection */}
-                <div className="mb-2">
-                  <span className="block text-gray-700 md:text-sm text-xs font-bold mb-2">
+                <div className="mb-3">
+                  <span className="block text-gray-700 md:text-base text-sm font-semibold mb-2">
                     Delivery Charge
                   </span>
-                  <div className="text-nowrap grid grid-cols-1 md:grid-cols-2 md:text-sm text-xs">
-                    <label className="inline-flex items-center mr-4 mb-2">
+                  <div className="text-nowrap grid grid-cols-1 md:grid-cols-2 md:text-base text-sm mb-2">
+                    <label className="inline-flex items-center mr-4 mb-2 md:mb-0 ">
                       <input
                         type="radio"
                         className="form-radio required"
@@ -319,51 +297,125 @@ const Order = () => {
                   </div>
                 </div>
 
-                <div className="mb-3">
+                <div className="mb-2">
                   <label
-                    className="block text-gray-700 md:text-sm text-xs font-bold mb-2"
+                    className="block text-gray-700 md:text-base text-sm font-semibold my-2"
                     htmlFor="paymentMethod"
                   >
                     Payment Method
                   </label>
-              <CustomSelect/>
+                  <CustomSelect />
+                </div>
+
+                <div className="mb-1">
+                  <label
+                    className="block text-gray-700 md:text-base text-sm font-semibold mb-2"
+                    htmlFor="address"
+                  >
+                    Additional Notes (Optional)
+                  </label>
+                  <textarea
+                    value={note}
+                    onChange={(e) => setNote(e.target.value)}
+                    id="note"
+
+                    placeholder="Enter your note"
+                    className=" border md:text-sm text-sm rounded w-full p-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  ></textarea>
                 </div>
 
                 {/* Summary Section */}
-                <div className="border-t border-gray-200 mt-2">
-                  <h3 className="font-bold mb-2">Order Summary</h3>
-                  <p className="flex justify-between">
-                    <span>Total Price:</span>
-                    <span>{totalPrice}৳</span>
+                <div className="mt-4">
+                  <h3 className="font-semibold text-lg md:text-xl text-teal-600 mb-3">
+                    Order Summary
+                  </h3>
+                  <div className="mb-2 block md:hidden ">
+                    {cart.map((product) => (
+                      <div
+                        key={product.id}
+                        className="flex justify-between mb-2"
+                      >
+                        <p className="flex gap-2">
+                          {product.name} <span>X {product.quantity}</span>
+                        </p>
+                        <p className="font-medium">{product.price}৳</p>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="flex justify-between mb-2 text-sm md:text-base">
+                    <span>Subtotal:</span>
+                    <span>৳{totalPrice}</span>
                   </p>
-                  <p className="flex justify-between">
+                  <p className="flex justify-between text-sm md:text-base">
                     <span>Delivery Charge:</span>
                     <span>{deliveryCharge}৳</span>
                   </p>
 
-                  <hr className="border border-gray-400 my-2" />
-                  <p className="flex justify-between font-bold">
+                  <hr className="border border-gray-400 my-3" />
+                  <p className="flex justify-between text-base md:text-lg font-semibold ">
                     <span>Total Amount:</span>
-                    <span>{totalAmountWithDelivery}৳</span>
+                    <span className="text-gray-600">
+                      ৳{totalAmountWithDelivery}
+                    </span>
                   </p>
                 </div>
 
                 {/* Action Buttons */}
-                <div className="text-center mt-4">
+                <div className="text-center mt-6 mb-4">
                   <button
                     type="submit"
-                    className="bg-gradient-to-r from-teal-500 to-teal-700 text-white font-bold py-2 px-4 text-sm md:text-base rounded focus:outline-none focus:shadow-outline"
+                    className="hidden md:block mx-auto w-full bg-gradient-to-r from-teal-500 to-teal-600 text-white font-semibold py-2 px-6 text-base  rounded-md "
                   >
-                    Place Order
+                    <span className="me-2">Place Order</span>
+                    <i className="fas fa-shopping-bag text-white text-base md:text-lg animate-bounce"></i>
                   </button>
-                  
+                </div>
+
+                <div
+                  className="gap-2 mx-auto  md:hidden fixed flex flex-col items-center justify-center bottom-0 w-full bg-gradient-to-t from-gray-50 to-white shadow-lg z-50 
+       px-6 py-4"
+                >
+                  <p className="flex justify-between text-base md:text-lg font-semibold ">
+                    <span>Total Amount:</span>
+                    <span className="text-yellow-600">
+                      ৳{totalAmountWithDelivery}
+                    </span>
+                  </p>
+                  <button
+                    type="submit"
+                    className="block mx-auto md:hidden  bg-gradient-to-r from-teal-500 to-teal-600 text-white font-semibold py-2 px-6 text-lg rounded-full w-full"
+                  >
+                    <span className="me-2">Place Order</span>
+                    <i className="fas fa-shopping-bag text-white text-lg animate-bounce"></i>
+                  </button>
                 </div>
               </form>
+              <div
+                className="gap-2 mx-auto  md:hidden fixed flex flex-col items-center justify-center bottom-0 w-full bg-gradient-to-t from-gray-50 to-white shadow-lg z-50 
+       px-6 py-4"
+              >
+                <p className="flex justify-between text-base md:text-lg font-semibold ">
+                  <span>Total Amount:</span>
+                  <span className="text-yellow-600">
+                    ৳{totalAmountWithDelivery}
+                  </span>
+                </p>
+                <button
+                  type="submit"
+                  onClick={handleSave}
+                  className="block mx-auto md:hidden  bg-gradient-to-r from-teal-500 to-teal-600 text-white font-semibold py-2 px-6 text-lg rounded-full w-full"
+                >
+                  <span className="me-2">Place Order</span>
+                  <i className="fas fa-shopping-bag text-white text-lg animate-bounce"></i>
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <Footer />
+      <div className="hidden md:block">
+        <Footer />
+      </div>
     </div>
   );
 };

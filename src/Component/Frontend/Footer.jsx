@@ -16,31 +16,31 @@ const Footer = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {/* Contact Section */}
             <div>
-              <h6 className="font-bold text-sm md:text-lg  mb-2">
+              <h6 className="font-bold text-base md:text-lg  mb-2">
                 Contact Us
               </h6>
               <a
                 href="#"
-                className="text-gray-600 text-xs md:text-sm mb-1 hover:underline"
+                className="text-gray-600 text-sm md:text-base mb-1 hover:underline"
               >
                 Location Goes Here
               </a>
               <a
                 href="tel:+8801622185353"
-                className="flex items-center mt-1 text-gray-600 hover:underline text-xs md:text-sm "
+                className="flex items-center mt-1 text-gray-600 hover:underline text-sm md:text-base "
               >
                 <FaPhoneAlt className="mr-2" /> +880 1622185353
               </a>
               <a
                 href="mailto:help@gmail.com"
-                className="flex items-center mt-1 text-gray-600 hover:underline text-xs md:text-sm "
+                className="flex items-center mt-1 text-gray-600 hover:underline text-sm md:text-base "
               >
                 <FaEnvelope className="mr-2" /> help@gmail.com
               </a>
             </div>
             {/* Information Section */}
             <div>
-              <h6 className="font-bold text-sm md:text-lg mb-2">
+              <h6 className="font-bold text-base md:text-lg mb-2">
                 Information
               </h6>
               <ul>
@@ -54,7 +54,7 @@ const Footer = () => {
                   <li className="mb-1" key={item}>
                     <a
                       href="#"
-                      className="text-gray-600 hover:underline text-xs md:text-sm"
+                      className="text-gray-600 hover:underline text-sm md:text-base"
                     >
                       {item}
                     </a>
@@ -64,7 +64,7 @@ const Footer = () => {
             </div>
             {/* Customer Care Section */}
             <div>
-              <h6 className="font-bold text-sm md:text-lg mb-2">
+              <h6 className="font-bold text-base md:text-lg mb-2">
                 Customer Care
               </h6>
               <ul>
@@ -77,7 +77,7 @@ const Footer = () => {
                   <li className="mb-1" key={item}>
                     <a
                       href="#"
-                      className="text-gray-600 hover:underline text-xs md:text-sm"
+                      className="text-gray-600 hover:underline text-sm md:text-base"
                     >
                       {item}
                     </a>
@@ -87,10 +87,10 @@ const Footer = () => {
             </div>
             {/* Newsletter Signup Section */}
             <div>
-              <h6 className="font-bold text-sm md:text-lg mb-2 whitespace-nowrap">
+              <h6 className="font-bold text-base md:text-lg mb-2 whitespace-nowrap">
                 Signup For Our Newsletter
               </h6>
-              <div className="flex mt-3 text-xs md:text-sm ">
+              <div className="flex mt-3 text-sm md:text-base ">
                 <input
                   type="text"
                   placeholder="Search..."
@@ -107,33 +107,33 @@ const Footer = () => {
                   aria-label="Facebook"
                   className="text-teal-600 hover:scale-125 transition-transform duration-300 ease-in-out"
                 >
-                  <FaFacebookF className="text-sm md:text-base"/>
+                  <FaFacebookF className="text-base md:text-base"/>
                 </a>
                 <a
-                  href="https://whatsapp.com"
+                 href="https://wa.me/01632460342"
                   className="text-teal-600 hover:scale-125 transition-transform duration-300 ease-in-out"
                 >
-                  <FaWhatsapp className="text-sm md:text-base"/>
+                  <FaWhatsapp className="text-base md:text-base"/>
                 </a>
                 <a
                   href="https://www.instagram.com/attire_idyll/channel/"
                   aria-label="Instagram"
                   className="text-teal-600 hover:scale-125 transition-transform duration-300 ease-in-out"
                 >
-                  <FaInstagram className="text-sm md:text-base"/>
+                  <FaInstagram className="text-base md:text-base"/>
                 </a>
               </div>
             </div>
           </div>
           {/* Footer Bottom Text */}
-          <div className="mt-6 md:text-center text-sm md:text-sm">
+          <div className="mt-6 md:text-center ">
             <a href="https://expressitbd.net/" target="blank">
               {" "}
-              <p className="text-gray-800 text-xs md:text-sm text-nowrap">
+              <p className="text-gray-800 text-sm md:text-base text-nowrap">
                 Designed and developed by{" "}
                 <span className="font-airstrip font-semibold    text-blue-900  hover:text-blue-700">
                   Express{" "}
-                <span className="relative  font-sans text-sm md:text-lg text-white font-bold bg-pink-700 px-1 mr-1">
+                <span className="relative  font-sans text-base md:text-lg text-white font-bold bg-pink-700 px-1 mr-1">
                   IT
                   <span className="absolute w-0 h-0 border-l-[5px] border-l-transparent  border-r-transparent border-t-[5px] border-t-pink-700 right-0 top-full"></span>
                 </span>
