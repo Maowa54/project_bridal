@@ -5,6 +5,7 @@ import SocialMedia from "../../Component/Frontend/SocialMedia";
 import Navbar from "../../Component/Frontend/Navbar";
 import Footer from "../../Component/Frontend/Footer";
 import ImageCarousel from "../../Component/Frontend/Home/ImageCarousel";
+import ScrollToTopButton from "../../Component/Frontend/ScrollToTopButton";
 
 
 const Home = () => {
@@ -116,14 +117,15 @@ const Home = () => {
   return (
     <div className=" ">
       <Navbar />
-      <div className="container mx-auto pt-14 md:pt-20 ">
+      <ScrollToTopButton/>
+      <div className="container mx-auto pt-16 md:pt-20 ">
         <div className="w-full md:w-[90%] mx-auto overflow-hidden relative">
           <SocialMedia />
             <ImageCarousel/>
           {/* Buttons Section */}
           <div className="mt-8">
             {/* Top Row: First Three Buttons */}
-            <div className="w-full md:w-[45%] px-4 mx-auto mt-4 flex flex-col md:flex-row justify-center gap-5 text-xs md:text-base">
+            <div className="w-full md:w-[45%] px-4 mx-auto mt-4 flex flex-col md:flex-row justify-center gap-5 text-sm md:text-base">
               {categories.slice(0, 3).map((category) => (
                 <Link
                   to={{
@@ -139,7 +141,7 @@ const Home = () => {
             </div>
 
             {/* Bottom Row: Bridal Button */}
-            <div className="w-full md:w-[60%] px-4 md:px-0 mx-auto mt-4 flex justify-center text-xs md:text-base">
+            <div className="w-full md:w-[60%] px-4 md:px-0 mx-auto mt-4 flex justify-center text-sm md:text-base">
               <Link
                 to={{
                   pathname: "/allProduct",
@@ -161,11 +163,11 @@ const Home = () => {
                 alt="Brand Logo"
                 className="mr-2 w-6 md:w-8 h-auto"
               />
-              <h5 className="mb-0  md:text-xl font-semibold">
+              <h5 className="mb-0  text-lg md:text-xl font-semibold">
                 THE BRAND
               </h5>
             </div>
-            <p className="mt-2 text-justify text-xs md:text-base leading-relaxed">
+            <p className="mt-2 text-justify text-sm md:text-base leading-relaxed">
               The vision of our clothing brand is to inspire confidence,
               authenticity, and individuality in every person who wears our
               garments. We aim to create a diverse range of fashion pieces that
@@ -206,7 +208,7 @@ const Home = () => {
               alt="Brand Logo"
               className="mr-2 w-6 md:w-8 h-auto"
             />
-            <h5 className="md:text-xl font-semibold">CLIENT GALLERY</h5>
+            <h5 className="text-lg md:text-xl font-semibold">CLIENT GALLERY</h5>
             <img
               src="/assets/Images/logo.png"
               alt="Brand Logo"
@@ -214,7 +216,7 @@ const Home = () => {
             />
           </div>
           <div>
-            <p className="text-xs md:text-base text-center leading-relaxed mt-3 px-2 md:px-0">
+            <p className="text-sm md:text-base text-center leading-relaxed mt-3 px-2 md:px-0">
               The vision of our clothing brand is to inspire confidence,
               authenticity,
               <br />
@@ -243,7 +245,7 @@ const Home = () => {
             <div className="text-center my-5">
               <button
                 onClick={handleViewMore}
-                className="px-7 py-1 font-medium text-xs md:text-base border hover:bg-gradient-to-b from-teal-500 to-teal-700 hover:text-white hover:border-teal-400 border-gray-800 rounded"
+                className="px-7 py-1 font-medium text-sm md:text-base border hover:bg-gradient-to-b from-teal-500 to-teal-700 hover:text-white hover:border-teal-400 border-gray-800 rounded"
               >
                 View More
               </button>

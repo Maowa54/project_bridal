@@ -55,7 +55,7 @@ const Navbar = () => {
   return (
     <div className="shadow ">
       <div className=" mx-auto">
-        <nav className="lg:px-24  px-4 py-3 md:py-4 mx-auto transition-all duration-50 ease-in-out w-full bg-white fixed top-0  z-50 shadow">
+        <nav className="lg:px-24  px-4 py-4 mx-auto transition-all duration-50 ease-in-out w-full bg-white fixed top-0  z-50 shadow">
           <div className="flex flex-wrap items-center justify-between mx-auto ">
             <div className="text-center">
               <button
@@ -71,7 +71,7 @@ const Navbar = () => {
 
               <div
                 ref={sidepanelRef}
-                className={`sidepanel w-40 md:w-72 fixed top-0 left-0 h-full bg-white shadow-xl  transition-transform duration-500 ease-in-out overflow-hidden py-6 px-6 z-50 ${
+                className={`sidepanel w-48 md:w-72 fixed top-0 left-0 h-full bg-white shadow-xl  transition-transform duration-500 ease-in-out overflow-hidden py-6 px-6 z-50 ${
                   isOpen ? "translate-x-0" : "-translate-x-full"
                 }`}
                 onClick={(e) => e.stopPropagation()} // Prevent click inside panel from closing
@@ -95,7 +95,7 @@ const Navbar = () => {
                             pathname: "/allProduct",
                           }}
                           state={{ category }}
-                          className="block px-2 md:px-6 text-nowrap py-3 text-xs md:text-lg text-gray-700 hover:text-white hover:bg-gradient-to-r from-teal-400 to-teal-600 rounded-lg transition-all duration-300 transform hover:scale-105"
+                          className="block px-2 md:px-6 text-nowrap py-3 text-sm md:text-lg text-gray-700 hover:text-white hover:bg-gradient-to-r from-teal-400 to-teal-600 rounded-lg transition-all duration-300 transform hover:scale-105"
                         >
                           {category.name}
                         </Link>
@@ -111,7 +111,7 @@ const Navbar = () => {
                 <img
                   src="/assets/Images/Frame.png"
                   alt="Logo"
-                  className="max-w-[140px] md:max-w-[200px] lg:max-w-[240px] h-auto object-contain"
+                  className="max-w-[160px] md:max-w-[200px] lg:max-w-[240px] h-auto object-contain"
                 />
               </Link>
             </div>
@@ -119,7 +119,7 @@ const Navbar = () => {
             <div className="flex items-center space-x-4">
               <div className="relative">
                 <div className="absolute bottom-3 md:bottom-5 left-3 md:left-4">
-                  <p className="flex size-2 items-center justify-center rounded-full bg-red-500  p-2 text-[0.5rem] md:text-xs  text-white">
+                  <p className="flex size-2 items-center justify-center rounded-full bg-red-500  p-2 text-[0.7rem] md:text-sm  text-white">
                     {cartCount || 0}
                   </p>
                 </div>
@@ -129,16 +129,11 @@ const Navbar = () => {
                   onClick={handleViewCart}
                   className=" text-black  hover:text-gray-500 focus:outline-none "
                 >
-                  <i className="bi bi-cart   md:text-xl lg:text-2xl"></i>
+                  <i className="bi bi-cart text-xl md:text-2xl"></i>
                 </button>
               </div>
               {isModalOpen && <AddToCart isModalOpen={isModalOpen} onClose={handleCloseCart} />}
 
-              <Link to="/login">
-                <button>
-                  <i className="bi bi-person text-lg"></i>
-                </button>
-              </Link>
             </div>
           </div>
         </nav>

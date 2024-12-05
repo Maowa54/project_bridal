@@ -25,6 +25,7 @@ import Singleproduct from "../Pages/Frontend/Singleproduct";
 import ThankYou from "../Pages/Frontend/ThankYou";
 
 import PreOrder from "../Pages/Frontend/PreOrder";
+import ScrollToTopButton from "../Component/Frontend/ScrollToTopButton";
 
 // Scroll to top component to ensure page scrolls to top on route change
 const ScrollToTop = () => {
@@ -90,16 +91,18 @@ function App() {
     <div className="relative">
       <Router>
         <ScrollToTop /> {/* Add ScrollToTop component here */}
+        
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/allProduct" element={<AllProduct />} />
           <Route path="/singleproduct/:product_info" element={<Singleproduct />} />
           <Route path="/preorder" element={<PreOrder />} />
 
+
           <Route path="/checkout" element={<Order />} />
           <Route path="/thankyou" element={<ThankYou />} />
 
-          <Route path="/register" element={<Register />} />
+          {/* <Route path="/register" element={<Register />} /> */}
           <Route path="/login" element={<Login />} />
           <Route path="/otp" element={<Otp />} />
           <Route

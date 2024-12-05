@@ -135,7 +135,7 @@ const Footer = () => {
                   Express{" "}
                 <span className="relative  font-sans text-base md:text-lg text-white font-bold bg-pink-700 px-1 mr-1">
                   IT
-                  <span className="absolute w-0 h-0 border-l-[5px] border-l-transparent  border-r-transparent border-t-[5px] border-t-pink-700 right-0 top-full"></span>
+                  <span className="absolute border-l-[5px] border-l-transparent  border-r-transparent border-t-[5px] border-t-pink-700 right-0 top-full"></span>
                 </span>
                   bd
                 </span>

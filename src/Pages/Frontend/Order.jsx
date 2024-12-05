@@ -7,6 +7,8 @@ import CustomSelect from "../../Component/Frontend/Checkout/CustomSelect";
 import { useNavigate } from "react-router-dom";
 import { CartContext } from "../../Component/Frontend/CartContext";
 import SocialMedia from "../../Component/Frontend/SocialMedia";
+import ScrollToTopButton from "../../Component/Frontend/ScrollToTopButton";
+import { ImSpinner10 } from "react-icons/im";
 
 const Order = () => {
   const [errors, setErrors] = useState({});
@@ -15,7 +17,7 @@ const Order = () => {
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [note, setNote] = useState("");
-  const { cart, removeFromCart } = useContext(CartContext);
+  const { cart } = useContext(CartContext);
 
   const navigate = useNavigate(); // Initialize useNavigate
 
@@ -71,13 +73,13 @@ const Order = () => {
       cart.map((product) => product.quantity)
     );
     formData.append("c_name", name);
-    
+
     formData.append("c_phone", phone);
     // formData.append('courier', courier);
     // formData.append('note', note);
     formData.append("source", "online");
     formData.append("address", address);
-    
+
     formData.append("delivery_charge", deliveryCharge);
     formData.append("note", note);
     formData.append("cod_amount", totalAmountWithDelivery);
@@ -85,7 +87,7 @@ const Order = () => {
     for (let [key, value] of formData.entries()) {
       console.log(`${key}: ${value}`);
     }
-    +setLoading(true); // Start loading
+    setLoading(true); // Start loading
     try {
       const response = await axios.post(
         "https://admin.attireidyll.com/api/public/order/create",
@@ -131,6 +133,7 @@ const Order = () => {
   return (
     <div>
       <Navbar />
+      <ScrollToTopButton />
 
       <div className=" mx-auto md:px-4 pt-8 md:pt-20 ">
         <div className="md:w-[90%] mx-auto">
@@ -140,10 +143,10 @@ const Order = () => {
               <table className="w-full border-collapse">
                 <thead>
                   <tr className="border-b">
-                    <th className="text-teal-600 px-2 py-3 font-semibold text-sm md:text-xl text-left">
+                    <th className="text-teal-600 px-2 py-3 font-semibold text-xl text-left">
                       Your Products
                     </th>
-                    <th className="text-teal-600 px-2 py-3 font-semibold text-sm md:text-xl text-right">
+                    <th className="text-teal-600 px-2 py-3 font-semibold text-xl text-right">
                       Subtotal
                     </th>
                   </tr>
@@ -173,20 +176,18 @@ const Order = () => {
                             />
                           </div>
                           <div className="ms-2 md:ms-4">
-                            <p className="mb-1 font-semibold">
-                              {product.name}
-                            </p>
+                            <p className="mb-1 font-semibold">{product.name}</p>
                             <p className="font-meidum text-gray-600">
                               Price: {product.price}৳
                             </p>
                             {product.discount_amount && (
-                              <p className="text-red-700 text-sm md:text-sm">
+                              <p className="text-red-700 text-sm">
                                 Discount: {product.discount_amount}৳
                               </p>
                             )}
                           </div>
                         </td>
-                        <td className="px-4 py-2 text-sm md:text-base text-black font-medium text-right">
+                        <td className="px-4 py-2 text-base text-black font-medium text-right">
                           {productTotalPrice}৳
                         </td>
                       </tr>
@@ -218,7 +219,7 @@ const Order = () => {
                     type="text"
                     id="customerName"
                     placeholder="Enter your name"
-                    className="border mb-2 md:text-sm text-sm rounded w-full p-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="border  text-sm  rounded w-full p-2 text-gray-700 leading-tight "
                   />
 
                   {errors.c_name && (
@@ -238,14 +239,14 @@ const Order = () => {
                     type="tel"
                     id="phoneNumber"
                     placeholder="Enter your phone number"
-                    className="mb-2 border md:text-sm text-sm rounded w-full p-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="border text-sm rounded w-full p-2 text-gray-700 leading-tight "
                   />
 
                   {errors.c_phone && (
                     <p className="text-red-500 text-sm">{errors.c_phone[0]}</p>
                   )}
                 </div>
-                <div className="mb-1">
+                <div className="">
                   <label
                     className="block text-gray-700 md:text-base text-sm font-semibold mb-2"
                     htmlFor="address"
@@ -257,7 +258,7 @@ const Order = () => {
                     onChange={(e) => setAddress(e.target.value)}
                     id="address"
                     placeholder="Enter your delivery address"
-                    className=" border md:text-sm text-sm rounded w-full p-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className=" border text-sm  rounded w-full p-2 text-gray-700 "
                     required
                   ></textarea>
                 </div>
@@ -318,9 +319,8 @@ const Order = () => {
                     value={note}
                     onChange={(e) => setNote(e.target.value)}
                     id="note"
-
                     placeholder="Enter your note"
-                    className=" border md:text-sm text-sm rounded w-full p-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className=" border text-sm rounded w-full p-2 text-gray-700 leading-tight "
                   ></textarea>
                 </div>
 
@@ -362,13 +362,27 @@ const Order = () => {
 
                 {/* Action Buttons */}
                 <div className="text-center mt-6 mb-4">
-                  <button
-                    type="submit"
-                    className="hidden md:block mx-auto w-full bg-gradient-to-r from-teal-500 to-teal-600 text-white font-semibold py-2 px-6 text-base  rounded-md "
-                  >
-                    <span className="me-2">Place Order</span>
-                    <i className="fas fa-shopping-bag text-white text-base md:text-lg animate-bounce"></i>
-                  </button>
+                <button
+                  type="submit"
+                  className="hidden md:block mx-auto   bg-gradient-to-r from-teal-500 to-teal-700 text-white font-semibold py-2 px-6 text-lg rounded-md w-full"
+                  disabled={loading} // Disable button while loading
+                  onClick={handleSave}
+                >
+                  {loading ? (
+                    <div className="flex justify-center w-full">
+                      <ImSpinner10
+                        className="animate-spin text-white"
+                        size={20}
+                      />
+                      <span className="px-2">Processing...</span>
+                    </div>
+                  ) : (
+                    <>
+                      <span className="me-2">Place Order</span>
+                      <i className="fas fa-shopping-bag text-white text-lg animate-bounce"></i>
+                    </>
+                  )}
+                </button>
                 </div>
 
                 <div
@@ -383,7 +397,7 @@ const Order = () => {
                   </p>
                   <button
                     type="submit"
-                    className="block mx-auto md:hidden  bg-gradient-to-r from-teal-500 to-teal-600 text-white font-semibold py-2 px-6 text-lg rounded-full w-full"
+                    className="hidden md:block mx-auto   bg-gradient-to-r from-teal-500 to-teal-600 text-white font-semibold py-2 px-6 text-lg rounded-full w-full"
                   >
                     <span className="me-2">Place Order</span>
                     <i className="fas fa-shopping-bag text-white text-lg animate-bounce"></i>
@@ -400,13 +414,27 @@ const Order = () => {
                     ৳{totalAmountWithDelivery}
                   </span>
                 </p>
+
                 <button
                   type="submit"
+                  className="block mx-auto md:hidden  bg-gradient-to-r from-teal-500 to-teal-700 text-white font-semibold py-2 px-6 text-lg rounded-full w-full"
+                  disabled={loading} // Disable button while loading
                   onClick={handleSave}
-                  className="block mx-auto md:hidden  bg-gradient-to-r from-teal-500 to-teal-600 text-white font-semibold py-2 px-6 text-lg rounded-full w-full"
                 >
-                  <span className="me-2">Place Order</span>
-                  <i className="fas fa-shopping-bag text-white text-lg animate-bounce"></i>
+                  {loading ? (
+                    <div className="flex justify-center w-full">
+                      <ImSpinner10
+                        className="animate-spin text-white"
+                        size={20}
+                      />
+                      <span className="px-2">Processing...</span>
+                    </div>
+                  ) : (
+                    <>
+                      <span className="me-2">Place Order</span>
+                      <i className="fas fa-shopping-bag text-white text-lg animate-bounce"></i>
+                    </>
+                  )}
                 </button>
               </div>
             </div>

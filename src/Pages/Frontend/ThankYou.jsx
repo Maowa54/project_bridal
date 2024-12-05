@@ -10,7 +10,7 @@ const ThankYouPage = () => {
       </div>
 
       {/* Content */}
-      <div className="flex-grow flex flex-col items-center justify-center py-6 px-4 md:px-8 pt-16 md:pt-24">
+      <div className="flex-grow flex flex-col items-center justify-center py-6 px-4 md:px-8 pt-20 md:pt-40 pb-16 md:pb-32">
         {/* Shopping Bag Image */}
         <img
           src="/assets/Images/bag.png"
@@ -22,12 +22,12 @@ const ThankYouPage = () => {
         <h1 className="text-2xl md:text-4xl font-semibold text-teal-600 mb-4 text-center">
           Thank You for Your Order!
         </h1>
-        <p className="text-gray-700 mb-6 text-sm md:text-base text-center max-w-lg">
+        <p className="text-gray-700 mb-6 text-xs md:text-sm text-center max-w-lg">
           Your order has been successfully placed. We are processing it and will send you a confirmation email soon.
         </p>
 
         {/* Buttons */}
-        <div className="space-x-4 mb-6 flex flex-col sm:flex-row gap-4">
+        <div className="space-x-4 mb-6 flex flex-col sm:flex-row gap-2">
           <a
             href="/"
             className="inline-block px-6 py-3 text-white text-sm md:text-base bg-yellow-400 font-semibold rounded-full hover:bg-yellow-500 transition duration-300 text-center"
@@ -36,7 +36,7 @@ const ThankYouPage = () => {
           </a>
           <a
             href="/checkout"
-            className="inline-block px-6 py-2 md:py-3 text-sm md:text-base   text-white bg-teal-500 font-semibold rounded-full hover:bg-teal-600 transition duration-300 text-center"
+            className="inline-block px-8 py-2 md:py-3 text-sm md:text-base   text-white bg-teal-500 font-semibold rounded-full hover:bg-teal-600 transition duration-300 text-center"
           >
             Go Back
           </a>
@@ -79,6 +79,7 @@ const ThankYouPage = () => {
           </a>
         </div>
       </div>
+
 
       {/* Footer */}
       <div className="hidden md:block">

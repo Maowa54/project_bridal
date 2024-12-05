@@ -5,6 +5,7 @@ import Navbar from "../../Component/Frontend/Navbar";
 import Footer from "../../Component/Frontend/Footer";
 import axios from "axios";
 import { CartContext } from "../../Component/Frontend/CartContext";
+import ScrollToTopButton from "../../Component/Frontend/ScrollToTopButton";
 
 const Singleproduct = () => {
   const [products, setProducts] = useState([]);
@@ -78,7 +79,6 @@ const Singleproduct = () => {
   console.log(product_id);
   console.log(product);
 
-
   useEffect(() => {
     console.log("Updated products state:", products);
   }, [products]);
@@ -93,7 +93,6 @@ const Singleproduct = () => {
   }, [products, product]);
 
   console.log(CategoryProducts);
-
 
   const [count, setCount] = useState(1);
 
@@ -111,7 +110,8 @@ const Singleproduct = () => {
   return (
     <div>
       <Navbar />
-      <div className="container mx-auto flex pt-14 md:pt-20">
+      <ScrollToTopButton />
+      <div className="container mx-auto flex pt-12 md:pt-20">
         <SocialMedia />
         <div className="w-[90%] mx-auto">
           <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
@@ -125,14 +125,14 @@ const Singleproduct = () => {
             </div>
             {/* Product Info */}
             <div className="mt-1">
-              <p className="text-lg font-semibold md:text-2xl">
+              <p className="text-xl font-semibold md:text-2xl">
                 {product.name}
               </p>
               <div className="mt-2 md:mt-4">
-                <p className="font-semibold  md:text-xl">
+                <p className="font-semibold text-lg md:text-xl">
                   Price - {product.price}
                 </p>
-                <p className="py-2 text-justify leading-relaxed text-xs md:text-base">
+                <p className="py-2 text-justify leading-relaxed text-sm md:text-base">
                   {product.short_desc}
                 </p>
               </div>
@@ -144,32 +144,33 @@ const Singleproduct = () => {
                 ))}
               </div> */}
               {/* Buttons */}
-
-              <div className="flex space-x-2 md:space-x-3 mt-2 md:mt-4  items-center  ">
-                <p className="text-sm font-semibold md:text-base ">Quantity:</p>
-                <div className="flex items-center ">
-                  <button
-                    onClick={decrement}
-                    className="size-6 md:size-8 text-sm md:text-lg font-semibold bg-teal-700 text-white hover:bg-teal-800"
-                  >
-                    -
-                  </button>
-                  <span className="text-sm md:text-base md:pt-1 text-center border border-teal-700 size-6 md:size-8  font-medium">
-                    {count}
-                  </span>
-                  <button
-                    onClick={increment}
-                    className="size-6 md:size-8 text-sm md:text-lg font-semibold bg-teal-700 text-white hover:bg-teal-800"
-                  >
-                    +
-                  </button>
+              {product.pre_order == 0 && (
+                <div className="flex space-x-2 md:space-x-3 mt-2 md:mt-4  items-center  ">
+                  <p className=" font-semibold md:text-lg ">Quantity:</p>
+                  <div className="flex items-center ">
+                    <button
+                      onClick={decrement}
+                      className="size-6 md:size-8 text-sm md:text-lg font-semibold bg-teal-700 text-white hover:bg-teal-800"
+                    >
+                      -
+                    </button>
+                    <span className="text-sm md:text-base md:pt-1 text-center border border-teal-700 size-6 md:size-8  font-medium">
+                      {count}
+                    </span>
+                    <button
+                      onClick={increment}
+                      className="size-6 md:size-8 text-sm md:text-lg font-semibold bg-teal-700 text-white hover:bg-teal-800"
+                    >
+                      +
+                    </button>
+                  </div>
                 </div>
-              </div>
+              )}
 
-              <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 mt-8">
+              <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 mt-5 md:mt-8">
                 {product.pre_order == 0 && (
                   <button
-                    className=" justify-center text-nowrap items-center w-full sm:w-auto px-5 py-2 text-xs md:text-base bg-transparent border border-teal-700 text-teal-700 rounded-lg font-semibold hover:bg-teal-700 hover:text-white transition-colors duration-300 ease-in-out hover:scale-105 hover:shadow-2xl shadow"
+                    className=" justify-center text-nowrap items-center w-full sm:w-auto px-5 py-2 text-sm md:text-base bg-transparent border border-teal-700 text-teal-700 rounded-lg font-semibold hover:bg-teal-700 hover:text-white transition-colors duration-300 ease-in-out hover:scale-105 hover:shadow-2xl shadow"
                     onClick={() => {
                       addToCart(product, count);
                     }}
@@ -185,7 +186,7 @@ const Singleproduct = () => {
                       addToCart(product, count);
                     }}
                   >
-                    <button className="inline-flex justify-center items-center w-full sm:w-auto text-xs md:text-base text-nowrap px-8 py-2 bg-gradient-to-r from-teal-500 to-teal-700 border border-teal-200 text-white font-semibold rounded-lg transform transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-2xl">
+                    <button className="inline-flex justify-center items-center w-full sm:w-auto text-sm md:text-base text-nowrap px-8 py-2 bg-gradient-to-r from-teal-500 to-teal-700 border border-teal-200 text-white font-semibold rounded-lg transform transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-2xl">
                       <i className="fas fa-shopping-bag mr-2"></i>Buy Now
                     </button>
                   </Link>
@@ -196,7 +197,7 @@ const Singleproduct = () => {
                     rel="noopener noreferrer"
                   >
                     <button className="flex items-center justify-center px-16 md:px-24 py-1 md:py-2 border border-gray-900 hover:border-green-700 text-sm text-nowrap md:text-lg hover:text-white rounded-lg hover:bg-green-700 transition-colors hover:scale-105 duration-300 ease-in-out group hover:shadow-xl">
-                      <i className="fab fa-whatsapp text-xl text-green-500 mr-2 group-hover:text-white"></i>
+                      <i className="fab fa-whatsapp text-lg md:text-xl text-green-500 mr-2 group-hover:text-white"></i>
                       Chat Now
                     </button>
                   </a>
@@ -204,7 +205,7 @@ const Singleproduct = () => {
 
                 {product.pre_order == 0 && (
                   <button
-                    className="inline-flex text-nowrap justify-center items-center sm:w-auto w-full text-xs md:text-base hover:underline"
+                    className="inline-flex text-nowrap justify-center items-center sm:w-auto w-full text-sm md:text-base hover:underline"
                     onClick={handleButtonClick}
                   >
                     <img
@@ -291,13 +292,13 @@ const Singleproduct = () => {
               </div>
 
               <div className="mt-3 md:mt-6">
-                <p className=" text-justify leading-relaxed text-xs md:text-base ">
+                <p className=" text-justify leading-relaxed text-sm md:text-base ">
                   <span className="font-semibold"> Care : </span> Dry Clean Only
                   Preserve: in air tight poly.{" "}
                 </p>
               </div>
               <div className="mt-2 md:mt-4">
-                <p className=" text-justify text-xs  leading-relaxed md:text-base">
+                <p className=" text-justify text-sm  leading-relaxed md:text-base">
                   <span className="font-semibold"> Disclaimer:</span> Product
                   colour may slightly vary due to photographic lighting sources
                   or your monitor setting. Lace and/or Embellishments and Fabric
@@ -307,7 +308,7 @@ const Singleproduct = () => {
             </div>
           </div>
 
-          <div className="text-lg md:text-2xl mt-6 font-semibold">
+          <div className="text-xl md:text-2xl mt-6 font-semibold">
             <p>You May Also Like</p>
           </div>
           {/* Client Images */}
@@ -333,14 +334,58 @@ const Singleproduct = () => {
           <div className="text-center my-5">
             <Link
               to=""
-              className=" px-7 py-1 text-xs md:text-base border hover:bg-gradient-to-b from-teal-500 to-teal-700 hover:text-white hover:border-teal-500 border-gray-800 rounded"
+              className=" px-7 py-1 text-sm md:text-base border hover:bg-gradient-to-b from-teal-500 to-teal-700 hover:text-white hover:border-teal-500 border-gray-800 rounded"
             >
               View More
             </Link>
           </div>
         </div>
       </div>
-      <Footer />
+
+      <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden flex flex-col space-y-2 w-full">
+        <div className="mx-2 p-2 rounded-md bg-gray-300 w-fit">
+          <i className="fas fa-phone mr-1 text-red-700"></i> <span className="text-teal-800 font-semibold ">01632460342</span>
+
+          
+        </div>
+        {/* When pre_order is 0, show Add to Cart and Buy Now side by side */}
+        {product.pre_order === 0 ? (
+          <div className="flex justify-between w-full">
+            <button
+              className="py-3 w-full text-white bg-gradient-to-r from-yellow-400 text-lg  to-yellow-600 font-medium"
+              onClick={() => addToCart(product, count)}
+            >
+              <i className="fas fa-shopping-cart mr-2"></i>Add To Cart
+            </button>
+
+            <Link
+              to="/checkout"
+              onClick={() => addToCart(product, count)}
+              className="w-full relative text-white flex text-lg justify-center items-center text-nowrap font-medium bg-gradient-to-r from-teal-500 via-teal-600 to-teal-700"
+            >
+              <span className="absolute border-r-[24px] border-l-transparent border-r-transparent border-t-[50px] border-t-yellow-600 left-0 top-0"></span>
+              <i className="fas fa-shopping-bag mr-2"></i>Buy Now
+            </Link>
+          </div>
+        ) : (
+          // When pre_order is not 0, show Chat Now button
+          <a
+            href="https://wa.me/01632460342"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full px-2"
+          >
+            <button className="w-full mx-auto text-white bg-gradient-to-r from-green-500 to-green-700 px-6 py-3 rounded-full">
+              <i className="fab fa-whatsapp text-lg md:text-xl mr-2 text-white"></i>
+              Chat Now
+            </button>
+          </a>
+        )}
+      </div>
+
+    <div className="pb-20">
+    <Footer />
+    </div>
     </div>
   );
 };

@@ -5,6 +5,7 @@ import SocialMedia from "../../Component/Frontend/SocialMedia";
 import Footer from "../../Component/Frontend/Footer";
 import Navbar from "../../Component/Frontend/Navbar";
 import { useEffect, useState } from "react";
+import ScrollToTopButton from "../../Component/Frontend/ScrollToTopButton";
 
 const AllProduct = () => {
   const location = useLocation();
@@ -56,6 +57,7 @@ const AllProduct = () => {
   return (
     <div>
       <Navbar />
+      <ScrollToTopButton/>
 
       <div className="container mx-auto ">
         <div className="w-[90%] mx-auto ">

@@ -172,3 +172,46 @@ body {
   animation: moveIconForwardBackward 1s ease-in-out infinite; /* 1s duration, smooth easing, infinite loop */
 }
 
+.flex-container {
+  display: flex;
+  gap: 10px; /* Space between the buttons */
+}
+
+.diagonal-button {
+  position: relative;
+  display: inline-block;
+  padding: 12px 24px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: white;
+  background-color: #3b82f6; /* Tailwind's blue-500 */
+  overflow: hidden;
+  border: none;
+  cursor: pointer;
+}
+
+.right-border-diagonal::after,
+.left-border-diagonal::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 20px; /* Adjust the width of the diagonal border */
+  background-color: #1e40af; /* Tailwind's blue-900 */
+  z-index: 0;
+}
+
+.right-border-diagonal::after {
+  right: 0;
+  clip-path: polygon(0 0, 100% 0, 0 100%, 0 100%);
+}
+
+.left-border-diagonal::after {
+  left: 0;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.diagonal-button span {
+  position: relative;
+  z-index: 1;
+}
