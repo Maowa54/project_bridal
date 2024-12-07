@@ -110,7 +110,7 @@ const Footer = () => {
                   <FaFacebookF className="text-base md:text-base"/>
                 </a>
                 <a
-                 href="https://wa.me/01632460342"
+                 href="https://wa.me/8801632460342"
                   className="text-teal-600 hover:scale-125 transition-transform duration-300 ease-in-out"
                 >
                   <FaWhatsapp className="text-base md:text-base"/>

@@ -107,11 +107,19 @@ const Singleproduct = () => {
   const handleButtonClick = () => setPopupVisible(true);
   const handleClosePopup = () => setPopupVisible(false);
 
+  const [visibleCount, setVisibleCount] = useState(3); // Initially display 3 products
+  const batchSize = 3; // Number of products to show per "View More"
+
+  const handleViewMore = () => {
+    setVisibleCount((prev) => Math.min(prev + batchSize, CategoryProducts.length)); // Show next batch
+  };
+
+
   return (
     <div>
       <Navbar />
       <ScrollToTopButton />
-      <div className="container mx-auto flex pt-12 md:pt-20">
+      <div className="container mx-auto flex pt-14 md:pt-20">
         <SocialMedia />
         <div className="w-[90%] mx-auto">
           <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
@@ -192,7 +200,7 @@ const Singleproduct = () => {
                   </Link>
                 ) : (
                   <a
-                    href="https://wa.me/01632460342"
+                    href="https://wa.me/8801632460342"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -311,43 +319,52 @@ const Singleproduct = () => {
           <div className="text-xl md:text-2xl mt-6 font-semibold">
             <p>You May Also Like</p>
           </div>
-          {/* Client Images */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-4 justify-items-center">
-            {CategoryProducts.filter((item) => item.id !== product.id) // Exclude the selected product
-              .map((product) => (
-                <div className="mb-2" key={product.id}>
-                  <Link
-                    to={`/singleproduct/${product.name}-${product.id}`}
-                    state={{ product }}
-                  >
-                    <img
-                      src={`https://admin.attireidyll.com/public/storage/product/${product.image}`}
-                      alt={product.name || "Product image"}
-                      className="w-full h-auto transition-transform duration-300 ease-in-out hover:scale-105"
-                    />
-                  </Link>
-                </div>
-              ))}
-          </div>
+        {/* Client Images */}
+<div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-4 justify-items-center">
+  {CategoryProducts.filter((item) => item.id !== product.id) // Exclude the selected product
+    .slice(0, visibleCount) // Limit the number of products displayed
+    .map((product) => (
+      <div className="mb-2" key={product.id}>
+        <Link
+          to={`/singleproduct/${product.name}-${product.id}`}
+          state={{ product }}
+        >
+          <img
+            src={`https://admin.attireidyll.com/public/storage/product/${product.image}`}
+            alt={product.name || "Product image"}
+            className="w-full h-auto transition-transform duration-300 ease-in-out hover:scale-105"
+          />
+        </Link>
+      </div>
+    ))}
+</div>
 
-          {/* View More Button */}
-          <div className="text-center my-5">
-            <Link
-              to=""
-              className=" px-7 py-1 text-sm md:text-base border hover:bg-gradient-to-b from-teal-500 to-teal-700 hover:text-white hover:border-teal-500 border-gray-800 rounded"
-            >
-              View More
-            </Link>
-          </div>
+{/* View More Button */}
+{visibleCount < CategoryProducts.filter((item) => item.id !== product.id).length && (
+  <div className="text-center my-5">
+    <button
+      onClick={handleViewMore}
+      className="px-7 py-1 text-sm md:text-base border hover:bg-gradient-to-b from-teal-500 to-teal-700 hover:text-white hover:border-teal-500 border-gray-800 rounded"
+    >
+      View More
+    </button>
+  </div>
+)}
         </div>
+          
       </div>
 
-      <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden flex flex-col space-y-2 w-full">
-        <div className="mx-2 p-2 rounded-md bg-gray-300 w-fit">
-          <i className="fas fa-phone mr-1 text-red-700"></i> <span className="text-teal-800 font-semibold ">01632460342</span>
+      <div className="fixed bottom-0 left-0 right-0 z-30 md:hidden flex flex-col space-y-2 w-full">
+      <div className="mx-2 p-2 rounded-md bg-gray-300 w-fit">
+  <a
+    href="tel:+8801632460342"
+    className="flex items-center text-teal-800 font-semibold"
+  >
+    <i className="fas fa-phone mr-2 text-red-700"></i>
+    01632460342
+  </a>
+</div>
 
-          
-        </div>
         {/* When pre_order is 0, show Add to Cart and Buy Now side by side */}
         {product.pre_order === 0 ? (
           <div className="flex justify-between w-full">
@@ -370,7 +387,7 @@ const Singleproduct = () => {
         ) : (
           // When pre_order is not 0, show Chat Now button
           <a
-            href="https://wa.me/01632460342"
+             href="https://wa.me/8801632460342"
             target="_blank"
             rel="noopener noreferrer"
             className="w-full px-2"

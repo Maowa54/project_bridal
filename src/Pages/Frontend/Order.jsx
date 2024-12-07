@@ -177,7 +177,7 @@ const Order = () => {
                           </div>
                           <div className="ms-2 md:ms-4">
                             <p className="mb-1 font-semibold">{product.name}</p>
-                            <p className="font-meidum text-gray-600">
+                            <p className="font-meidum ">
                               Price: {product.price}৳
                             </p>
                             {product.discount_amount && (
@@ -208,7 +208,7 @@ const Order = () => {
                 </h2>
                 <div className="mb-2">
                   <label
-                    className="block text-gray-700 md:text-base text-sm font-semibold mb-2"
+                    className="block  md:text-base text-sm font-semibold mb-2"
                     htmlFor="recipientName"
                   >
                     Name
@@ -219,7 +219,7 @@ const Order = () => {
                     type="text"
                     id="customerName"
                     placeholder="Enter your name"
-                    className="border  text-sm  rounded w-full p-2 text-gray-700 leading-tight "
+                    className="border  text-sm  rounded w-full p-2 00 leading-tight "
                   />
 
                   {errors.c_name && (
@@ -228,7 +228,7 @@ const Order = () => {
                 </div>
                 <div className="mb-2">
                   <label
-                    className="block text-gray-700 md:text-base text-sm font-semibold mb-2"
+                    className="block  md:text-base text-sm font-semibold mb-2"
                     htmlFor="phoneNumber"
                   >
                     Phone No
@@ -239,7 +239,7 @@ const Order = () => {
                     type="tel"
                     id="phoneNumber"
                     placeholder="Enter your phone number"
-                    className="border text-sm rounded w-full p-2 text-gray-700 leading-tight "
+                    className="border text-sm rounded w-full p-2 00 leading-tight "
                   />
 
                   {errors.c_phone && (
@@ -248,7 +248,7 @@ const Order = () => {
                 </div>
                 <div className="">
                   <label
-                    className="block text-gray-700 md:text-base text-sm font-semibold mb-2"
+                    className="block md:text-base text-sm font-semibold mb-2"
                     htmlFor="address"
                   >
                     Delivery Address
@@ -258,7 +258,7 @@ const Order = () => {
                     onChange={(e) => setAddress(e.target.value)}
                     id="address"
                     placeholder="Enter your delivery address"
-                    className=" border text-sm  rounded w-full p-2 text-gray-700 "
+                    className=" border text-sm  rounded w-full p-2 00 "
                     required
                   ></textarea>
                 </div>
@@ -269,7 +269,7 @@ const Order = () => {
 
                 {/* Delivery Charge Selection */}
                 <div className="mb-3">
-                  <span className="block text-gray-700 md:text-base text-sm font-semibold mb-2">
+                  <span className="block  md:text-base text-sm font-semibold mb-2">
                     Delivery Charge
                   </span>
                   <div className="text-nowrap grid grid-cols-1 md:grid-cols-2 md:text-base text-sm mb-2">
@@ -300,7 +300,7 @@ const Order = () => {
 
                 <div className="mb-2">
                   <label
-                    className="block text-gray-700 md:text-base text-sm font-semibold my-2"
+                    className="block  md:text-base text-sm font-semibold my-2"
                     htmlFor="paymentMethod"
                   >
                     Payment Method
@@ -310,7 +310,7 @@ const Order = () => {
 
                 <div className="mb-1">
                   <label
-                    className="block text-gray-700 md:text-base text-sm font-semibold mb-2"
+                    className="block  md:text-base text-sm font-semibold mb-2"
                     htmlFor="address"
                   >
                     Additional Notes (Optional)
@@ -320,7 +320,7 @@ const Order = () => {
                     onChange={(e) => setNote(e.target.value)}
                     id="note"
                     placeholder="Enter your note"
-                    className=" border text-sm rounded w-full p-2 text-gray-700 leading-tight "
+                    className=" border text-sm rounded w-full p-2 00 leading-tight "
                   ></textarea>
                 </div>
 
@@ -333,7 +333,7 @@ const Order = () => {
                     {cart.map((product) => (
                       <div
                         key={product.id}
-                        className="flex justify-between mb-2"
+                        className="flex font-medium justify-between mb-2"
                       >
                         <p className="flex gap-2">
                           {product.name} <span>X {product.quantity}</span>
@@ -342,11 +342,11 @@ const Order = () => {
                       </div>
                     ))}
                   </div>
-                  <p className="flex justify-between mb-2 text-sm md:text-base">
+                  <p className="flex font-medium justify-between mb-2 text-sm md:text-base">
                     <span>Subtotal:</span>
                     <span>৳{totalPrice}</span>
                   </p>
-                  <p className="flex justify-between text-sm md:text-base">
+                  <p className="flex font-medium justify-between text-sm md:text-base">
                     <span>Delivery Charge:</span>
                     <span>{deliveryCharge}৳</span>
                   </p>
@@ -354,7 +354,7 @@ const Order = () => {
                   <hr className="border border-gray-400 my-3" />
                   <p className="flex justify-between text-base md:text-lg font-semibold ">
                     <span>Total Amount:</span>
-                    <span className="text-gray-600">
+                    <span className="text-yellow-600">
                       ৳{totalAmountWithDelivery}
                     </span>
                   </p>
@@ -385,30 +385,13 @@ const Order = () => {
                 </button>
                 </div>
 
-                <div
-                  className="gap-2 mx-auto  md:hidden fixed flex flex-col items-center justify-center bottom-0 w-full bg-gradient-to-t from-gray-50 to-white shadow-lg z-50 
-       px-6 py-4"
-                >
-                  <p className="flex justify-between text-base md:text-lg font-semibold ">
-                    <span>Total Amount:</span>
-                    <span className="text-yellow-600">
-                      ৳{totalAmountWithDelivery}
-                    </span>
-                  </p>
-                  <button
-                    type="submit"
-                    className="hidden md:block mx-auto   bg-gradient-to-r from-teal-500 to-teal-600 text-white font-semibold py-2 px-6 text-lg rounded-full w-full"
-                  >
-                    <span className="me-2">Place Order</span>
-                    <i className="fas fa-shopping-bag text-white text-lg animate-bounce"></i>
-                  </button>
-                </div>
+                
               </form>
               <div
                 className="gap-2 mx-auto  md:hidden fixed flex flex-col items-center justify-center bottom-0 w-full bg-gradient-to-t from-gray-50 to-white shadow-lg z-50 
        px-6 py-4"
               >
-                <p className="flex justify-between text-base md:text-lg font-semibold ">
+                <p className="flex justify-between text-lg md:text-xl font-semibold ">
                   <span>Total Amount:</span>
                   <span className="text-yellow-600">
                     ৳{totalAmountWithDelivery}

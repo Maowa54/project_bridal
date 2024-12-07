@@ -40,11 +40,13 @@ export const CartProvider = ({ children }) => {
     setCartCount(updatedCart.reduce((acc, item) => acc + item.quantity, 0));
     setTotalPrice(updatedCart.reduce((acc, item) => acc + item.price, 0));
 
-    // Show success message
-    toast.success('Added to Cart Successfully!', {
-      position: "top-right",  // Position the toast at the top right
-     
-    });
+// Show success message
+toast.success('Added to Cart Successfully!', {
+  position: "top-right", 
+  duration: 1000, 
+});
+
+
   };
   
   
@@ -59,7 +61,8 @@ export const CartProvider = ({ children }) => {
 
     setTotalPrice(updatedCart.reduce((acc, item) => acc + item.price, 0));
     toast.success('Quantity Updated Successfully!', {
-      position: "top-right",  // Position the toast at the top right
+      position: "top-right",
+      duration: 1000,
      
     });
 
@@ -96,7 +99,9 @@ export const CartProvider = ({ children }) => {
     localStorage.setItem("cart", JSON.stringify(updatedCart));
     setTotalPrice(updatedCart.reduce((acc, item) => acc + item.price, 0));
     toast.success('Product Removed Successfully!', {
-      position: "top-right",  // Position the toast at the top right
+      position: "top-right", 
+      duration: 1000,
+
      
     });
   };

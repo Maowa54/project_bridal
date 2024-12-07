@@ -4,9 +4,6 @@ import { useState, useEffect } from "react";
 const SocialMedia = (platform) => {
   const [showButtons, setShowButtons] = useState(false);
 
-
- 
-
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowButtons(true);
@@ -38,17 +35,17 @@ const SocialMedia = (platform) => {
             </button>
           </a>
 
-
-          {platform !== 'Twitter' && (
-  <a href="https://wa.me/01632460342" target="_blank" rel="noopener noreferrer">
-    <button className="w-full pl-2 py-1 bg-green-600 text-white hover:bg-green-700 transition-colors hover:scale-105 duration-300 ease-in-out">
-      <i className="fab fa-whatsapp mr-2"></i> {/* WhatsApp Icon */}
-    </button>
-  </a>
-)}
-
-
-        
+          {platform !== "Twitter" && (
+            <a
+              href="https://wa.me/8801632460342"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <button className="w-full pl-2 py-1 bg-green-600 text-white hover:bg-green-700 transition-colors hover:scale-105 duration-300 ease-in-out">
+                <i className="fab fa-whatsapp mr-2"></i> {/* WhatsApp Icon */}
+              </button>
+            </a>
+          )}
         </div>
       )}
     </>

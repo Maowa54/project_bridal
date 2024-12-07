@@ -156,7 +156,7 @@ const Home = () => {
           </div>
 
           {/* Brand Section */}
-          <div className="mt-7 px-2 md:px-0">
+          <div className="mt-7 px-3 md:px-0">
             <div className="flex items-center">
               <img
                 src="/assets/Images/logo.png"

@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Link, useLocation } from "react-router-dom";
-import RangeSlider from "../../Component/Frontend/Allproduct/RangeSlider";
 import SocialMedia from "../../Component/Frontend/SocialMedia";
+import RangeSlider from "../../Component/Frontend/Allproduct/RangeSlider";
+
 import Footer from "../../Component/Frontend/Footer";
 import Navbar from "../../Component/Frontend/Navbar";
 import { useEffect, useState } from "react";
@@ -16,53 +17,61 @@ const AllProduct = () => {
 
   const [products, setProducts] = useState([]);
   const [CategoryProducts, setCategoryProducts] = useState([]);
-  const [priceRange, setPriceRange] = useState([0, 0]); // Initial range is [0, 0]
-  const [visibleCount, setVisibleCount] = useState(9); // Define visibleCount state
-
+  const [visibleCount, setVisibleCount] = useState(9);
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(10000);
+  const [values, setValues] = useState([0, 10000]);
 
   useEffect(() => {
     const storedProducts = localStorage.getItem("allProducts");
     if (storedProducts) {
-      setProducts(JSON.parse(storedProducts));
+      const parsedProducts = JSON.parse(storedProducts);
+      setProducts(parsedProducts);
     }
   }, []);
 
   useEffect(() => {
-    // Filter products based on the category
-    if (category) {
+    if (category && products.length) {
+      // Filter products by the current category
       const filtered = products.filter((p) => p.category_id === category.id);
       setCategoryProducts(filtered);
 
-      // Calculate the min and max prices dynamically from the filtered products
+      // Update the dynamic MIN and MAX prices for the current category
       if (filtered.length > 0) {
-        const minPrice = Math.min(...filtered.map((product) => product.price));
-        const maxPrice = Math.max(...filtered.map((product) => product.price));
-        setPriceRange([minPrice, maxPrice]); // Update the price range
+        const prices = filtered.map((p) => p.price);
+        setMinPrice(Math.min(...prices));
+        setMaxPrice(Math.max(...prices));
+        setValues([Math.min(...prices), Math.max(...prices)]);
       }
     }
   }, [products, category]);
 
-  const handlePriceChange = (newRange) => {
-    setPriceRange(newRange); // Update price range on slider change
-  };
-
-  const filteredProducts = CategoryProducts.filter(
-    (product) =>
-      product.price >= priceRange[0] && product.price <= priceRange[1]
-  );
+  useEffect(() => {
+    // Filter products by the price range
+    if (category && products.length) {
+      const filtered = products.filter(
+        (p) =>
+          p.category_id === category.id &&
+          p.price >= values[0] &&
+          p.price <= values[1]
+      );
+      setCategoryProducts(filtered);
+    }
+  }, [values, category, products]);
 
   const handleViewMore = () => {
     setVisibleCount((prevCount) => prevCount + 3);
   };
+
   return (
     <div>
       <Navbar />
-      <ScrollToTopButton/>
+      <ScrollToTopButton />
 
       <div className="container mx-auto ">
         <div className="w-[90%] mx-auto ">
           <SocialMedia />
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-4 pt-24">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-4 pt-20 md:pt-24">
             {/* Sidebar - Category and Price Filter */}
             <div className="md:col-span-3 col-span-12 hidden lg:block">
               <div className="flex items-center mb-3">
@@ -150,26 +159,24 @@ const AllProduct = () => {
                   </a>
                 </div>
               </div>
-
-              <div>
-              <RangeSlider
-        min={priceRange[0]}
-        max={priceRange[1]}
-        onPriceChange={handlePriceChange}
-        initialValues={priceRange}
-      />
+              <div className="flex flex-col justify-center items-center lg:col-span-3">
+                <RangeSlider
+                  minPrice={minPrice}
+                  maxPrice={maxPrice}
+                  values={values}
+                  onChange={setValues}
+                />
               </div>
             </div>
 
             {/* Product Images Section */}
-            {filteredProducts.length > 0 && (
+            {CategoryProducts.length > 0 && (
               <div className="lg:col-span-9 col-span-12">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {filteredProducts.slice(0, visibleCount).map((product) => (
+                  {CategoryProducts.slice(0, visibleCount).map((product) => (
                     <div className="mb-2" key={product.id}>
                       <Link
-                        to={`/singleproduct/${product.name}-${product.id}`}
-                        state={{ product }}
+                        to={`/singleproduct/${product.name}-${product.id}} state={{ product }`}
                       >
                         <img
                           src={`https://admin.attireidyll.com/public/storage/product/${product.image}`}
@@ -182,7 +189,7 @@ const AllProduct = () => {
                 </div>
 
                 {/* View More Button */}
-                {visibleCount < filteredProducts.length && (
+                {visibleCount < CategoryProducts.length && (
                   <div className="text-center my-5">
                     <button
                       onClick={handleViewMore}
