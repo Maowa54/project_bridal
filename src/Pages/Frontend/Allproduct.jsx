@@ -176,7 +176,8 @@ const AllProduct = () => {
                   {CategoryProducts.slice(0, visibleCount).map((product) => (
                     <div className="mb-2" key={product.id}>
                       <Link
-                        to={`/singleproduct/${product.name}-${product.id}} state={{ product }`}
+                         to={`/singleproduct/${product.name}-${product.id}`}
+                         state={{ product }}
                       >
                         <img
                           src={`https://admin.attireidyll.com/public/storage/product/${product.image}`}

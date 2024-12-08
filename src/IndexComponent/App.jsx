@@ -100,7 +100,7 @@ function App() {
 
 
           <Route path="/checkout" element={<Order />} />
-          <Route path="/thankyou" element={<ThankYou />} />
+          <Route path="/thankyou/:order_id" element={<ThankYou />} />
 
           {/* <Route path="/register" element={<Register />} /> */}
           <Route path="/login" element={<Login />} />

@@ -112,6 +112,7 @@ toast.success('Added to Cart Successfully!', {
   return (
     <CartContext.Provider
       value={{
+      
         cart,
         cartCount,
         totalPrice,

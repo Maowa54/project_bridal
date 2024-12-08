@@ -87,16 +87,65 @@ body {
   
   
 
-  @keyframes slideInLeft {
-    from {
-      transform: translateX(-100%);
-      opacity: 0;
-    }
-    to {
-      transform: translateX(0);
-      opacity: 1;
-    }
+ /* Slide-In-Right Animation */
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%); /* Start off-screen to the right */
+    opacity: 0; /* Fully transparent */
   }
+  to {
+    transform: translateX(0); /* Slide into view */
+    opacity: 1; /* Fully visible */
+  }
+}
+/* Side Panel */
+.side-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 300px; /* Adjust as needed */
+  background-color: #fff;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+  z-index: 1000; /* Above the backdrop */
+  transform: translateX(100%); /* Initially hidden */
+  opacity: 0;
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out; /* Smooth transitions */
+}
+
+/* Panel Open State */
+.side-panel.open {
+  animation: slideInRight 0.5s forwards; /* Trigger the slide-in animation */
+}
+
+/* Panel Close State */
+.side-panel.close {
+  animation: slideOutRight 0.5s forwards; /* Trigger the slide-out animation */
+}
+
+/* Backdrop */
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999; /* Ensure it sits on top */
+}
+
+/* Close Button */
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+
   
 /* custom-nprogress.css */
 
@@ -215,3 +264,54 @@ body {
   position: relative;
   z-index: 1;
 }
+
+
+/* Flying animation for mobile */
+@media (max-width: 639px) {
+  .mobile-flying-div {
+    position: fixed;
+    transform: translateY(150px);
+    opacity: 0;
+    animation: mobile_fly_to_cart 2s ease-out forwards;
+  }
+
+  @keyframes mobile_fly_to_cart {
+    0% {
+      left: 10%; /* starting position */
+      top: 50%;  /* starting position */
+      opacity: 1;
+    }
+    100% {
+      left: calc(100% - 60px); /* end position, near the cart */
+      top: calc(10%); /* end position, near the cart */
+      opacity: 0;
+      transform: scale(0.2);
+    }
+  }
+}
+
+/* Flying animation for larger screens */
+@media (min-width: 640px) {
+  .flying-div {
+    position: absolute;
+    opacity: 0;
+    top: 50%;
+    left: 30%;
+    animation: fly_to_cart 2s ease-out forwards;
+  }
+
+  @keyframes fly_to_cart {
+    0% {
+      left: 30%;
+      top: 50%;
+      opacity: 1;
+    }
+    100% {
+      left: calc(100% - 60px); /* end position, near the cart */
+      top: calc(20%); /* end position, near the cart */
+      opacity: 0;
+      transform: scale(0.2);
+    }
+  }
+}
+

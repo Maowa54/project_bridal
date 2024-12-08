@@ -7,7 +7,6 @@ import CustomSelect from "../../Component/Frontend/Checkout/CustomSelect";
 import { useNavigate } from "react-router-dom";
 import { CartContext } from "../../Component/Frontend/CartContext";
 import SocialMedia from "../../Component/Frontend/SocialMedia";
-import ScrollToTopButton from "../../Component/Frontend/ScrollToTopButton";
 import { ImSpinner10 } from "react-icons/im";
 
 const Order = () => {
@@ -97,7 +96,7 @@ const Order = () => {
 
       console.log(response);
       if (response.data.status) {
-        navigate("/thankyou");
+        navigate(`/thankyou/${response.data.data.id}`);
 
         // Reset form fields
         setName("");
@@ -133,7 +132,7 @@ const Order = () => {
   return (
     <div>
       <Navbar />
-      <ScrollToTopButton />
+      <SocialMedia />
 
       <div className=" mx-auto md:px-4 pt-8 md:pt-20 ">
         <div className="md:w-[90%] mx-auto">
@@ -388,7 +387,7 @@ const Order = () => {
                 
               </form>
               <div
-                className="gap-2 mx-auto  md:hidden fixed flex flex-col items-center justify-center bottom-0 w-full bg-gradient-to-t from-gray-50 to-white shadow-lg z-50 
+                className="gap-2 mx-auto  md:hidden fixed flex flex-col items-center justify-center bottom-0 w-full bg-gradient-to-t from-gray-50 to-white shadow-lg z-30 
        px-6 py-4"
               >
                 <p className="flex justify-between text-lg md:text-xl font-semibold ">

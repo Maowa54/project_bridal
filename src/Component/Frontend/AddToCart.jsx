@@ -28,8 +28,8 @@ const AddToCart = ({ onClose }) => {
       onClick={handleBackdropClick}
     >
       <div
-        className=" relative flex ms-auto flex-col md:w-96 h-screen bg-white shadow-lg "
-        onClick={(e) => e.stopPropagation()}
+        className=" relative flex ms-auto flex-col  bg-white shadow-lg "
+      
       >
         {/* Header */}
         <div className="p-4 flex absolute w-full justify-between items-center border-b bg-white shadow-md">
@@ -44,7 +44,7 @@ const AddToCart = ({ onClose }) => {
 
   {/* Close Button with Animation */}
   <button
-    onClick={onClose}
+    
     className="text-gray-600 hover:text-[#C43882] transition-transform duration-300 ease-in-out transform hover:scale-110"
   >
     <IoClose className="text-xl md:text-2xl" />
@@ -65,7 +65,7 @@ const AddToCart = ({ onClose }) => {
                 <div className="flex-1">
                   <p className="font-semibold text-gray-800 md:text-lg">{product.name}</p>
                   
-                  <p className="text-yellow-700 text-sm md:text-base ">৳{product.price}</p>
+                  <p className="text-yellow-700 text-sm md:text-base ">৳{product.unitrice}</p>
                   <div className="flex justify-between items-center">
                     <div className="flex items-center mt-1">
                       <button
