@@ -134,7 +134,7 @@ const Order = () => {
       <Navbar />
       <SocialMedia />
 
-      <div className=" mx-auto md:px-4 pt-8 md:pt-20 ">
+      <div className="container mx-auto  pt-8 md:pt-20 ">
         <div className="md:w-[90%] mx-auto">
           <div className="grid grid-cols-12 mt-5 space-y-5 lg:space-y-0 lg:space-x-4">
             {/* Responsive table */}

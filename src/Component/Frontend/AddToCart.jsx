@@ -1,4 +1,4 @@
-import { useContext,  } from "react";
+import { useEffect,useContext } from "react";
 import { Link } from "react-router-dom";
 import { CartContext } from "./CartContext";
 import { IoClose } from "react-icons/io5";
@@ -9,18 +9,27 @@ import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 const AddToCart = ({ onClose }) => {
   const {
     cart,
-   
+
     removeFromCart,
     updateCartItem,
     handleDecreaseQuantity,
     handleIncreaseQuantity,
   } = useContext(CartContext);
- 
+
   const handleBackdropClick = (e) => {
     if (e.target === e.currentTarget) {
       onClose();
     }
   };
+  useEffect(() => {
+    // Disable scrolling when cart opens
+    document.body.classList.add("overflow-hidden");
+
+    // Enable scrolling when cart closes
+    return () => {
+      document.body.classList.remove("overflow-hidden");
+    };
+  }, []);
 
   return (
     <div
@@ -28,29 +37,27 @@ const AddToCart = ({ onClose }) => {
       onClick={handleBackdropClick}
     >
       <div
-        className=" relative flex ms-auto flex-col  bg-white shadow-lg "
-      
+        className=" relative flex ml-auto flex-col w-full md:w-96 h-screen bg-white shadow-lg "
+        onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="p-4 flex absolute w-full justify-between items-center border-b bg-white shadow-md">
-  {/* Cart Header with Icon */}
-  <div className="flex items-center space-x-2">
-    
-    <span className="text-yellow-500 ">
-      <i className="fas fa-shopping-cart text-lg md:text-2xl"></i>
-    </span>
-    <h2 className="text-lg md:text-xl font-semibold">Your Cart</h2>
-  </div>
+        <div className="p-4 flex absolute w-full justify-between items-center border-b  shadow-md">
+          {/* Cart Header with Icon */}
+          <div className="flex items-center space-x-2">
+            <span className="text-yellow-500 ">
+              <i className="fas fa-shopping-cart text-lg md:text-2xl"></i>
+            </span>
+            <h2 className="text-lg md:text-xl font-semibold">Your Cart</h2>
+          </div>
 
-  {/* Close Button with Animation */}
-  <button
-    
-    className="text-gray-600 hover:text-[#C43882] transition-transform duration-300 ease-in-out transform hover:scale-110"
-  >
-    <IoClose className="text-xl md:text-2xl" />
-  </button>
-</div>
-
+          {/* Close Button with Animation */}
+          <button
+            onClick={onClose}
+            className="text-gray-600 hover:text-[#C43882] transition-transform duration-300 ease-in-out transform hover:scale-110"
+          >
+            <IoClose className="text-xl md:text-2xl" />
+          </button>
+        </div>
 
         {/* Scrollable Product List */}
         <div className="flex-1 p-4 mt-14 md:mt-16 overflow-y-auto">
@@ -63,9 +70,13 @@ const AddToCart = ({ onClose }) => {
                   className="size-16 md:size-20"
                 />
                 <div className="flex-1">
-                  <p className="font-semibold text-gray-800 md:text-lg">{product.name}</p>
-                  
-                  <p className="text-yellow-700 text-sm md:text-base ">৳{product.unitrice}</p>
+                  <p className="font-semibold text-gray-800 md:text-lg">
+                    {product.name}
+                  </p>
+
+                  <p className="text-yellow-700 text-sm md:text-base ">
+                    ৳{product.unitPrice}
+                  </p>
                   <div className="flex justify-between items-center">
                     <div className="flex items-center mt-1">
                       <button
@@ -75,7 +86,7 @@ const AddToCart = ({ onClose }) => {
                         -
                       </button>
                       <span className="size-5 md:size-6 text-sm md:text-base font-medium px-3 flex items-center justify-center border text-teal-700 border-teal-600">
-                      {product.quantity}
+                        {product.quantity}
                       </span>
                       <button
                         onClick={() => handleIncreaseQuantity(product.id)}
@@ -112,7 +123,10 @@ const AddToCart = ({ onClose }) => {
           >
             Check Out
             <span className="animate-icon ">
-              <MdKeyboardDoubleArrowRight  color="white" className="text-2xl md:text-3xl"/>
+              <MdKeyboardDoubleArrowRight
+                color="white"
+                className="text-2xl md:text-3xl"
+              />
             </span>
           </Link>
         </div>
