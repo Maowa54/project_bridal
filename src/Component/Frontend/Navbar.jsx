@@ -32,6 +32,19 @@ const Navbar = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (isMenuOpen || isCartOpen) {
+      document.body.classList.add("overflow-hidden"); // Disable background scroll
+    } else {
+      document.body.classList.remove("overflow-hidden"); // Enable background scroll
+    }
+
+    // Clean up when component unmounts
+    return () => {
+      document.body.classList.remove("overflow-hidden");
+    };
+  }, [isMenuOpen, isCartOpen]);
+
   const openMenuPanel = () => {
     setIsMenuOpen(true);
   };
@@ -71,18 +84,18 @@ const Navbar = () => {
   return (
     <div className="shadow">
       <div className=" mx-auto">
-        <nav className="lg:px-20 py-4 mx-auto transition-all duration-50 ease-in-out w-full bg-white fixed top-0 z-50 shadow">
+        <nav className="lg:px-24 px-4 py-4 mx-auto transition-all duration-50 ease-in-out w-full bg-white fixed top-0 z-50 shadow">
           <div className="flex flex-wrap items-center justify-between mx-auto">
             {/* Left Side Panel (Menu) */}
             <div className="text-center">
               <button
-                className="px-3 md:px-4 openbtn text-gray-800 text-lg md:text-2xl font-medium hover:text-gray-500 focus:outline-none"
+                className="openbtn text-gray-800 text-lg md:text-2xl font-medium hover:text-gray-500 focus:outline-none"
                 onClick={openMenuPanel}
               >
                 <img
                   src="/assets/Images/menus.png"
                   alt=""
-                  className="size-4 md:size-5 hover:scale-105"
+                  className="size-4 md:size-5"
                 />
               </button>
 
@@ -134,134 +147,116 @@ const Navbar = () => {
                 />
               </Link>
             </div>
-            {/* Right Side Panel (Cart) */}
-            <div className="flex flex-col items-center space-x-4">
-              <div className="relative ">
-                <div className="absolute bottom-4 md:bottom-5 left-7 md:left-8">
-                  <p className="flex size-2 items-center justify-center rounded-full bg-red-500 p-2 text-[0.7rem] md:text-sm text-white">
-                    {cartCount || 0}
-                  </p>
-                </div>
 
-                <button
-                  aria-label="View Cart"
-                  onClick={openCartPanel}
-                  className="text-black hover:text-gray-500 focus:outline-none px-4"
-                >
-                  <i className="bi bi-cart text-xl md:text-2xl"></i>
-                </button>
-              </div>
 
-              {/* Cart Side Panel (Slide-in from Right) */}
-              <div
-                ref={cartPanelRef}
-                className={`sidepanel flex flex-col justify-between fixed top-0 right-0 h-screen w-full md:w-96 bg-white shadow-xl transition-transform duration-500 ease-in-out overflow-hidden py-2 z-50 ${
-                  isCartOpen ? "translate-x-0" : "translate-x-full"
-                }`}
-                onClick={(e) => e.stopPropagation()}
-              >
-                {/* Header */}
-                <div className="p-4 flex absolute w-full justify-between items-center border-b bg-white ">
-                  {/* Cart Header with Icon */}
-                  <div className="flex items-center space-x-2">
-                    <span className="text-yellow-500 ">
-                      <i className="fas fa-shopping-cart text-lg md:text-2xl"></i>
-                    </span>
-                    <h2 className="text-lg md:text-xl font-semibold">
-                      Your Cart
-                    </h2>
-                  </div>
+           {/* Right Side Panel (Cart) */}
+<div className="flex flex-col items-center space-x-4 inset-0">
+  {/* Cart Icon with Counter */}
+  <div className="relative">
+    <div className="absolute bottom-4 md:bottom-5 left-3 md:left-4">
+      <p className="flex items-center justify-center size-4 md:size-5 rounded-full bg-red-500 text-xs md:text-sm text-white">
+        {cartCount || 0}
+      </p>
+    </div>
+    <button
+      aria-label="View Cart"
+      onClick={openCartPanel}
+      className="text-black hover:text-gray-500 focus:outline-none"
+    >
+      <i className="bi bi-cart text-xl md:text-2xl"></i>
+    </button>
+  </div>
 
-                  {/* Close Button with Animation */}
+  {/* Cart Side Panel */}
+  <div
+    ref={cartPanelRef}
+    className={`fixed  inset-0 h-screen w-full md:w-96 bg-white shadow-xl transition-transform duration-500 ease-in-out overflow-hidden py-2 z-50 "
+    }`}
+    onClick={(e) => e.stopPropagation()}
+  >
+    {/* Header */}
+    <div className="p-4 flex justify-between items-center border-b bg-white">
+      <div className="flex items-center space-x-2">
+        <i className="fas fa-shopping-cart text-yellow-500 text-lg md:text-2xl"></i>
+        <h2 className="text-lg md:text-xl font-semibold">Your Cart</h2>
+      </div>
+      <button
+        className="text-gray-600 hover:text-[#C43882] transform hover:scale-110 transition-transform duration-300"
+        onClick={closeCartPanel}
+      >
+        <IoClose className="text-xl md:text-2xl" />
+      </button>
+    </div>
+
+    {/* Product List */}
+    <div className="flex-1 p-4  overflow-y-auto">
+      <ul className="space-y-5">
+        {cart.map((product) => (
+          <li key={product.id} className="flex items-center space-x-6">
+            <img
+              src={`https://admin.attireidyll.com/public/storage/product/${product.image}`}
+              alt={product.name}
+              className="w-16 h-16 md:w-20 md:h-20"
+            />
+            <div className="flex-1">
+              <p className="font-semibold text-gray-800 md:text-lg">
+                {product.name}
+              </p>
+              <p className="text-yellow-700 text-sm md:text-base">
+                ৳{product.unitPrice}
+              </p>
+              <div className="flex justify-between items-center mt-1">
+                <div className="flex items-center">
                   <button
-                    className="text-gray-600 hover:text-[#C43882] transition-transform duration-300 ease-in-out transform hover:scale-110"
-                    onClick={closeCartPanel}
+                    onClick={() => handleDecreaseQuantity(product.id)}
+                    className="w-6 h-6 text-sm md:text-base font-semibold bg-teal-600 text-white rounded-l flex items-center justify-center hover:bg-teal-700"
                   >
-                    <IoClose className="text-xl md:text-2xl" />
+                    -
+                  </button>
+                  <span className="w-6 h-6 text-sm md:text-base font-medium flex items-center justify-center border border-teal-600 text-teal-700">
+                    {product.quantity}
+                  </span>
+                  <button
+                    onClick={() => handleIncreaseQuantity(product.id)}
+                    className="w-6 h-6 text-sm md:text-base font-semibold bg-teal-600 text-white rounded-r flex items-center justify-center hover:bg-teal-700"
+                  >
+                    +
                   </button>
                 </div>
-
-                {/* Scrollable Product List */}
-                <div className="flex-1 p-4 mt-14 md:mt-16 overflow-y-auto">
-                  <ul className="space-y-5">
-                    {cart.map((product) => (
-                      <li
-                        key={product.id}
-                        className="flex items-center space-x-6"
-                      >
-                        <img
-                          src={`https://admin.attireidyll.com/public/storage/product/${product.image}`}
-                          alt={product.title}
-                          className="size-16 md:size-20"
-                        />
-                        <div className="flex-1">
-                          <p className="font-semibold text-gray-800 md:text-lg">
-                            {product.name}
-                          </p>
-                          <p className="text-yellow-700 text-sm md:text-base">
-                            ৳{product.unitPrice}
-                          </p>
-                          <div className="flex justify-between items-center">
-                            <div className="flex items-center mt-1">
-                              <button
-                                onClick={() =>
-                                  handleDecreaseQuantity(product.id)
-                                }
-                                className="size-5 md:size-6 rounded-l px-3 text-sm md:text-base font-semibold bg-teal-600 text-white hover:bg-teal-600 flex items-center justify-center"
-                              >
-                                -
-                              </button>
-                              <span className="size-5 md:size-6 text-sm md:text-base font-medium px-3 flex items-center justify-center border text-teal-700 border-teal-600">
-                                {product.quantity}
-                              </span>
-                              <button
-                                onClick={() =>
-                                  handleIncreaseQuantity(product.id)
-                                }
-                                className="size-5 md:size-6 rounded-r text-sm md:text-base font-semibold bg-teal-600 text-white hover:bg-teal-600 flex items-center justify-center"
-                              >
-                                +
-                              </button>
-                            </div>
-                            <button
-                              className="text-red-500 hover:text-red-700"
-                              onClick={() => removeFromCart(product.id)}
-                            >
-                              <RiDeleteBin6Line className="text-lg md:text-xl" />
-                            </button>
-                          </div>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Footer (Fixed at the bottom of the panel) */}
-                <div className="border-t p-4 bg-white shadow-lg sticky bottom-0 w-full">
-                  <div className="flex items-center justify-between">
-                    <p className="md:text-xl text-lg font-semibold">
-                      Subtotal:
-                    </p>
-                    <p className="md:text-xl text-lg font-semibold">
-                      ৳ {cart.reduce((acc, product) => acc + product.price, 0)}
-                    </p>
-                  </div>
-                  <Link
-                    onClick={closeCartPanel}
-                    to="/checkout"
-                    className="mt-4 text-center font-semibold py-3 rounded-md bg-gradient-to-r from-teal-500 to-teal-800 border border-teal-200 text-white flex gap-3 justify-center items-center text-lg md:text-xl"
-                  >
-                    Check Out
-                    <span className="animate-icon">
-                      <MdKeyboardDoubleArrowRight
-                        color="white"
-                        className="text-2xl md:text-3xl"
-                      />
-                    </span>
-                  </Link>
-                </div>
+                <button
+                  className="text-red-500 hover:text-red-700"
+                  onClick={() => removeFromCart(product.id)}
+                >
+                  <RiDeleteBin6Line className="text-lg md:text-xl" />
+                </button>
               </div>
             </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    {/* Footer */}
+    <div className="border-t p-4 bg-white shadow-lg fixed bottom-0 w-full">
+      <div className="flex items-center justify-between">
+        <p className="text-lg md:text-xl font-semibold">Subtotal:</p>
+        <p className="text-lg md:text-xl font-semibold">
+          ৳ {cart.reduce((acc, product) => acc + product.price, 0)}
+        </p>
+      </div>
+      <Link
+    onClick={closeCartPanel}
+    to="/checkout"
+    className="mt-4 text-center font-semibold py-3 rounded-md bg-gradient-to-r from-teal-500 to-teal-800 border border-teal-200 text-white flex items-center justify-center gap-3 text-lg md:text-xl"
+    style={{ marginBottom: "env(safe-area-inset-bottom)" }} // Ensures space for mobile safe area
+  >
+    Check Out
+    <MdKeyboardDoubleArrowRight className="text-2xl md:text-3xl" />
+  </Link>
+    </div>
+  </div>
+</div>
+
           </div>
         </nav>
       </div>
