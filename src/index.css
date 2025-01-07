@@ -352,3 +352,42 @@ body {
   from { transform: translateX(20%); opacity: 0; }
   to { transform: translateX(0); opacity: 1; }
 }
+
+
+
+/* Custom scrollbar for category list */
+.scrollbar-custom {
+  overflow-y: auto; /* Enable vertical scrolling */
+  max-height: 3rem; /* Set a maximum height for the scrollable area */
+}
+
+/* Custom scrollbar styles for WebKit browsers (Chrome, Safari, Edge) */
+.scrollbar-custom::-webkit-scrollbar {
+  width: 3px; /* Set a very thin scrollbar width */
+}
+
+
+
+/* Custom scrollbar styles for Firefox */
+.scrollbar-customize {
+  scrollbar-width: thin; /* Thin scrollbar */
+}
+
+
+/* Custom scrollbar for category list */
+.scrollbar-customize {
+  overflow-y: auto; /* Enable vertical scrolling */
+  max-height: 20rem; /* Set a maximum height for the scrollable area */
+}
+
+/* Custom scrollbar styles for WebKit browsers (Chrome, Safari, Edge) */
+.scrollbar-customize::-webkit-scrollbar {
+  width: 3px; /* Set a very thin scrollbar width */
+}
+
+
+
+/* Custom scrollbar styles for Firefox */
+.scrollbar-customize {
+  scrollbar-width: thin; /* Thin scrollbar */
+}

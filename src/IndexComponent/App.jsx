@@ -150,7 +150,7 @@ function App() {
                           <IoIosNotifications size={30} />
                         </button>
                       </header>
-                      <main className="pt-16 p-4">
+                      <main className="pt-16 px-4">
                         <MainContent userInfo={userInfo} error={error} />
                       </main>
                     </div>

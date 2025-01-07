@@ -2,8 +2,8 @@ import React from 'react';
 
 const Footer_Backend = () => {
   return (
-    <footer className='w-full bottom-0  '>
-      <div className=" font-medium mt-6 rounded bg-teal-500 text-white text-sm md:text-base px-4 py-2 flex flex-col md:flex-row justify-between items-center gap-2">
+    <footer className='w-full '>
+      <div className=" font-medium mt-6 rounded bg-[#18D4AB] text-white text-sm md:text-base px-4 py-2 flex flex-col md:flex-row justify-between items-center gap-2">
         <a href="https://expressitbd.net/" target="_blank" rel="noopener noreferrer" className="text-center md:text-left">
           <p className="text-sm md:text-base ">
             Designed and developed by{" "}

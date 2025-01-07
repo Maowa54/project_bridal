@@ -478,7 +478,7 @@ const EditProduct = () => {
     }
     try {
       const response = await axios.post(
-        "https://admin.glorebd.com/api/product/update",
+        "https://admin.attireidyll.com/api/product/update",
         formData,
         {
           headers: {
@@ -542,7 +542,7 @@ const EditProduct = () => {
     const fetchVariation = async () => {
       try {
         const response = await axios.get(
-          `https://admin.glorebd.com/api/product/variation/values`,
+          `https://admin.attireidyll.com/api/product/variation/values`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
