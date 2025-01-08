@@ -1,274 +1,70 @@
-import React, { useEffect, useState } from "react";
-import ReactApexChart from "react-apexcharts";
+import { useEffect, useState } from "react";
 import userr from "../../../assets/file.png";
-import { PieChart, Pie, Cell, Rectangle } from "recharts";
-import { FaTruck, FaUser, FaCloudSun } from "react-icons/fa"; // Import desired icons
-
-const RADIAN = Math.PI / 180;
-
-// Sales Performance
+import Footer_Backend from "../../Component/Backend/Footer_Backend";
+import { Link } from "react-router-dom";
 import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
+  FaCheck,
+  FaClock,
+  FaCloudSun,
+  FaEye,
+  FaRegEdit,
+  FaShoppingCart,
+  FaTruck,
+  FaUndo,
+  FaArrowDown,
+  FaTimesCircle,
+  FaDollarSign,
+  FaCreditCard,
+  FaCalendarAlt,
+  FaChartBar,
+  FaChartLine,
+  FaCashRegister,
+  FaCheckCircle,
+  FaUsers,
+  FaEnvelope,
+  FaFolder,
+  FaTimes,
+  FaCalendar,
+} from "react-icons/fa";
+
+import axios from "axios";
+import { Doughnut, Line } from "react-chartjs-2"; // Combined imports for charts
+import {
+  Chart as ChartJS,
+  ArcElement,
   Tooltip,
   Legend,
-  ResponsiveContainer,
-} from "recharts";
-import axios from "axios";
+  LineElement,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  Title,
+} from "chart.js";
+import { MdDeleteForever } from "react-icons/md";
+import { CiMenuKebab } from "react-icons/ci";
 
-const yearlyData = [
-  { name: "Jan", Target: 12000, Achieved: 10400 },
-  { name: "Feb", Target: 11000, Achieved: 9000 },
-  { name: "Mar", Target: 14000, Achieved: 12000 },
-  { name: "Apr", Target: 15000, Achieved: 12500 },
-  { name: "May", Target: 16000, Achieved: 13000 },
-  { name: "Jun", Target: 17000, Achieved: 14000 },
-  { name: "Jul", Target: 18000, Achieved: 15000 },
-  { name: "Aug", Target: 19000, Achieved: 16000 },
-  { name: "Sep", Target: 20000, Achieved: 17000 },
-  { name: "Oct", Target: 21000, Achieved: 18000 },
-  { name: "Nov", Target: 22000, Achieved: 19000 },
-  { name: "Dec", Target: 23000, Achieved: 20000 },
-];
-// Employee data
-const employees = [
-  {
-    name: "Employee Name",
-    sales: "10000 ৳",
-    image: "https://via.placeholder.com/50",
-  },
-  {
-    name: "Employee Name",
-    sales: "10000 ৳",
-    image: "https://via.placeholder.com/50",
-  },
-  {
-    name: "Employee Name",
-    sales: "10000 ৳",
-    image: "https://via.placeholder.com/50",
-  },
-  {
-    name: "Employee Name",
-    sales: "10000 ৳",
-    image: "https://via.placeholder.com/50",
-  },
-  {
-    name: "Employee Name",
-    sales: "10000 ৳",
-    image: "https://via.placeholder.com/50",
-  },
-];
-
-// .......................
+// Register all required ChartJS components once
+ChartJS.register(
+  ArcElement,
+  Tooltip,
+  Legend,
+  LineElement,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  Title
+);
 
 const Dashboard = () => {
   const token = localStorage.getItem("token");
   const clientId = localStorage.getItem("clientId");
-  const [isLoading, setIsLoading] = useState(false);
 
-  const [chartData] = useState({
-    options: {
-      chart: {
-        type: "radialBar",
-      },
-      plotOptions: {
-        radialBar: {
-          hollow: {
-            size: "60%",
-          },
-        },
-      },
-      labels: ["Sales"],
-    },
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedValue, setSelectedValue] = useState("Last 7 Days"); // Default value
 
-    series: [52],
-  });
-
-
-
-  // Most Sold Items
-
-  const items = [
-    { name: "Jeans", percentage: 70 },
-    { name: "Shirts", percentage: 40 },
-    { name: "Belts", percentage: 60 },
-    { name: "Caps", percentage: 80 },
-    { name: "Others", percentage: 20 },
-  ];
-
-  const targetAmount = 10500;
-  const [amount, setAmount] = useState(0); // Starting from 0
-  const incrementValue = 500; // Smaller increment for smoother counting
-  const intervalTime = 10; // Interval time in milliseconds (0.01 seconds)
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setAmount((prevAmount) => {
-        // If the target amount is reached, stop incrementing
-        if (prevAmount >= targetAmount) {
-          clearInterval(timer);
-          return targetAmount;
-        }
-        // Otherwise, increment smoothly
-        return Math.min(prevAmount + incrementValue, targetAmount);
-      });
-    }, intervalTime);
-
-    // Clear the timer when the component is unmounted
-    return () => clearInterval(timer);
-  }, []);
-  // Latest Orders
-  const employees = [
-    {
-      name: "Employee Name",
-      sales: "10000",
-      image: "https://via.placeholder.com/50",
-      orderId: "#11232",
-      date: "Jun 29,2022",
-      customerName: "Obaydul Kader",
-      status: "Delivered",
-    },
-    {
-      name: "Employee Name",
-      sales: "10000",
-      image: "https://via.placeholder.com/50",
-      orderId: "#11232",
-      date: "Jun 29,2022",
-      customerName: "Obaydul Kader",
-      status: "Delivered",
-    },
-    {
-      name: "Employee Name",
-      sales: "10000",
-      image: "https://via.placeholder.com/50",
-      orderId: "#11232",
-      date: "Jun 29,2022",
-      customerName: "Obaydul Kader",
-      status: "Delivered",
-    },
-    {
-      name: "Employee Name",
-      sales: "10000",
-      image: "https://via.placeholder.com/50",
-      orderId: "#11232",
-      date: "Jun 29,2022",
-      customerName: "Obaydul Kader",
-      status: "Delivered",
-    },
-    {
-      name: "Employee Name",
-      sales: "10000",
-      image: "https://via.placeholder.com/50",
-      orderId: "#11232",
-      date: "Jun 29,2022",
-      customerName: "Obaydul Kader",
-      status: "Delivered",
-    },
-  ];
-
-  // Low Stock
-  const notice = [
-    {
-      title: "Upcoming....",
-      status: "Unread",
-      image: "assets/notice.png",
-    },
-    {
-      title: "Upcoming....",
-      status: "Unread",
-      image: "assets/notice.png",
-    },
-    {
-      title: "Upcoming....",
-      status: "Unread",
-      image: "assets/notice.png",
-    },
-    {
-      title: "Upcoming....",
-      status: "Unread",
-      image: "assets/notice.png",
-    },
-    {
-      title: "Upcoming....",
-      status: "Unread",
-      image: "assets/notice.png",
-    },
-  ];
-
- 
-
-  // Sales By Traffic Source
-  const source = [
-    {
-      title: "Direct",
-      status: "Upcoming Sales",
-      image: "assets/Direct.png",
-    },
-    {
-      title: "Search",
-      status: "Upcoming Sales",
-      image: "assets/Search.png",
-    },
-    {
-      title: "Social",
-      status: "Upcoming Sales",
-      image: "assets/Social.png",
-    },
-    {
-      title: "Referrals",
-      status: "Upcoming Sales",
-      image: "assets/Raferral.png",
-    },
-  ];
-
-  // Delivery Report
-  const [value, setValue] = useState(70); // Set the initial filled value
-
-  // Calculate data based on the state value
-  const data = [
-    { name: "Filled", value: value, color: "#32A386" }, // Red color for filled portion
-    { name: "Empty", value: 100 - value, color: "#f0f0f0" }, // Gray color for empty portion
-  ];
-
-  const cx = 130;
-  const cy = 100;
-  const iR = 50;
-  const oR = 90;
-
-  const needle = (value, cx, cy, iR, oR, color) => {
-    const length = (iR + 2 * oR) / 3;
-    const ang = 180.0 * (1 - value / 100);
-    const sin = Math.sin(-RADIAN * ang);
-    const cos = Math.cos(-RADIAN * ang);
-    const r = 5;
-    const x0 = cx + 5;
-    const y0 = cy + 5;
-    const xba = x0 + r * sin;
-    const yba = y0 - r * cos;
-    const xbb = x0 - r * sin;
-    const ybb = y0 + r * cos;
-    const xp = x0 + length * cos;
-    const yp = y0 + length * sin;
-
-    return [
-      <circle
-        key="needle-circle"
-        cx={x0}
-        cy={y0}
-        r={r}
-        fill={color}
-        stroke="none"
-      />,
-      <path
-        key="needle-path"
-        d={`M${xba} ${yba}L${xbb} ${ybb} L${xp} ${yp} L${xba} ${yba}`}
-        stroke="none"
-        fill={color}
-      />,
-    ];
+  const handleOptionClick = (value) => {
+    setSelectedValue(value); // Update the selected value
+    setIsOpen(false); // Close the dropdown
   };
 
   const [currentDate, setCurrentDate] = useState("");
@@ -281,11 +77,9 @@ const Dashboard = () => {
         timeZone: "Asia/Dhaka",
         day: "2-digit",
         month: "2-digit",
-        year: "numeric"
+        year: "numeric",
       }).format(new Date());
-      
-     
-      
+
       setCurrentDate(dhakaDate);
 
       // Get the current hour in Dhaka time
@@ -297,13 +91,13 @@ const Dashboard = () => {
 
       // Set the greeting based on the current hour
       if (currentHour < 5) {
-        setGreeting("Good Morning");
+        setGreeting("Good Morning!");
       } else if (currentHour < 17) {
-        setGreeting("Good Noon");
+        setGreeting("Good Noon!");
       } else if (currentHour < 22) {
-        setGreeting("Good Evening");
+        setGreeting("Good Evening!");
       } else {
-        setGreeting("Good Night");
+        setGreeting("Good Night!");
       }
     };
 
@@ -336,6 +130,64 @@ const Dashboard = () => {
     return () => clearInterval(intervalId); // Clean up on component unmount
   }, []);
 
+  const [pageSize, setPageSize] = useState(10); // Default page size
+
+  const [displayOrders, setDisplayOrders] = useState([]);
+  const [filteredOrders, setFilteredOrders] = useState([]);
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      const localStorageKey = "orders";
+      const cachedData = localStorage.getItem(localStorageKey);
+      const now = Date.now();
+
+      if (cachedData) {
+        const { timestamp, orders } = JSON.parse(cachedData);
+        if (now - timestamp < 2 * 60 * 1000) {
+          // Use cached data
+          setDisplayOrders(orders);
+          setFilteredOrders(orders);
+          return;
+        }
+      }
+
+      try {
+        setIsLoading(true);
+        const response = await axios.get(
+          `https://admin.attireidyll.com/api/online/orders/get`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response.data.status) {
+          const orders = response.data.data.data;
+          setDisplayOrders(orders);
+          setFilteredOrders(orders);
+
+          localStorage.setItem(
+            localStorageKey,
+            JSON.stringify({ timestamp: now, orders })
+          );
+        } else {
+          console.error("Failed to fetch orders:", response.data.message);
+        }
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      } finally {
+        setIsLoading(false); // End loading
+      }
+    };
+
+    fetchOrders();
+  }, [token]);
+
+  console.log(displayOrders);
+
   function formatDate(dateString) {
     const date = new Date(dateString);
     const day = String(date.getDate()).padStart(2, "0");
@@ -343,7 +195,20 @@ const Dashboard = () => {
     const year = date.getFullYear();
     return `${month}-${day}-${year}`;
   }
-  // Stock Get
+
+  function formatTime(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+  }
+
+  // Slice the orders array based on pageSize
+  const orders = filteredOrders.slice(0, pageSize);
+
+  console.log(orders);
 
   const [getStock, setGetStock] = useState([]);
 
@@ -438,8 +303,6 @@ const Dashboard = () => {
 
       const products = response.data?.data.data || [];
 
-     
-
       setGetStock(products);
     } catch (error) {
       console.error(
@@ -453,64 +316,11 @@ const Dashboard = () => {
     fetchProducts();
   }, [token, clientId]);
 
-  console.log(getStock)
+  console.log(getStock);
 
   // get order
 
-  const [orders, setOrders] = useState([]);
-
-  useEffect(() => {
-    const fetchOrders = async () => {
-      const localStorageKey = `orders_${clientId}`;
-      const cachedData = localStorage.getItem(localStorageKey);
-      const now = Date.now();
-
-      if (cachedData) {
-        const { timestamp, orders } = JSON.parse(cachedData);
-        if (now - timestamp < 2 * 60 * 1000) {
-          // Use cached data
-          setOrders(orders);
-
-          return;
-        }
-      }
-
-      try {
-        setIsLoading(true);
-        const response = await axios.get(
-          `https://admin.attireidyll.com/api/orders/all/get`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        if (response.data.status) {
-          const orders = response.data.data.data;
-          setOrders(orders);
-
-          localStorage.setItem(
-            localStorageKey,
-            JSON.stringify({ timestamp: now, orders })
-          );
-        } else {
-          console.error("Failed to fetch orders:", response.data.message);
-        }
-      } catch (error) {
-        console.error("Error fetching orders:", error);
-      } finally {
-        setIsLoading(false); // End loading
-      }
-    };
-
-    fetchOrders();
-  }, [clientId, token]);
-
-  console.log(orders)
-  const [mostSoldCategories, setMostSoldCategories] = useState([]);
-  const [courierCounts, setCourierCounts] = useState([]);
-  const [salesBySource, setSalesBySource] = useState([]);
+  console.log(orders);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -521,8 +331,13 @@ const Dashboard = () => {
         const cacheExpiryTime = 1 * 60 * 1000; // Cache expiry time: 5 minutes
 
         // Check if cached data is available and not expired
-        if (cachedData && cacheTimestamp && Date.now() - cacheTimestamp < cacheExpiryTime) {
-          const { mostSoldCategories, courierCounts, salesBySource } = JSON.parse(cachedData);
+        if (
+          cachedData &&
+          cacheTimestamp &&
+          Date.now() - cacheTimestamp < cacheExpiryTime
+        ) {
+          const { mostSoldCategories, courierCounts, salesBySource } =
+            JSON.parse(cachedData);
           setMostSoldCategories(mostSoldCategories);
           setCourierCounts(courierCounts);
           setSalesBySource(salesBySource);
@@ -539,13 +354,18 @@ const Dashboard = () => {
           );
 
           // Destructure and store the data
-          const { mostSoldCategories, courierCounts, salesBySource } = response.data.data;
+          const { mostSoldCategories, courierCounts, salesBySource } =
+            response.data.data;
           setMostSoldCategories(mostSoldCategories);
           setCourierCounts(courierCounts);
           setSalesBySource(salesBySource);
 
           // Save the new data to localStorage
-          const newCacheData = { mostSoldCategories, courierCounts, salesBySource };
+          const newCacheData = {
+            mostSoldCategories,
+            courierCounts,
+            salesBySource,
+          };
           localStorage.setItem(cacheKey, JSON.stringify(newCacheData));
           localStorage.setItem(`${cacheKey}_timestamp`, Date.now());
           console.log("Fetched new data and updated cache");
@@ -557,36 +377,6 @@ const Dashboard = () => {
 
     fetchData();
   }, [clientId, token]);
-  const sourceImages = {
-    facebook: "assets/facebook.png",
-    instagram: "assets/insta.jpg",
-    phone_call: "assets/phone.png",
-  };
-  const getCourierIcon = (courierName) => {
-    switch (courierName) {
-      case "steadfast":
-        return (
-          <img src="/assets/Stadefast.png" alt="Pathao" className="w-6 h-6" />
-        );
-      case "redx":
-        return <img src="/assets/redex.png" alt="Pathao" className="w-6 h-6" />;
-      case "office-delivery":
-        return <img src="/assets/officelogo.png" alt="Pathao" className="w-6 h-6" />;
-      case "SA-paribahan":
-        return (
-          <img src="/assets/sa-poribohon.jpg" alt="SA-Poribohon" className="w-6 h-6" />
-        );
-      case "sundarban":
-        return (
-          <img src="/assets/sunderban.jpg" alt="Pathao" className="w-6 h-6" />
-        );
-      case "Another Courier":
-        return <FaUser className="w-6 h-6" />; // Example icon for another courier
-      // Add more cases as needed
-      default:
-        return <FaUser className="w-6 h-6" />; // Fallback icon
-    }
-  };
 
   const [users, setUsers] = useState([]);
 
@@ -614,707 +404,632 @@ const Dashboard = () => {
   }, [token]);
   console.log(users);
 
-  const initialChartSeries = mostSoldCategories
-  ? mostSoldCategories.map((item) => item.total_sales)
-  : [];
-
-const initialTotal = initialChartSeries.reduce((a, b) => a + b, 0);
-
-const [chartSeries, setChartSeries] = useState(initialChartSeries);
-// Static color array (you can customize this as needed)
-const staticColors = [
-  "#FF5733", "#33FF57", "#3357FF", "#F8D800", "#8E44AD", "#FF8C00", "#1F77B4", "#FF6F61",
-  "#76D7C4", "#F39C12", "#C0392B", "#9B59B6"
-];
-const [chartOptions, setChartOptions] = useState({
-  chart: {
-    type: "donut",
-  },
-  labels: mostSoldCategories
-    ? mostSoldCategories.map((item) => item.category_name)
-    : [],
-  colors: mostSoldCategories
-    ? mostSoldCategories.map((_, index) => staticColors[index % staticColors.length])
-    : [],
-  responsive: [
+  const cards = [
     {
-      breakpoint: 480,
-      options: {
-        chart: {
-          width: 100,
-        },
-        legend: {
-          position: "bottom",
-        },
-      },
+      icon: FaArrowDown,
+      value: "0",
+      label: "Picked Up Orders",
+      textColor: "text-blue-800",
+      iconBg: "bg-blue-100",
     },
-  ],
-  legend: {
-    show: false, // Disable the default legend
-  },
-  plotOptions: {
-    pie: {
-      donut: {
-        labels: {
-          show: true,
-          total: {
-            show: true,
-            label: "Total",
-            formatter: () => initialTotal, // Show initial total dynamically
-          },
-        },
-      },
+    {
+      icon: FaTimes,
+      value: "2",
+      label: "Cancelled Orders",
+      textColor: "text-orange-800",
+      iconBg: "bg-orange-100",
     },
-  },
-  dataLabels: {
-    enabled: false, // Disable the percentage values
-  },
-});
+    {
+      icon: FaTruck,
+      value: "1",
+      label: "Out For Delivery",
+      textColor: "text-yellow-800",
+      iconBg: "bg-yellow-100",
+    },
+    {
+      icon: FaDollarSign,
+      value: "62",
+      label: "Paid Orders",
+      textColor: "text-green-800",
+      iconBg: "bg-green-100",
+    },
+    {
+      icon: FaCreditCard,
+      value: "134",
+      label: "Unpaid Orders",
+      textColor: "text-blue-800",
+      iconBg: "bg-blue-100",
+    },
+    {
+      icon: FaCalendarAlt,
+      value: "৳0.00",
+      label: "Today's Earning",
+      textColor: "text-orange-800",
+      iconBg: "bg-orange-100",
+    },
+    {
+      icon: FaChartBar,
+      value: "৳0.00",
+      label: "Today's Pending Earning",
+      textColor: "text-yellow-800",
+      iconBg: "bg-yellow-100",
+    },
+    {
+      icon: FaChartLine,
+      value: "৳0.00",
+      label: "This Year Earning",
+      textColor: "text-green-800",
+      iconBg: "bg-green-100",
+    },
+    {
+      icon: FaCalendar,
+      value: "543",
+      label: "Today's Product Sale",
+      textColor: "text-orange-800",
+      iconBg: "bg-orange-100",
+    },
 
+    {
+      icon: FaCashRegister,
+      value: "৳4,226,702.93",
+      label: "Total Earning",
+      textColor: "text-blue-800",
+      iconBg: "bg-blue-100",
+    },
+    {
+      icon: FaShoppingCart,
+      value: "543",
+      label: "Total Product Sale",
+      textColor: "text-orange-800",
+      iconBg: "bg-orange-100",
+    },
+    {
+      icon: FaCheckCircle,
+      value: "0",
+      label: "This Month's Product Sale",
+      textColor: "text-green-800",
+      iconBg: "bg-green-100",
+    },
+    {
+      icon: FaChartBar,
+      value: "0",
+      label: "This Year's Product Sale",
+      textColor: "text-blue-800",
+      iconBg: "bg-blue-100",
+    },
+    {
+      icon: FaUsers,
+      value: "101",
+      label: "Total Customers",
+      textColor: "text-orange-800",
+      iconBg: "bg-orange-100",
+    },
+    {
+      icon: FaEnvelope,
+      value: "35",
+      label: "Total Subscribers",
+      textColor: "text-yellow-800",
+      iconBg: "bg-yellow-100",
+    },
+    {
+      icon: FaFolder,
+      value: "14",
+      label: "Total Categories",
+      textColor: "text-green-800",
+      iconBg: "bg-green-100",
+    },
+  ];
 
-const [categoryCount, setCategoryCount] = useState(
-  mostSoldCategories ? mostSoldCategories.length : 0
-);
-
-
-
-// Update chart data dynamically when `mostSoldCategories` changes
-useEffect(() => {
-  if (mostSoldCategories && mostSoldCategories.length > 0) {
-    // Map the categories to static colors (cycle through staticColors array if needed)
-    const assignedColors = mostSoldCategories.map((_, index) => staticColors[index % staticColors.length]);
-
-    const updatedSeries = mostSoldCategories.map((item) => item.total_sales);
-    const updatedTotal = updatedSeries.reduce((a, b) => a + b, 0);
-
-    setChartOptions((prevOptions) => ({
-      ...prevOptions,
-      labels: mostSoldCategories.map((item) => item.category_name),
-      colors: assignedColors, // Use fixed colors
-      plotOptions: {
-        ...prevOptions.plotOptions,
-        pie: {
-          ...prevOptions.plotOptions.pie,
-          donut: {
-            ...prevOptions.plotOptions.pie.donut,
-            labels: {
-              ...prevOptions.plotOptions.pie.donut.labels,
-              total: {
-                show: true,
-                label: "Total",
-                formatter: () => updatedTotal, // Update total dynamically
-              },
-            },
-          },
-        },
-      },
-    }));
-
-    setChartSeries(updatedSeries);
-    setCategoryCount(mostSoldCategories.length); // Update the count
-  }
-}, [mostSoldCategories]);
-
-
-  
-
-
-  console.log(chartSeries)
-  console.log(chartOptions.labels)
   return (
-    <div>
+    <div className="">
       {/* header */}
 
       <div className=" relative">
-        <div className="bg-sky-400 text-white mb-4 shadow-md flex flex-col md:flex-row md:justify-between  items-center rounded-md min-w-[320px] w-full">
+        <div className="bg-[#18D4AB] text-white mb-4 shadow-md flex flex-col md:flex-row md:justify-between  items-center rounded-md min-w-[320px] w-full">
           <div className="flex items-center p-3">
-            <div className="flex flex-col justify-center items-center space-y-1">
-              <FaCloudSun size={25} />
-              <h1>Partly Cloudly</h1>
+            <div className="hidden md:flex flex-col justify-center items-center space-y-1">
+              <FaCloudSun size={25} className="text-yellow-400" />
+              <h1 className="font-medium">Partly Cloudly</h1>
             </div>
-            <div className="border-l-2 border-dashed h-16 mx-4"></div>
+            <div className="md:border-l-2 border-dashed h-16 md:mx-4"></div>
             <div className="ml-5">
-              <h1>{currentDate}</h1>
+              <h1 className="font-semibold">{currentDate}</h1>
               <div className="md:flex md:flex-col  lg:block">
-                <big className="text-2xl font-semibold">{greeting}</big>
-                <small className=" mx-2">
+                <big className="text-lg md:text-2xl font-semibold">
+                  {greeting}
+                </big>
+                <small className="font-medium mx-2">
                   Here's What Happening in your store today!
                 </small>
               </div>
             </div>
           </div>
 
-          <div className="flex items-center mb-2flex-row">
+          <div className="flex items-center mb-2 flex-row">
             <div className="md:absolute static right-20 bottom-2 ">
-              <img src={userr} className="w-32" alt="" />
+              <img src={userr} className="w-16 md:w-32" alt="" />
             </div>
             <div className="mt-2 mr-2">
               <h1>Every Time</h1>
-              <h1 className="font-semibold md:text-xl text-xs">{currentTime}</h1>
+              <h1 className="font-semibold md:text-xl text-xs">
+                {currentTime}
+              </h1>
             </div>
           </div>
         </div>
       </div>
 
-      <div>
-        <div className="grid  font-semibold grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-5 md:ml-0">
-          <div className="card  custom-shadow">
-            <div className=" ">
-              <h2 className="card-title px-5 py-1 ">Todays Sale</h2>
-              <div className=" flex px-5 items-center justify-between">
-                <h2 className=" text-2xl whitespace-nowrap flex items-center gap-3">
-                  {Math.floor(counts.todaySell)}
-                  <span className="text-xl"> ৳</span>
-                </h2>
+      <div className="mt-2">
+        <div className="grid font-semibold grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-5">
+          {[
+            {
+              title: "Sales Today",
+              count: Math.floor(counts.todaySell),
+              unit: "৳",
+              icon: "fa-solid fa-chart-line",
+            },
 
-                {/* <ReactApexChart
-                  options={chartData.options}
-                  series={chartData.series}
-                  type="radialBar"
-                  height={150}
-                /> */}
+            {
+              title: "Total Sales",
+              count: Math.floor(counts.totalSell),
+              unit: "৳",
+              dropdown: true,
+            },
+            {
+              title: "Top 5 Category Sales",
+              count: Math.floor(counts.this_month_sell),
+              unit: "",
+              pieChartData: {
+                labels: ["Bridal", "Woman", "Kids", "Family ", "Man "],
+                datasets: [
+                  {
+                    data: [30, 25, 20, 15, 10], // Replace with your actual data
+                    backgroundColor: [
+                      "#FF5733",
+                      "#33FF57",
+                      "#3357FF",
+                      "#FF33A1",
+                      "#FFDA33",
+                    ],
+                  },
+                ],
+              },
+            },
+            {
+              title: "Total Orders",
+              count: Math.floor(counts.todays_orders),
+              unit: "",
+              icon: "fa-solid fa-box",
+            },
+          ].map((card, index) => (
+            <div
+              key={index}
+              className="card border shadow transform rounded overflow-hidden flex flex-col"
+            >
+              <div className="px-5 py-4 flex-grow">
+                <div className="flex text-nowrap justify-between items-center">
+                  <p className="card-title text-gray-500 text-sm md:text-base">
+                    {card.title}
+                  </p>
+
+                  {card.dropdown ? (
+                    <div className="relative inline-block">
+                      <button
+                        className="flex items-center justify-between text-nowrap bg-white text-gray-500 text-xs rounded px-3  cursor-pointer"
+                        onClick={() => setIsOpen(!isOpen)}
+                      >
+                        {selectedValue}
+                        <i
+                          className={`ml-2 fas ${
+                            isOpen ? "fa-chevron-up" : "fa-chevron-down"
+                          } transition-transform`}
+                        ></i>
+                      </button>
+
+                      {isOpen && (
+                        <ul className="absolute mt-2 bg-white text-nowrap rounded shadow-md text-gray-500 text-xs w-auto">
+                          <li
+                            className="px-4 py-2 cursor-pointer hover:text-teal-600"
+                            onClick={() => handleOptionClick("Last 7 Days")}
+                          >
+                            Last 7 Days
+                          </li>
+                          <li
+                            className="px-4 py-2 cursor-pointer hover:text-teal-600"
+                            onClick={() => handleOptionClick("Last 30 Days")}
+                          >
+                            Last 30 Days
+                          </li>
+                          <li
+                            className="px-4 py-2 cursor-pointer hover:text-teal-600"
+                            onClick={() => handleOptionClick("Last 3 Months")}
+                          >
+                            Last 3 Months
+                          </li>
+                        </ul>
+                      )}
+                    </div>
+                  ) : (
+                    <i
+                      className={`${card.icon} text-gray-600 text-lg md:text-xl`}
+                    ></i>
+                  )}
+                </div>
+
+                <div className="flex items-center justify-between mt-6">
+                  {card.pieChartData ? (
+                    <div className="flex items-center">
+                      {/* Doughnut Chart on the left side */}
+                      <div className="size-14 mr-4">
+                        <Doughnut
+                          data={card.pieChartData}
+                          options={{
+                            responsive: true,
+                            plugins: {
+                              legend: {
+                                display: false, // Hide legend inside the chart
+                              },
+                            },
+                          }}
+                        />
+                      </div>
+
+                      {/* Custom Legend on the right side with scrolling */}
+                      <div className="overflow-y-auto max-h-14 scrollbar-custom">
+                        <ul className="space-y-2 text-gray-600 text-sm mr-2">
+                          {card.pieChartData.labels.map((label, idx) => (
+                            <li key={idx} className="flex items-center">
+                              {/* Rounded color circle */}
+                              <span
+                                className="inline-block w-2.5 h-2.5 rounded-full mr-2"
+                                style={{
+                                  backgroundColor:
+                                    card.pieChartData.datasets[0]
+                                      .backgroundColor[idx],
+                                }}
+                              ></span>
+                              {label}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  ) : (
+                    <h2 className="text-xl md:text-3xl font-semibold text-gray-800 flex items-center gap-2">
+                      {card.count}
+                      <span className="text-xl">{card.unit}</span>
+                    </h2>
+                  )}
+                </div>
+              </div>
+              <div className="bg-teal-100 text-sm text-teal-800 p-3 mt-auto">
+                <span className="bg-teal-700 text-white px-4 py-1 rounded-full text-sm font-medium mr-2">
+                  10%
+                </span>
+                increase from the last day
               </div>
             </div>
-
-            <div>
-              <h1 className=" bg-sky-400 p-3 rounded-b-md text-white">
-                {" "}
-                <span className=" bg-blue-700  px-5 py-1 rounded-full mr-2">
-                  10%{" "}
-                </span>{" "}
-                increase from the last day
-              </h1>
-            </div>
-          </div>
-          <div className="card   bg-base-100 custom-shadow">
-            <div className=" ">
-              <h2 className="card-title px-5 py-1 ">This Month Sale</h2>
-              <div className=" flex px-5 items-center justify-between">
-                <h2 className="  text-2xl whitespace-nowrap flex items-center gap-3">
-                  {Math.floor(counts.this_month_sell)} 
-                   <span className="text-xl"> ৳</span>
-                </h2>
-                {/* <ReactApexChart
-                  options={chartData.options}
-                  series={chartData.series}
-                  type="radialBar"
-                  height={150}
-                /> */}
-              </div>
-            </div>
-
-            <div>
-              <h1 className=" bg-sky-400 p-3 rounded-b-md text-white">
-                {" "}
-                <span className=" bg-blue-700  px-5 py-1 rounded-full mr-2">
-                  10%{" "}
-                </span>{" "}
-                increase from the last day
-              </h1>
-            </div>
-          </div>
-          <div className="card  custom-shadow">
-            <div className=" ">
-              <h2 className="card-title px-5 py-1 ">Total Sale</h2>
-              <div className=" flex px-5 items-center justify-between">
-                <h2 className="  text-2xl whitespace-nowrap flex items-center gap-3">
-                  {Math.floor(counts.totalSell)} 
-                  <span className="text-xl"> ৳</span>
-                </h2>
-                {/* <ReactApexChart
-                  options={chartData.options}
-                  series={chartData.series}
-                  type="radialBar"
-                  height={150}
-                /> */}
-              </div>
-            </div>
-
-            <div>
-              <h1 className=" bg-sky-400 p-3 rounded-b-md text-white">
-                {" "}
-                <span className=" bg-blue-700  px-5 py-1 rounded-full mr-2">
-                  10%{" "}
-                </span>{" "}
-                increase from the last day
-              </h1>
-            </div>
-          </div>
-
-          <div className="card  bg-base-100 custom-shadow">
-            <div className="   ">
-              <h2 className="card-title px-5 py-1 ">Total Order</h2>
-              <div className=" flex px-5 items-center justify-between">
-                <h2 className="  text-2xl whitespace-nowrap">
-                  {Math.floor(counts.todays_orders)} Pice
-                </h2>
-                {/* <ReactApexChart
-                  options={chartData.options}
-                  series={chartData.series}
-                  type="radialBar"
-                  height={150}
-                /> */}
-              </div>
-            </div>
-
-        
-              <h1 className=" bg-sky-400 p-3   rounded-b-md text-white">
-                {" "}
-                <span className=" bg-blue-700  px-5 py-1 rounded-full mr-2">
-                  10%{" "}
-                </span>{" "}
-                increase from the last day
-              </h1>
-            
-          </div>
+          ))}
         </div>
       </div>
 
-      {/* Sales Performance */}
+      <div className="mt-4">
+        <div className="grid grid-cols-12 gap-6">
+          {/* Sales Graph Section */}
+          <div className="col-span-12 md:col-span-9   rounded ">
+            <div className="border shadow px-4 pt-4 pb-12 rounded">
+              <h3 className="text-lg font-semibold text-gray-700 mb-4">
+                Sales This Month
+              </h3>
+              <div className="w-full">
+                <Line
+                  data={{
+                    labels: ["Week 1", "Week 2", "Week 3", "Week 4"], // Example labels
+                    datasets: [
+                      {
+                        label: "Sales (৳)",
+                        data: [15000, 20000, 18000, 25000], // Example data
+                        borderColor: "#4CAF50",
+                        backgroundColor: "rgba(76, 175, 80, 0.2)",
+                        tension: 0.4,
+                      },
+                    ],
+                  }}
+                  options={{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                      legend: {
+                        display: true,
+                        position: "top",
+                      },
+                    },
+                    scales: {
+                      x: {
+                        grid: {
+                          display: false,
+                        },
+                      },
+                      y: {
+                        grid: {
+                          color: "#e4e4e4",
+                        },
+                      },
+                    },
+                  }}
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 text-nowrap justify-between gap-4 mt-4">
+              {/* Statistics Cards */}
+              {[
+                {
+                  label: "Confirmed Orders",
+                  value: 0,
+                  icon: <FaCheck size={13} />,
+                  bgColor: "bg-green-100",
+                  textColor: "text-green-700",
+                },
+                {
+                  label: "Pending Orders",
+                  value: 0,
+                  icon: <FaClock size={15} />,
+                  bgColor: "bg-yellow-100",
+                  textColor: "text-yellow-700",
+                },
+                {
+                  label: "Deliveries",
+                  value: 0,
+                  icon: <FaTruck size={15} />,
+                  bgColor: "bg-purple-100",
+                  textColor: "text-purple-700",
+                },
 
-      <div className="grid grid-cols-12 gap-4 mt-6">
-        {/* Sales Performance */}
-        <div className="col-span-12 lg:col-span-5 p-5 rounded-lg custom-shadow">
-          <h2 className="text-xl  font-semibold mb-3">Sales Performance</h2>
-          <div className="flex flex-col md:flex-row items-start">
-            {" "}
-            {/* Flex container to align items */}
-            <div className="flex-1 space-y-2 ">
-              {" "}
-              {/* Employee list */}
-              {users.map((employee, index) => (
-                <div key={index} className="flex items-center space-x-2">
-                  <img
-                    src="https://static-00.iconduck.com/assets.00/user-icon-2048x2048-ihoxz4vq.png"
-                    alt="Employee"
-                    className="w-12 h-12 rounded object-cover"
-                  />
-                  <div className="flex justify-between w-[100%] md:w-[70%] gap-12 md:gap-0">
-                    <span className="font-medium ">{employee?.name}</span>
-                    <span className="font-semibold">Upcoming...</span>
+                {
+                  label: "Returned Orders",
+                  value: 0,
+                  icon: <FaUndo size={15} />,
+                  bgColor: "bg-red-100",
+                  textColor: "text-red-700",
+                },
+              ].map((stat, index) => (
+                <div
+                  key={index}
+                  className={`${stat.bgColor} ${stat.textColor} flex flex-col border cursor-pointer hover:bg-opacity-80 hover:shadow-lg transition-all duration-300 w-full p-6 rounded  shadow-md gap-2 justify-center`}
+                >
+                  <h2 className="text-2xl md:text-3xl font-semibold text-center">
+                    {stat.value}
+                  </h2>
+                  <div className="flex items-center justify-center gap-2">
+                    <span>{stat.icon}</span>
+                    <h2 className="font-medium text-sm md:text-base">
+                      {stat.label}
+                    </h2>
                   </div>
                 </div>
               ))}
             </div>
-            <div className="w-full md:w-1/2">
-              {" "}
-              {/* Parent div with responsive width */}
-              <ResponsiveContainer width="100%" height={250}>
-                <b className="xl:hidden flex justify-center text-lg font-semibold text-gray-700 whitespace-nowrap">
-                  Yearly Target
-                </b>
-                <BarChart
-                  data={yearlyData}
-                  margin={{
-                    top: 10,
-                    right: 30,
-                    bottom: 15,
-                  }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" stroke="#f5f5f5" />
-                  <XAxis dataKey="name" tick={{ fill: "#333" }} />
-                  <YAxis
-                    tick={{ fill: "#333" }}
-                    domain={[0, "dataMax"]}
-                    tickCount={5}
-                    interval="preserveStartEnd"
-                  />
-                  <Tooltip
-                    contentStyle={{ backgroundColor: "#333", color: "#fff" }}
-                  />
-                  <Legend verticalAlign="top" height={36} />
-                  <Bar dataKey="Target" fill="#28DEFC" />
-                  <Bar dataKey="Achieved" fill="pink" />
-                </BarChart>
-              </ResponsiveContainer>
+          </div>
+
+          {/* Top Selling Products Section */}
+          <div className="col-span-12 md:col-span-3 rounded border shadow">
+            <div className="bg-teal-100 p-3 py-4">
+              <h3 className="md:text-xl text-teal-800 font-bold">
+                Top-Selling Products
+              </h3>
+              <h3 className="text-xs text-nowrap text-gray-500 mt-1 ">
+                We have listed 15 total products
+              </h3>
+            </div>
+            <div className="max-h-72 overflow-y-auto scrollbar-customize">
+              <ul className="space-y-3">
+                {[
+                  {
+                    name: "Product A",
+                    sales: 120,
+                    image: "/public/assets/Images/kids-clothing.jpg",
+                  },
+                  {
+                    name: "Product B",
+                    sales: 95,
+                    image: "/public/assets/Images/woo.jpg",
+                  },
+                  {
+                    name: "Product C",
+                    sales: 80,
+                    image: "/public/assets/Images/men-clothing.jpg",
+                  },
+                  {
+                    name: "Product D",
+                    sales: 75,
+                    image: "/public/assets/Images/men-clothing.png",
+                  },
+                  {
+                    name: "Product E",
+                    sales: 60,
+                    image: "/public/assets/Images/women-clothing.jpg",
+                  },
+                  {
+                    name: "Product F",
+                    sales: 50,
+                    image: "/public/assets/Images/kids-clothing.jpg",
+                  },
+                  {
+                    name: "Product G",
+                    sales: 30,
+                    image: "/public/assets/Images/kids-clothing.jpg",
+                  },
+                  {
+                    name: "Product H",
+                    sales: 25,
+                    image: "/public/assets/Images/kids-clothing.jpg",
+                  },
+                  // Add more products as needed
+                ].map((product, index) => (
+                  <li
+                    key={index}
+                    className="flex items-center   rounded p-3 border-b"
+                  >
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="w-12 h-12 object-cover rounded"
+                    />
+                    <div className="ml-4">
+                      <span className="text-gray-600 font-medium">
+                        {product.name}
+                      </span>
+                      <div className="text-sm text-gray-500">
+                        Sold: {product.sales} Items
+                      </div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>
-
-        {/* Most Sold Items */}
-        <div className="col-span-12 lg:col-span-4 custom-shadow rounded-lg px-6 py-8">
-  <h3 className="text-lg font-semibold mb-1">Most Sold Categories</h3>
-  <h3 className="text-sm text-gray-400 font-semibold mb-4">{categoryCount} Category</h3>
-
-  <div className="flex flex-row md:justify-evenly justify-between items-center gap-5">
-    <div className="flex-1 max-w-[50%] lg:max-w-full">
-      {/* Display chart */}
-      <ReactApexChart
-        options={chartOptions}
-        series={chartSeries}
-        type="donut"
-        width="110%" // Adjust width to avoid overflow
-      />
-    </div>
-
-    <div className="flex-1 max-w-[50%] lg:max-w-full">
-      <div className="flex  space-y-1 flex-col gap-1 mt-2">
-        {chartOptions.labels.map((label, index) => (
-          <div key={index} className="flex items-center space-x-2">
-            {/* Category name with the corresponding color */}
-            <span
-              className="font-medium"
-              style={{ color: chartOptions.colors[index] }}
-            >
-              {label}:
-            </span>
-            {/* Sales quantity with the same color */}
-            <span
-              className="font-semibold"
-              style={{ color: chartOptions.colors[index] }}
-            >
-              {chartSeries[index]}
-            </span>
-          </div>
-        ))}
       </div>
-    </div>
-  </div>
-</div>
 
+      <div className="mt-4 border rounded">
+        <div className="flex p-4 border-b justify-between">
+          <div>
+            <h2 className="font-semibold text-lg md:text-xl">Recent Orders</h2>
+            <h2 className=" text-sm  text-gray-500 mt-1">
+              10 Most Recent Orders
+            </h2>
+          </div>
+          <div className="flex items-center justify-center">
+            <Link to="/order">
+              <button className="px-3 py-2 text-sm rounded  text-white bg-teal-500 hover:bg-teal-600">
+                <i className="far fa-eye mr-2"></i>View All
+              </button>
+            </Link>
+          </div>
+        </div>
 
-        {/* Low Stock */}
-        <div className="col-span-12 lg:col-span-3  bg-white custom-shadow rounded-lg px-4 ">
-          <h2 className="text-xl font-semibold mb-3">Low Stock</h2>
+        <div className="overflow-x-auto mt-2">
+          <div className="w-full">
+            <table className="table text-nowrap">
+              <thead className="text-base  text-gray-700 border-b">
+                <tr>
+                  <th className="">Date</th>
+                  <th className="">Order ID</th>
+                  <th className="">Customer</th>
+                  <th className="">Items</th>
 
-          {/* Table Header */}
-          <div className="overflow-x-auto  scroll-container ">
-            <table className="table w-full">
-              <thead className="text-gray-600 bg-[#EFEFEF]">
-                <tr className="bg-[#EFEFEF] text-black text-sm">
-                  <th className="font-semibold">Photo</th>
-                  <th className="font-semibold">Product</th>
-                  <th className="font-semibold text-right">Variation</th>
-                  <th className="font-semibold text-right">Stock</th>
+                  <th className="">Address</th>
+
+                  <th className="">Total</th>
+                  <th className="">Status</th>
+                  <th className="">Action</th>
                 </tr>
               </thead>
-              <tbody>
-  {getStock
-    ?.slice()
-    .map((stock) => ({
-      ...stock,
-      minStock: stock.variation_combinations && stock.variation_combinations.length > 0
-        ? Math.min(...stock.variation_combinations.map((variation) => variation.stock))
-        : stock.stock,
-    }))
-    .sort((a, b) => a.minStock - b.minStock) // Sort by the minimum stock value
-    .flatMap((stock, index) =>
-      stock.variation_combinations && stock.variation_combinations.length > 0
-        ? stock.variation_combinations
-            .slice()
-            .sort((a, b) => a.stock - b.stock) // Sort variations by stock within each product
-            .map((variation, varIndex) => (
-              <tr key={`${index}-${varIndex}`} className="border-b hover:bg-gray-100 text-sky-800">
-                {varIndex === 0 && (
-                  <>
-                    <td rowSpan={stock.variation_combinations.length}>
-                      <img
-                        src={`https://admin.attireidyll.com/public/storage/product/${stock?.image}`}
-                        alt={stock?.name}
-                        className="w-12 h-12 rounded object-cover"
-                      />
-                    </td>
-                    <td rowSpan={stock.variation_combinations.length} className="font-medium">
-                      {stock?.name}
-                    </td>
-                  </>
-                )}
-                <td className="text-sm text-gray-600 text-right">{variation.values}</td>
-                <td className="font-semibold text-right">{variation.stock}</td>
-              </tr>
-            ))
-        : (
-          <tr key={index} className="border-b hover:bg-gray-100 text-sky-800">
-            <td>
-              <img
-                src={`https://admin.attireidyll.com/public/storage/product/${stock?.image}`}
-                alt={stock?.name}
-                className="w-12 h-12 rounded object-cover"
-              />
-            </td>
-            <td className="font-medium">{stock?.name}</td>
-            <td className="text-sm text-gray-600 text-right">Single</td>
-            <td className="font-semibold text-right">{stock.stock}</td>
-          </tr>
-        )
-    )}
-</tbody>
 
+              <tbody className="text-sm  text-gray-700 font-medium">
+                {isLoading ? ( // Check if data is still loading
+                  <tr className="hover">
+                    <td colSpan="13" className="text-center">
+                      <span className="loading loading-ring loading-md"></span>
+                      <h1>Loading Orders...</h1>
+                    </td>
+                  </tr>
+                ) : orders.length > 0 ? ( // Check if orders array has data
+                  orders.slice(0, 10).map((order, index) => (
+                    <tr key={order.id} className="hover cursor-pointer">
+                      <td className="flex flex-col">
+                        <span>{formatDate(order.created_at)}</span>
+                        <span>{formatTime(order.created_at)}</span>
+                      </td>
+                      <td>{order.unique_id}</td>
+                      <td className="flex flex-col">
+                        <span>{order.c_name}</span>
+                        <span>{order.c_phone}</span>
+                      </td>
+
+                      <td>
+                        {Number(order?.s_product_qty) +
+                          Number(order?.v_product_qty)}
+                      </td>
+
+                      <td>
+                        {order.address.length > 20
+                          ? `${order.address.substring(0, 15)}.....`
+                          : order.address}
+                      </td>
+
+                      <td>{order.cod_amount}</td>
+                      <td>{order.status}</td>
+                      <td>
+                        <div className="relative">
+                          <div className="dropdown">
+                            <button className="md:text-lg ml-5">
+                              <CiMenuKebab />
+                            </button>
+                            <ul
+                              tabIndex={0}
+                              className="dropdown-content menu bg-base-100 rounded-box z-50 p-2 shadow absolute right-2"
+                            >
+                              <li>
+                                <a>
+                                  <FaEye className="text-teal-500 text-lg   pl-1" />
+                                  View
+                                </a>
+                              </li>
+
+                              <li>
+                                <a>
+                                  <MdDeleteForever className="text-red-500 text-lg  " />
+                                  Delete
+                                </a>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  // If orders array is empty
+                  <tr>
+                    <td colSpan="13" className="text-center">
+                      <div className=" flex flex-col items-center ">
+                        <p className=" mt-4 text-xl font-semibold mr-4">
+                          No orders found
+                        </p>
+                        <img
+                          className=" w-[15%] animate-pulse "
+                          src="https://cdn-icons-png.flaticon.com/256/4076/4076478.png"
+                          alt="No Orders found"
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                )}
+              </tbody>
             </table>
           </div>
         </div>
       </div>
-
-      {/* Third Row */}
-
-      <div className="grid grid-cols-12 gap-4 mt-6">
-        {/* Latest Orders */}
-        <div className="col-span-12 lg:col-span-9 p-5 rounded-lg custom-shadow overflow-auto">
-          {/* Header with Buttons */}
-          <div className="flex justify-between items-center mb-3">
-            <h2 className="text-xl font-semibold">Latest Orders</h2>
-
-            {/* Filter Buttons */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6 ">
+        {cards.map((card, index) => (
+          <div
+            key={index}
+            className={`flex border items-center p-4 rounded-lg shadow `}
+          >
+            <div
+              className={`flex  items-center justify-center w-12 h-12 rounded-full ${card.iconBg} text-xl`}
+            >
+              <card.icon className={card.textColor} />
+            </div>
+            <div className="ml-4">
+              <h4 className="text-2xl font-bold text-gray-800">{card.value}</h4>
+              <p className="text-sm text-gray-500">{card.label}</p>
+            </div>
           </div>
-
-          {/* Table Structure */}
-          <table className="min-w-full bg-[#EFEFEF] rounded-sm">
-            {/* Table Header */}
-            <thead className=" text-gray-600">
-              <tr className="bg-[#EFEFEF] font-semibold">
-                <th className="px-4 py-2 text-left">Photo</th>
-                <th className="px-4 py-2 text-left">Product Name</th>
-                <th className="px-4 py-2 text-left">Order ID</th>
-                <th className="px-4 py-2 text-left">Date</th>
-                <th className="px-4 py-2 text-left">Customer Name</th>
-                <th className="px-4 py-2 text-left">Status</th>
-                <th className="px-4 py-2 text-left">Amount</th>
-              </tr>
-            </thead>
-
-            {/* Table Body */}
-            <tbody>
-              {orders?.slice(0, 5).map((order, index) => (
-                <tr key={index} className="bg-white">
-                  <td className="px-4 py-2">
-                    {order?.order_products?.length > 0 ? (
-                      <img
-                        src={`https://admin.attireidyll.com/public/storage/product/${order.order_products[0].image}`}
-                        alt={order.order_products[0].name}
-                        className="w-12 h-12 rounded object-cover"
-                      />
-                    ) : (
-                      // <img
-                      //   src={`https://admin.attireidyll.com/public/storage/product/${order?.order_variable_products[0]?.product?.image}`}
-                      //   alt={order.order_products[0].name}
-                      //   className="w-12 h-12 rounded object-cover"
-                      // />
-                      // <span>n/a</span>
-                      <div>{order.order_variable_products.map((pr)=>(
-                        <div key={pr.id}>
-                           <img
-                         src={`https://admin.attireidyll.com/public/storage/product/${pr?.product?.image}`}
-                         alt='imageee'
-                         className="w-12 h-12 rounded object-cover"
-                      />
-                      {/* <span>{pr.product.name}</span> */}
-                        </div>
-                      ))}</div>
-                    )}
-                  </td>
-                  <td className="px-4 py-2">
-                    {order?.order_products.length > 0
-                      ? order?.order_products[0].name
-                      : "N/A"}
-                  </td>
-                  <td className="px-4 py-2">{order?.id}</td>
-                  <td className="px-4 py-2">{formatDate(order?.created_at)}</td>
-                  <td className="px-4 py-2">{order?.c_name}</td>
-                  <td className="px-4 py-2">{order?.status}</td>
-                  <td className="px-4 py-2">{order?.cod_amount}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Notice Stock */}
-        <div className="col-span-12 lg:col-span-3 space-y-1 bg-white custom-shadow rounded-lg p-4 overflow-auto">
-          <h2 className="text-xl font-semibold mb-4">Notice</h2>
-
-          {/* Table */}
-          <table className="w-full table-auto">
-            {/* Table Header */}
-            <thead className="bg-[#EFEFEF]">
-              <tr className="rounded-sm">
-                <th className="text-left pl-16 py-2">Title</th>
-                <th className="text-right px-3 py-2">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {notice.map((notice, index) => (
-                <tr key={index}>
-                  <td className="flex items-center space-x-2 px-2 py-2">
-                    <img
-                      src={notice.image}
-                      alt="Employee"
-                      className="w-12 h-12 rounded object-cover"
-                    />
-                    <span className="font-medium">{notice.title}</span>
-                  </td>
-                  <td className="px-2 py-2 text-right font-semibold">
-                    {notice.status}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        ))}
       </div>
-
-      {/* Forth Row */}
-
-      <div className="grid grid-cols-12 gap-4 mt-6">
-        {/* Sales By Social Source */}
-        <div className="col-span-12 lg:col-span-3 space-y-1  custom-shadow rounded-lg p-4 overflow-auto">
-          <h2 className="text-xl font-semibold mb-3">Sales By Social Source</h2>
-
-          {/* Table structure */}
-          <table className="min-w-full bg-white">
-            <tbody>
-              {salesBySource.map((socialmedia, index) => (
-                <tr key={index}>
-                  {/* Box with centered image */}
-                  <td className="px-4 py-2">
-                    <div className="w-12 h-12 bg-gray-200 flex items-center justify-center rounded">
-                      <img
-                        src={sourceImages[socialmedia?.source]}
-                        alt="Social Media"
-                        className="w-8 h-8 rounded object-cover"
-                      />
-                    </div>
-                  </td>
-                  <td className="px-4 py-2">
-                    <span className="font-medium">{socialmedia?.source}</span>
-                  </td>
-                  <td className="px-4 py-2 text-right">
-                    <span className="font-semibold">
-                      {socialmedia?.total_sales}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Sales By Traffic Source Stock */}
-
-        <div className="col-span-12 lg:col-span-3 space-y-1 custom-shadow rounded-lg p-4 overflow-auto">
-          <h2 className="text-xl font-semibold mb-3">Sales By Traffic Source</h2>
-
-          <table className="min-w-full">
-            <tbody>
-              {source.map((source, index) => (
-                <tr key={index}>
-                  {/* Box with centered image */}
-                  <td className="flex items-center space-x-2 px-4 py-2">
-                    <div className="w-12 h-12 bg-gray-200 flex items-center justify-center rounded">
-                      <img
-                        src={source.image}
-                        alt="Source"
-                        className="w-8 h-8 rounded object-cover"
-                      />
-                    </div>
-                    <span className="font-medium">{source.title}</span>
-                  </td>
-                  {/* Status column */}
-                  <td className="text-right font-semibold px-4 py-2">
-                    {source.status}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Delivery Report */}
-        
-        <div className="col-span-12 lg:col-span-6 custom-shadow rounded-lg overflow-x-auto">
-          
-        <h2 className="text-xl font-semibold mb-4 p-5">
-            Delivery Report
-          </h2>
-          {/* Map over courierCounts to create a chart for each courier */}
-          <div className="flex flex-row ">
-  {courierCounts
-    .sort((a, b) => b.percentage - a.percentage) // Sort by percentage in descending order
-    .map((courier, index) => (
-      <div key={index} className="flex flex-col items-center">
-        <div className="flex items-center justify-between w-[70%] mt-2">
-          {/* Replace the image with an icon */}
-          {getCourierIcon(courier?.courier)}
-          <span className="font-semibold">{courier?.courier}</span>
-          <span className="font-medium">{courier?.total}</span>
-        </div>
-
-        <PieChart width={250} height={250}>
-          <Rectangle x={0} y={0} width={400} height={500} fill="#f0f0f0" />
-
-          <Pie
-            dataKey="value"
-            startAngle={180}
-            endAngle={0}
-            data={[
-              { value: courier?.percentage },
-              { value: 100 - courier?.percentage },
-            ]}
-            cx={cx}
-            cy={cy}
-            innerRadius={iR}
-            outerRadius={oR * 0.7}
-            fill="#e0e0e0"
-            stroke="none"
-          >
-            {[
-              { value: courier?.percentage },
-              { value: 100 - courier?.percentage },
-            ].map((entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={
-                  index === 0
-                    ? courier?.courier === "redx"
-                      ? "#FF0000" :
-                      courier?.courier === "steadfast"
-                      ? "#32a386" :
-                      courier?.courier === "office-delivery"
-                      ? "#00FFFF"
-                      : courier?.courier === "SA-paribahan"
-                      ? "green"
-                      : courier?.courier === "sundarban"
-                      ? "#fdb14d"
-                      : "#0000FF"
-                    : "#e0e0e0"
-                }
-              />
-            ))}
-          </Pie>
-          {needle(courier?.percentage, cx, cy, iR, oR, "#444CB4")}
-          <text
-            x={cx - 55}
-            y={cy + 30}
-            textAnchor="middle"
-            fontSize={16}
-            fill="#000"
-          >
-            0%
-          </text>
-          <text
-            x={cx + 70}
-            y={cy + 30}
-            textAnchor="middle"
-            fontSize={16}
-            fill="#000"
-          >
-            100%
-          </text>
-          <text
-            x={cx}
-            y={cy + 35}
-            textAnchor="middle"
-            fontSize={20}
-            fill="#000"
-          >
-            {courier?.percentage.toFixed(2)}%
-          </text>
-        </PieChart>
-      </div>
-    ))}
-</div>
-
-        </div>
-      </div>
+      <Footer_Backend />
     </div>
   );
 };

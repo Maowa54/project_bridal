@@ -7,9 +7,7 @@ import AllProduct from '../Pages/Product/AllProduct';
 import Business from '../Pages/Config/Business/Business';
 import User from '../Pages/Config/User/User';
 import Order from '../Pages/Order/Order';
-import Access from '../Pages/Access/Access';
 import Notice from '../Pages/Notice/Notice';
-import FollowUp from '../Pages/FollowUp/FollowUp';
 import AllVariation from '../Pages/Product/AllVariation';
 import CreateVariation from '../Pages/Product/CreateVariation';
 import Invoice from '../Pages/Config/Invoice/Invoice';
@@ -34,6 +32,7 @@ import Subscription from '../Pages/Subscription/Subscription';
 import Log from '../Pages/Stock/Log';
 import SmsHistory from '../Pages/Marketing/SmsHistory';
 import CheckOut from '../Pages/CheckOut/CheckOut';
+import OnlineOrder from '../Pages/Order/OnlineOrder/OnlineOrder';
 // import EditSingleProduct from '../Pages/Product/EditSingleProduct';
 
 const MainContent = ({ userInfo ,error}) => {
@@ -49,27 +48,30 @@ const MainContent = ({ userInfo ,error}) => {
         <Route path="/config/business" element={<Business />} />
         <Route path="/config/user" element={<User />} />
         <Route path="/order" element={<Order />} />
-        <Route path="/access" element={<Access />} />
+
+        <Route path="/online-order" element={<OnlineOrder />} />
+
+        {/* <Route path="/access" element={<Access />} /> */}
         <Route path="/notice" element={<Notice />} />
         <Route path="/pos" element={<Pos />} />
-        <Route path="/follow-up" element={<FollowUp />} />
+        {/* <Route path="/follow-up" element={<FollowUp />} /> */}
         <Route path="/product/variation" element={<AllVariation />} />
         <Route path="/product/variation/create" element={<CreateVariation />} />
-        <Route path="/product/stock-location" element={<StockLocation />} />
+        {/* <Route path="/product/stock-location" element={<StockLocation />} /> */}
         <Route path="/config/invoice" element={<Invoice />} />
-        <Route path="/config/sms" element={<Sms />} />
-        <Route path="/config/low-stock" element={<LowStock />} />
+        {/* <Route path="/config/sms" element={<Sms />} />
+        <Route path="/config/low-stock" element={<LowStock />} /> */}
   
-        <Route path="/config/api" element={<Api />} />
+        {/* <Route path="/config/api" element={<Api />} /> */}
         <Route path="/category" element={<Category />} />
         <Route path="/category/addcategory" element={<AddCategory />} />
         <Route path="/product/createproduct" element={<CreateProduct />} />
-        <Route path="/stock/all" element={<AllStock />} />
+        {/* <Route path="/stock/all" element={<AllStock />} />
         <Route path="/stock/add" element={<AddStock />} />
-        <Route path="/stock/log" element={<Log />} />
+        <Route path="/stock/log" element={<Log />} /> */}
 
-        <Route path="/analytics/report" element={<Report />} />
-        <Route path="/analytics/sales-target" element={<SalesTarget />} />
+        {/* <Route path="/analytics/report" element={<Report />} /> */}
+        {/* <Route path="/analytics/sales-target" element={<SalesTarget />} /> */}
         <Route path="/marketing/sms-history" element={<SmsHistory />} />
         <Route path="/marketing/sms" element={<SMS />} />
         <Route path="/customer" element={<Customer />} />
