@@ -16,12 +16,7 @@ import StockLocation from "../../Component/Product/StockLocation";
 import VideoDrawer from "../../Component/Product/VideoDrawer";
 import { MdClose } from "react-icons/md";
 
-
-
-
 const EditProduct = () => {
-
-
   const [image, setImage] = useState("");
 
   const location = useLocation();
@@ -40,9 +35,11 @@ const EditProduct = () => {
       setCategoryId(editProduct.category_id);
       setSelectedImages(editProduct.product_images);
 
-      const variation_ids = editProduct.product_variation.map((item) => item.variation_id);
+      const variation_ids = editProduct.product_variation.map(
+        (item) => item.variation_id
+      );
       const variation_values = editProduct.product_variation.map((item) =>
-        item.variaton_values.split(',')
+        item.variaton_values.split(",")
       );
 
       setVariationIds(variation_ids);
@@ -53,8 +50,7 @@ const EditProduct = () => {
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-  const [variationImageIdx, setVariationImageIdx] = useState(null)
-
+  const [variationImageIdx, setVariationImageIdx] = useState(null);
 
   const toggleDrawer = () => {
     setVariationImageIdx(null);
@@ -68,30 +64,43 @@ const EditProduct = () => {
   // Update selected image when an image is selected
 
   const [name, setName] = useState(editProduct?.name || "");
+  const [orderStatus, setOrderStatus] = useState(
+    editProduct?.orderStatus || ""
+  );
+
+  const [pre_order, setPreOrder] = useState(
+    editProduct?.pre_order || ""
+  );
+
   const [short_desc, setShort_desc] = useState(editProduct?.short_desc || "");
   const [category_id, setCategoryId] = useState(editProduct?.category_id || "");
 
-  const [stockLocationId, setStockLocationId] = useState(editProduct?.stock_location_id || "");
+  const [stockLocationId, setStockLocationId] = useState(
+    editProduct?.stock_location_id || ""
+  );
   const [businessId, setBusinessId] = useState("");
   const [price, setPrice] = useState(editProduct?.price || "");
   const [stock, setStock] = useState(editProduct?.stock || "");
   const [status, setStatus] = useState("");
 
   const [code, setCode] = useState(editProduct?.code || "");
-  const [buyingPrice, setBuyingPrice] = useState(editProduct?.buying_price || "");
-  const [discountAmount, setDiscountAmount] = useState(editProduct?.discount_amount || "");
-  const [discountType, setDiscountType] = useState(editProduct?.discount_type || "fixed");
+  const [buyingPrice, setBuyingPrice] = useState(
+    editProduct?.buying_price || ""
+  );
+  const [discountAmount, setDiscountAmount] = useState(
+    editProduct?.discount_amount || ""
+  );
+  const [discountType, setDiscountType] = useState(
+    editProduct?.discount_type || "fixed"
+  );
   const [upload_by, setUpload_by] = useState("");
   const [discountDate, setDiscountDate] = useState(null);
-
-
 
   const generateVariationRandomCode = () => {
     const code = editProduct?.variation_combinations[0]?.code;
     if (code) {
-      return code
-    }
-    else {
+      return code;
+    } else {
       return editProduct?.code; // Generates a 10-digit number as a string
     }
   };
@@ -170,13 +179,11 @@ const EditProduct = () => {
   };
 
   const handleVariationChange = (selectedOption, index) => {
-
     const selectedVariationCheck = variations.find((variation, i) => {
-      return variation?.selectedVariation?.id === selectedOption?.id
+      return variation?.selectedVariation?.id === selectedOption?.id;
     });
 
     if (!selectedVariationCheck) {
-
       // Fix Id's Prblems in the same field
       setVariationIds((prevVariationId) => {
         return prevVariationId.filter((_, i) => i !== index); // Remove the ID
@@ -193,7 +200,6 @@ const EditProduct = () => {
   };
 
   const handleValuesChange = (selectedOptions, index) => {
-
     const updatedVariations = [...variations];
     updatedVariations[index].selectedValues = selectedOptions.map((option) => ({
       ...option,
@@ -229,7 +235,6 @@ const EditProduct = () => {
     });
   };
 
-
   const navigate = useNavigate();
 
   // Handle input change for price, stock, discount, and code in combinations
@@ -259,41 +264,39 @@ const EditProduct = () => {
     setVariationValuesIds((prevVariationValuesId) => {
       return prevVariationValuesId.filter((_, i) => i !== index); // Remove values at the same index
     });
-
   };
-
-
 
   const variationImageSelect = (name, index) => {
     const updatedCombinations = [...combinations]; // Copy the current combinations state
-    updatedCombinations[index]['vimage'] = name; // Update the specific field
+    updatedCombinations[index]["vimage"] = name; // Update the specific field
     setCombinations(updatedCombinations);
   };
 
   const variationImageRemove = (index) => {
     const updatedCombinations = [...combinations]; // Copy the current combinations state
-    updatedCombinations[index]['vimage'] = ""; // Update the specific field
+    updatedCombinations[index]["vimage"] = ""; // Update the specific field
     setCombinations(updatedCombinations);
   };
 
   const handleRemoveImage = (imagess, id) => {
-    const updatedImages = imagess.filter(image => image.id !== id);
+    const updatedImages = imagess.filter((image) => image.id !== id);
     setSelectedImages(updatedImages);
   };
 
   //image variations upload
   const handleVariationImage = (index) => {
-    setVariationImageIdx(index)
-    setIsDrawerOpen(!isDrawerOpen)
-  }
-
+    setVariationImageIdx(index);
+    setIsDrawerOpen(!isDrawerOpen);
+  };
 
   const handleChangeVariationsValue = () => {
     const existingVariations = editProduct.product_variation.map((pv) => ({
       selectedVariation: {
         id: pv.variation.id,
         value: pv.variation.name.toLowerCase(),
-        label: pv.variation.name.charAt(0).toUpperCase() + pv.variation.name.slice(1),
+        label:
+          pv.variation.name.charAt(0).toUpperCase() +
+          pv.variation.name.slice(1),
       },
       options: getOptionsForVariation(pv.variation.name.toLowerCase()),
       selectedValues: pv.variaton_values.split(",").map((value) => ({
@@ -311,7 +314,7 @@ const EditProduct = () => {
 
     setVariations(existingVariations);
     setChangeVariations(true);
-  }
+  };
 
   const addVariation = () => {
     if (variations.length < variationsData.length) {
@@ -342,10 +345,8 @@ const EditProduct = () => {
     const variationFind = variation?.variation_values.map((value) => ({
       value: value.name.toLowerCase().trim(),
       label: value.name.charAt(0).toUpperCase() + value.name.slice(1).trim(),
-    }))
-    return variationFind
-      ? variationFind
-      : [];
+    }));
+    return variationFind ? variationFind : [];
   };
 
   const [combinations, setCombinations] = useState([]); // Define combinations state
@@ -359,84 +360,102 @@ const EditProduct = () => {
     if (selectedVariations.length === 0) return [];
 
     // Generate combinations
-    const generatedCombinations = selectedVariations.reduce((acc, currVariation) => {
-      const newCombinations = [];
-      currVariation.selectedValues.forEach((selectedValue) => {
-        if (acc.length === 0) {
-          // Base case: Initialize combinations
-          newCombinations.push({
-            values: [selectedValue.value], // Only the "value" field for matching
-            buying_price: 0,
-            price: 0, // Default; will be updated later
-            stock: 0, // Default; will be updated later
-            discount: 0,
-            discount_type: "",
-            discount_percent: "",
-            discount_date: "",
-            vimage: "", // Default; will be updated later
-            code: generateVariationRandomCode(), // Temporary code
-          });
-        } else {
-          // Combine with existing combinations
-          acc.forEach((existingCombination) => {
-            const combinedValues = [...existingCombination.values, selectedValue.value];
+    const generatedCombinations = selectedVariations.reduce(
+      (acc, currVariation) => {
+        const newCombinations = [];
+        currVariation.selectedValues.forEach((selectedValue) => {
+          if (acc.length === 0) {
+            // Base case: Initialize combinations
             newCombinations.push({
-              values: combinedValues,
+              values: [selectedValue.value], // Only the "value" field for matching
               buying_price: 0,
               price: 0, // Default; will be updated later
               stock: 0, // Default; will be updated later
               discount: 0,
-              discount_type: "", // Default; will be updated later
-              discount_date: "", // Default; will be updated later
-              vimage: "",
+              discount_type: "",
+              discount_percent: "",
+              discount_date: "",
+              vimage: "", // Default; will be updated later
               code: generateVariationRandomCode(), // Temporary code
             });
-          });
-        }
-      });
-      return newCombinations;
-    }, []);
+          } else {
+            // Combine with existing combinations
+            acc.forEach((existingCombination) => {
+              const combinedValues = [
+                ...existingCombination.values,
+                selectedValue.value,
+              ];
+              newCombinations.push({
+                values: combinedValues,
+                buying_price: 0,
+                price: 0, // Default; will be updated later
+                stock: 0, // Default; will be updated later
+                discount: 0,
+                discount_type: "", // Default; will be updated later
+                discount_date: "", // Default; will be updated later
+                vimage: "",
+                code: generateVariationRandomCode(), // Temporary code
+              });
+            });
+          }
+        });
+        return newCombinations;
+      },
+      []
+    );
 
     // Merge generated combinations with the existing data
-    const finalCombinations = generatedCombinations.map((generatedCombination) => {
-      // Find a match in the combinations data
-      const matchingCombination = combinations.find((combination) =>
-        combination.values.every((value, index) => value === generatedCombination.values[index])
-      );
+    const finalCombinations = generatedCombinations.map(
+      (generatedCombination) => {
+        // Find a match in the combinations data
+        const matchingCombination = combinations.find((combination) =>
+          combination.values.every(
+            (value, index) => value === generatedCombination.values[index]
+          )
+        );
 
-      // Merge attributes
-      return {
-        ...generatedCombination,
-        buying_price: matchingCombination ? matchingCombination.buying_price : 0,
-        price: matchingCombination ? matchingCombination.price : 0,
-        stock: matchingCombination ? matchingCombination.stock : 0,
-        discount: matchingCombination ? matchingCombination.discount : 0,
-        discount_date: matchingCombination ? matchingCombination.discount_date : '',
-        discount_type: matchingCombination ? matchingCombination.discount_type : "fixed",
-        vimage: matchingCombination ? matchingCombination.vimage : "",
-        code: matchingCombination ? matchingCombination.code : generatedCombination.code,
-      };
-    });
+        // Merge attributes
+        return {
+          ...generatedCombination,
+          buying_price: matchingCombination
+            ? matchingCombination.buying_price
+            : 0,
+          price: matchingCombination ? matchingCombination.price : 0,
+          stock: matchingCombination ? matchingCombination.stock : 0,
+          discount: matchingCombination ? matchingCombination.discount : 0,
+          discount_date: matchingCombination
+            ? matchingCombination.discount_date
+            : "",
+          discount_type: matchingCombination
+            ? matchingCombination.discount_type
+            : "fixed",
+          vimage: matchingCombination ? matchingCombination.vimage : "",
+          code: matchingCombination
+            ? matchingCombination.code
+            : generatedCombination.code,
+        };
+      }
+    );
     return finalCombinations;
   };
 
-
-  // Video Drawer 
-  const [selectedVideoName, setSelectedVideoName] = useState(editProduct?.video || "");
+  // Video Drawer
+  const [selectedVideoName, setSelectedVideoName] = useState(
+    editProduct?.video || ""
+  );
 
   const [isVideoDrawerOpen, setIsVideoDrawerOpen] = useState(false);
 
-  const handleVideoSelect = (videoName) => setSelectedVideoName(videoName || editProduct.video);
-
+  const handleVideoSelect = (videoName) =>
+    setSelectedVideoName(videoName || editProduct.video);
 
   const handleVideoDelete = () => {
     setSelectedVideoName("");
-  }
+  };
 
   const toggleVideoDrawer = () => {
     setIsVideoDrawerOpen(!isVideoDrawerOpen);
   };
-
 
   // Generate combinations and store in state
   useEffect(() => {
@@ -462,8 +481,13 @@ const EditProduct = () => {
     formData.append("buying_price", buyingPrice);
     formData.append("is_published", status);
     formData.append("has_variation", hasVariation);
+    formData.append("pre_order", pre_order);
+
     formData.append("video", selectedVideoName);
-    formData.append("more_images", selectedImages.map((image) => image.id).join(','));
+    formData.append(
+      "more_images",
+      selectedImages.map((image) => image.id).join(",")
+    );
     formData.append("discount_amount", discountAmount);
     formData.append("discount_type", discountType);
     formData.append("discount_date", discountDate);
@@ -509,12 +533,9 @@ const EditProduct = () => {
     }
   };
 
-
-
   const [selectedImages, setSelectedImages] = useState([]);
 
   const funSelectedImages = (id, imagess) => {
-
     const selectedImage = imagess.find((image) => image.id === id);
 
     if (selectedImage) {
@@ -533,9 +554,6 @@ const EditProduct = () => {
     }
   };
 
-
-
-
   // edit logic
 
   useEffect(() => {
@@ -552,45 +570,44 @@ const EditProduct = () => {
         if (response.data.status) {
           setVariationsData(response.data.data);
           setVariationsDataSet(response.data.data);
-
         }
       } catch (error) {
         console.error("Error fetching variationsData:", error);
       }
     };
     fetchVariation();
-  }, [token])
+  }, [token]);
 
   console.log(editProduct);
 
   // Initial setup when productData is loaded
   useEffect(() => {
-
     if (editProduct?.has_variation) {
       setHasVariations(true);
       setHasVariation(1);
 
-      const existingCombinations = editProduct.variation_combinations.map((comb) => ({
-        values: comb.values.split(",").map((v) => v.trim()),
-        buying_price: parseFloat(comb.buying_price || 0),
-        price: parseFloat(comb.price || 0),
-        stock: parseInt(comb.stock || 0),
+      const existingCombinations = editProduct.variation_combinations.map(
+        (comb) => ({
+          values: comb.values.split(",").map((v) => v.trim()),
+          buying_price: parseFloat(comb.buying_price || 0),
+          price: parseFloat(comb.price || 0),
+          stock: parseInt(comb.stock || 0),
 
-        discount: comb.discount_type === 'fixed'
-          ? parseFloat(comb.discount || 0)
-          : parseFloat(comb.discount_percent || 0),
+          discount:
+            comb.discount_type === "fixed"
+              ? parseFloat(comb.discount || 0)
+              : parseFloat(comb.discount_percent || 0),
 
-        vimage: comb.image || "",
-        discount_type: comb.discount_type || "fixed",
-        discount_date: comb.discount_date || "",
-        code: comb.code,
-      }));
+          vimage: comb.image || "",
+          discount_type: comb.discount_type || "fixed",
+          discount_date: comb.discount_date || "",
+          code: comb.code,
+        })
+      );
 
       setCombinations(existingCombinations);
     }
   }, [editProduct, variationsDataSet]);
-
-
 
   return (
     <div id="section-1" className="mx-4 md:mx-10">
@@ -599,7 +616,7 @@ const EditProduct = () => {
       </div>
 
       <div id="section-1">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 ">
+        <form   onSubmit={handleSave} className="grid grid-cols-1 md:grid-cols-4 gap-4 ">
           {/* "Select Option" Div */}
           <div className="md:col-span-1 order-1 md:order-2">
             {/* <div className="px-4 pt-2 pb-4 mb-5 bg-white flex flex-col shadow">
@@ -620,6 +637,25 @@ const EditProduct = () => {
               )}
             </div> */}
 
+            <div className="mb-2 px-4 py-3 h-28 bg-white flex flex-col border border-gray-300 rounded-md shadow-sm transition duration-300 ease-in-out hover:border-teal-400 ">
+              <label
+                htmlFor="product_status"
+                className="block text-base font-semibold text-gray-800 mb-4"
+              >
+                Pre Order
+              </label>
+              <select
+                name="product_status"
+                id="product_status"
+                className="form-select text-sm rounded-md border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 py-2 px-3  focus:outline-none"
+                defaultValue={editProduct.pre_order}
+                onChange={(e) => setPreOrder(e.target.value)}
+              >
+                <option value="0">Off</option>
+                <option value="1">On</option>
+              </select>
+              <span className="text-red-600 text-sm error-text product_status_error"></span>
+            </div>
 
             <div className="relative rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full">
               {/* Drawer Toggle Button */}
@@ -641,7 +677,8 @@ const EditProduct = () => {
                     type="button"
                     onClick={() => {
                       handleVideoDelete();
-                    }} className="rounded w-full flex flex-col items-center cursor-pointer bg-white hover:text-red-500 duration-300 shadow py-3"
+                    }}
+                    className="rounded w-full flex flex-col items-center cursor-pointer bg-white hover:text-red-500 duration-300 shadow py-3"
                   >
                     Remove
                   </button>
@@ -649,56 +686,56 @@ const EditProduct = () => {
                     type="button"
                     onClick={() => {
                       toggleVideoDrawer();
-                    }} className="rounded w-full flex flex-col items-center mt-2 cursor-pointer bg-white shadow py-3"
+                    }}
+                    className="rounded w-full flex flex-col items-center mt-2 cursor-pointer bg-white shadow py-3"
                   >
                     Change Video
                   </button>
                 </div>
-              )
-
-                : (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      toggleVideoDrawer();
-                    }} className="rounded w-full flex flex-col items-center cursor-pointer bg-white shadow py-3"
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => {
+                    toggleVideoDrawer();
+                  }}
+                  className="rounded w-full flex flex-col items-center cursor-pointer bg-white shadow py-3"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="70"
+                    height="70"
+                    viewBox="0 0 80 80"
+                    fill="none"
+                    className="mb-2"
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="70"
-                      height="70"
-                      viewBox="0 0 80 80"
-                      fill="none"
-                      className="mb-2"
-                    >
-                      <circle cx="40" cy="40" r="40" fill="#D9D9D9" />
-                      <line
-                        x1="20"
-                        y1="40"
-                        x2="60"
-                        y2="40"
-                        stroke="white"
-                        strokeWidth="4"
-                      />
-                      <line
-                        x1="40"
-                        y1="20"
-                        x2="40"
-                        y2="60"
-                        stroke="white"
-                        strokeWidth="4"
-                      />
-                    </svg>
-                    <div className="mt-2 text-center">Add Video</div>
-                  </button>
-                )}
+                    <circle cx="40" cy="40" r="40" fill="#D9D9D9" />
+                    <line
+                      x1="20"
+                      y1="40"
+                      x2="60"
+                      y2="40"
+                      stroke="white"
+                      strokeWidth="4"
+                    />
+                    <line
+                      x1="40"
+                      y1="20"
+                      x2="40"
+                      y2="60"
+                      stroke="white"
+                      strokeWidth="4"
+                    />
+                  </svg>
+                  <div className="mt-2 text-center">Add Video</div>
+                </button>
+              )}
             </div>
           </div>
 
           {/* Left Side Content */}
 
-          <form
-            onSubmit={handleSave}
+          <div
+          
             className="md:col-span-3 order-2 md:order-1"
           >
             <div className="mb-4">
@@ -763,14 +800,16 @@ const EditProduct = () => {
                         <div key={index} className="relative group">
                           <img
                             src={`https://admin.attireidyll.com/public/storage/product/${img.name}`}
-                            alt={`Selected ${index, img.id}`}
+                            alt={`Selected ${(index, img.id)}`}
                             className="rounded border shadow-sm h-40 w-auto"
                           />
                           {/* Remove Icon */}
                           <button
                             type="button"
                             className="absolute -top-1 -right-1 flex items-center justify-center bg-red-600 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
-                            onClick={() => handleRemoveImage(selectedImages, img.id)}
+                            onClick={() =>
+                              handleRemoveImage(selectedImages, img.id)
+                            }
                           >
                             <MdClose />
                           </button>
@@ -778,9 +817,8 @@ const EditProduct = () => {
                       ))}
                     </div>
                   ) : (
-
-
-                    <svg onClick={toggleDrawer}
+                    <svg
+                      onClick={toggleDrawer}
                       xmlns="http://www.w3.org/2000/svg"
                       width="70"
                       height="70"
@@ -808,7 +846,9 @@ const EditProduct = () => {
                     </svg>
                   )}
 
-                  <span onClick={toggleDrawer} className="mt-2 text-center">Add Image</span>
+                  <span onClick={toggleDrawer} className="mt-2 text-center">
+                    Add Image
+                  </span>
                 </div>
               </div>
 
@@ -830,7 +870,8 @@ const EditProduct = () => {
                 </label>
                 <CategoryItems
                   categoryId={editProduct?.category_id}
-                  onCategoryIdChange={handleCategoryIdChange} />
+                  onCategoryIdChange={handleCategoryIdChange}
+                />
                 {errors.category_id && (
                   <p className="text-red-500 text-sm">
                     {errors.category_id[0]}
@@ -882,20 +923,20 @@ const EditProduct = () => {
 
                 {!hasVariations && (
                   <>
-                    <div className="container-fluid">
+                    <div className="px-3">
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 mx-5 items-center">
                         <div className="col-span-1">
-                          <div className="mb-3">
-                            <label className="form-label">Cost Price</label>
+                          <div className="mb-2">
+                            <label className="form-label mb-1">
+                              Cost Price
+                            </label>
                             <input
                               type="number"
                               className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
-                              id="price"
                               placeholder="Enter cost price"
-                              aria-label="Price"
+                              defaultValue={editProduct?.buying_price || ""}
                               onChange={(e) => setBuyingPrice(e.target.value)}
                             />
-
                             {errors.buying_price && (
                               <p className="text-red-500 text-sm">
                                 {errors.buying_price[0]}
@@ -907,7 +948,7 @@ const EditProduct = () => {
                         <div className="mb-2">
                           <label
                             htmlFor="stock"
-                            className="block text-sm font-medium text-gray-700"
+                            className="block font-medium text-gray-700 mb-1"
                           >
                             Stock
                           </label>
@@ -915,6 +956,7 @@ const EditProduct = () => {
                             type="number"
                             className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
                             id="stock"
+                            defaultValue={editProduct?.stock || ""}
                             placeholder="Enter stock"
                             aria-label="Stock"
                             onChange={(e) => setStock(e.target.value)}
@@ -929,7 +971,7 @@ const EditProduct = () => {
                         <div className="mb-2">
                           <label
                             htmlFor="code"
-                            className="block text-sm font-medium text-gray-700"
+                            className="block font-medium text-gray-700 mb-1"
                           >
                             Code
                           </label>
@@ -948,72 +990,82 @@ const EditProduct = () => {
 
                     <div className=" shadow-sm rounded-md hover:border-blue-500 focus:outline-none  focus:ring-blue-500 bg-white">
                       <div className="card-body p-4" id="section-7">
-                        <h5 className="text-lg font-semibold">
-                          Discount
-                        </h5>
+                        <h5 className="text-lg font-semibold">Discount</h5>
 
-                        <div className="grid grid-cols-1 gap-3 md:grid-cols-4 items-center">
-                          <div className="mb-2">
-                            <label
-                              htmlFor="Selling price"
-                              className="block text-sm font-medium text-gray-700"
-                            >
-                              Selling Price
-                            </label>
-                            <input
-                              type="number"
-                              className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
-                              id="price"
-                              placeholder="Enter price"
-                              aria-label="Price"
-                              onChange={(e) => setPrice(e.target.value)}
-                            />
+                        <div className="grid grid-cols-1 gap-3 md:grid-cols-4 items-center px-4">
+                          <div className="col-span-1">
+                            <div className="mb-3">
+                              <label className="form-label mb-1">
+                                Selling Price
+                              </label>
+                              <input
+                                id="price"
+                                type="number"
+                                placeholder="Enter price"
+                                aria-label="Price"
+                                defaultValue={editProduct?.price || ""}
+                                className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
+                                onChange={(e) => setPrice(e.target.value)}
+                              />
+                            </div>
                             {errors.price && (
                               <p className="text-red-500 text-sm">
                                 {errors.price[0]}
                               </p>
                             )}
                           </div>
-
-
-
                           <div className="col-span-1">
                             <div className="mb-3">
-                              <label className="form-label">Discount Amount</label>
+                              <label className="form-label mb-1">
+                                Discount Amount
+                              </label>
                               <input
                                 type="number"
                                 name="discount_value"
-                                defaultValue=""
+                                defaultValue={
+                                  editProduct?.discount_amount || ""
+                                }
+                                placeholder="Enter Discount price"
                                 className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
-                                onChange={(e) => setDiscountAmount(e.target.value)}
+                                onChange={(e) =>
+                                  setDiscountAmount(e.target.value)
+                                }
                               />
                             </div>
                           </div>
 
                           <div className="col-span-1">
                             <div className="mb-3">
-                              <label className="form-label">Percent Or Fixed</label>
+                              <label className="form-label mb-1">
+                                Percent Or Fixed
+                              </label>
                               <select
                                 name="discount_type"
                                 className="h-10 form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
-                                onChange={(e) => setDiscountType(e.target.value)}
                                 defaultValue="fixed"
+                                onChange={(e) =>
+                                  setDiscountType(e.target.value)
+                                }
                               >
                                 <option value="fixed">Fixed</option>
                                 <option value="percent">Percent</option>
-
                               </select>
                             </div>
                           </div>
                           <div className="col-span-1">
                             <div className="mb-3">
-                              <label className="form-label">Discount Date</label>
+                              <label className="form-label mb-1">
+                                Discount Date
+                              </label>
                               <input
                                 type="date"
+                                defaultValue={editProduct?.discount_date || ""}
                                 onClick={(e) => e.target.showPicker()}
-                                className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
+                                className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 px-2 py-1.5 w-full"
                                 placeholder="Enter discount"
-                                onChange={(e) => setDiscountDate(e.target.value)}
+                                onChange={(e) =>
+                                  setDiscountDate(e.target.value)
+                                }
                               />
                             </div>
                           </div>
@@ -1023,79 +1075,90 @@ const EditProduct = () => {
                   </>
                 )}
                 {hasVariations && (
-                  <div className="mb-4 py-4 bg-white shadow"><div className="flex justify-between mb-2">
-                    <div className="mx-4 my-2">Variations</div>
+                  <div className="mb-4 py-4 bg-white shadow">
+                    <div className="flex justify-between mb-2">
+                      <div className="mx-4 my-2">Variations</div>
 
-                    {!changeVariations &&
-                      <div className="mx-4 my-2 flex items-center">
-                        <input
-                          type="checkbox"
-                          className="toggle toggle-info scale-75"
-                          checked={changeVariations}
-                          onChange={handleChangeVariationsValue}
-                          aria-label="Toggle Variations"
-                        />
-                        <span className="ml-2">Change Variations</span>
-                      </div>
-                    }
-                  </div>
+                      {!changeVariations && (
+                        <div className="mx-4 my-2 flex items-center">
+                          <input
+                            type="checkbox"
+                            className="toggle toggle-info scale-75"
+                            checked={changeVariations}
+                            onChange={handleChangeVariationsValue}
+                            aria-label="Toggle Variations"
+                          />
+                          <span className="ml-2">Change Variations</span>
+                        </div>
+                      )}
+                    </div>
                     <div className="mx-5">
-                      {changeVariations &&
+                      {changeVariations && (
                         <>
-                          {
-                            variations.map((variation, index) => (
-                              <div key={index} className="">
-                                <div className="mb-6">
-                                  <div className="flex gap-4">
-                                    <div className="flex-1">
-                                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                                        Select Variation
-                                      </label>
-                                      <div className="flex flex-row-reverse gap-2">
-                                        <button type="button"
-                                          onClick={() => handleVariationDelete(variation, index)}
-                                          className="text-gray-500 hover:text-red-700 focus:outline-none"
-                                        >
-                                          X
-                                        </button>
-                                        <Select
-                                          options={variationOptions}
-                                          className="rounded-lg border border-gray-300 w-full"
-                                          placeholder="Select a variation"
-                                          isSearchable
-                                          onChange={(selectedOption) =>
-                                            handleVariationChange(selectedOption, index)
-                                          }
-                                          value={variation.selectedVariation}
-                                        />
-                                      </div>
-                                    </div>
-
-                                    <div className="flex-1">
-                                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                                        Select Values
-                                      </label>
-                                      <Select
-                                        id="variation_value_ids"
-                                        options={variation.options}
-                                        // options={variation.options || variationsData}
-                                        className="rounded-lg border border-gray-300 basic-multi-select"
-                                        placeholder="Select values"
-                                        isSearchable
-                                        required
-                                        isMulti
-                                        onChange={(selectedOptions) =>
-                                          handleValuesChange(selectedOptions, index)
+                          {variations.map((variation, index) => (
+                            <div key={index} className="">
+                              <div className="mb-6">
+                                <div className="flex gap-4">
+                                  <div className="flex-1">
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                      Select Variation
+                                    </label>
+                                    <div className="flex flex-row-reverse gap-2">
+                                      <button
+                                        type="button"
+                                        onClick={() =>
+                                          handleVariationDelete(
+                                            variation,
+                                            index
+                                          )
                                         }
-                                        value={variation.selectedValues}
-                                      // value={variation.selectedValues || variationsData}
+                                        className="text-gray-500 hover:text-red-700 focus:outline-none"
+                                      >
+                                        X
+                                      </button>
+                                      <Select
+                                        options={variationOptions}
+                                        className="rounded-lg border border-gray-300 w-full"
+                                        placeholder="Select a variation"
+                                        isSearchable
+                                        onChange={(selectedOption) =>
+                                          handleVariationChange(
+                                            selectedOption,
+                                            index
+                                          )
+                                        }
+                                        value={variation.selectedVariation}
                                       />
                                     </div>
                                   </div>
+
+                                  <div className="flex-1">
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                      Select Values
+                                    </label>
+                                    <Select
+                                      id="variation_value_ids"
+                                      options={variation.options}
+                                      // options={variation.options || variationsData}
+                                      className="rounded-lg border border-gray-300 basic-multi-select"
+                                      placeholder="Select values"
+                                      isSearchable
+                                      required
+                                      isMulti
+                                      onChange={(selectedOptions) =>
+                                        handleValuesChange(
+                                          selectedOptions,
+                                          index
+                                        )
+                                      }
+                                      value={variation.selectedValues}
+                                      // value={variation.selectedValues || variationsData}
+                                    />
+                                  </div>
                                 </div>
                               </div>
-                            ))
-                          }
+                            </div>
+                          ))}
                           <button
                             type="button"
                             onClick={addVariation}
@@ -1104,7 +1167,7 @@ const EditProduct = () => {
                             + Add another variation
                           </button>
                         </>
-                      }
+                      )}
                     </div>
 
                     <div className="mx-4 mb-6 overflow-x-auto">
@@ -1116,6 +1179,9 @@ const EditProduct = () => {
                                 Variation & Value
                               </th>
                               <th className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Image
+                              </th>
+                              <th className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Costing Price
                               </th>
                               <th className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -1123,9 +1189,6 @@ const EditProduct = () => {
                               </th>
                               <th className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Stock
-                              </th>
-                              <th className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Image
                               </th>
                               <th className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Discount
@@ -1142,23 +1205,18 @@ const EditProduct = () => {
                             </tr>
                           </thead>
                           <tbody className="bg-white divide-y divide-gray-200">
-                            {combinations.map((combination, combIndex) => {
-
-                              const formatToDateInputValue = (dateString) => {
-                                // if (!dateString) return ""; // Handle empty or undefined date
-                                console.log(dateString)
-                                const date = new Date(dateString); // Parse dateString into a Date object
-                                const year = date.getFullYear(); // Get year (YYYY)
-                                const month = String(date.getMonth() + 1).padStart(2, "0"); // Get month (01-12)
-                                const day = String(date.getDate()).padStart(2, "0"); // Get day (01-31)
-                                return `${year}-${month}-${day}`; // Return YYYY-MM-DD format
-                              };
-
-                              return (
-                                <tr key={`comb-${combIndex}`} className="">
-                                  <td className="capitalize text-center flex gap-2 items-center py-4">
-                                    <button type="button"
-                                      onClick={() => handleCombinationDelete(combination, combIndex)}
+                            {combinations.map((combination, combIndex) => (
+                              <tr key={`comb-${combIndex}`} className="">
+                                <td className="py-4 bg-gray-50 rounded px-3">
+                                  <div className="capitalize text-center flex gap-2 items-center">
+                                    <button
+                                      type="button"
+                                      onClick={() =>
+                                        handleCombinationDelete(
+                                          combination,
+                                          combIndex
+                                        )
+                                      }
                                       className="text-red-500 hover:text-red-700 focus:outline-none"
                                     >
                                       <RiDeleteBinLine />
@@ -1170,167 +1228,181 @@ const EditProduct = () => {
                                         </span>
                                       ))}
                                     </div>
-                                  </td>
-                                  <td className="px-2 py-4 whitespace-nowrap">
-                                    <input
-                                      type="number"
-                                      min="0"
-                                      required
-                                      value={combination.buying_price || ""}
-                                      onChange={(e) =>
-                                        handleInputChange(
-                                          e,
-                                          combIndex,
-                                          "buying_price"
-                                        )
-                                      }
-                                      className="form-control rounded-lg shadow border border-gray-300 p-2  w-[100px]"
-                                      placeholder="cost price"
-                                    />
-                                  </td>
+                                  </div>
+                                </td>
 
-                                  <td className="px-2 py-4 whitespace-nowrap">
-                                    <input
-                                      type="number"
-                                      required
-                                      min="0"
-                                      value={combination.price || ""}
-                                      onChange={(e) =>
-                                        handleInputChange(e, combIndex, "price")
-                                      }
-                                      className="form-control rounded-lg shadow border border-gray-300 p-2  w-[100px]"
-                                      placeholder="price"
-                                    />
-                                  </td>
-                                  <td className="px-2 py-4 whitespace-nowrap">
-                                    <input
-                                      type="number"
-                                      required
-                                      min="0"
-                                      value={combination.stock || ""}
-                                      onChange={(e) =>
-                                        handleInputChange(e, combIndex, "stock")
-                                      }
-                                      className="form-control rounded-lg shadow border border-gray-300 p-2 w-[100px]"
-                                      placeholder="stock"
-                                    />
-                                  </td>
-
-                                  <td className="whitespace-nowrap">
-                                    {combination.vimage ? (
-                                      <div className="relative group">
-                                        <img
-                                          src={`https://pub-c053b04a208d402dac06392a3df4fd32.r2.dev/image/${combination.vimage}`}
-                                          className="rounded border shadow-sm max-h-20 w-full"
-                                        />
-                                        <button
-                                          type="button"
-                                          className="absolute -top-1 -right-1 flex items-center justify-center bg-red-600 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
-                                          onClick={() => handleRemoveImage(selectedImages, img.id)}
-                                        >
-                                          <MdClose />
-                                        </button>
-                                      </div>) : (
-                                      <div onClick={() => {
+                                <td className="whitespace-nowrap border-dashed border-2">
+                                  {combination.vimage ? (
+                                    <div className="relative group">
+                                      <img
+                                        src={`https://pub-c053b04a208d402dac06392a3df4fd32.r2.dev/${clientId}/image/${combination.vimage}`}
+                                        className="rounded border h-20"
+                                      />
+                                      <button
+                                        type="button"
+                                        className="absolute -top-1 -right-1 flex items-center justify-center bg-red-600 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                                        onClick={() =>
+                                          variationImageRemove(combIndex)
+                                        }
+                                      >
+                                        <MdClose />
+                                      </button>
+                                    </div>
+                                  ) : (
+                                    <div
+                                      onClick={() => {
                                         handleVariationImage(combIndex);
-                                      }} className="flex flex-col items-center justify-center">
-                                        <svg
-                                          xmlns="http://www.w3.org/2000/svg"
-                                          width="30"
-                                          height="30"
-                                          viewBox="0 0 80 80"
-                                          fill="none"
-                                        >
-                                          <circle cx="40" cy="40" r="40" fill="#D9D9D9" />
-                                          <line
-                                            x1="20"
-                                            y1="40"
-                                            x2="60"
-                                            y2="40"
-                                            stroke="white"
-                                            strokeWidth="4"
-                                          />
-                                          <line
-                                            x1="40"
-                                            y1="20"
-                                            x2="40"
-                                            y2="60"
-                                            stroke="white"
-                                            strokeWidth="4"
-                                          />
-                                        </svg>
-                                        <span>Add Image</span>
-                                      </div>
-                                    )}
-                                  </td>
-
-                                  <td className="px-2 py-4 whitespace-nowrap">
-
-
-                                    <input
-                                      type="number"
-                                      min="0"
-                                      value={combination.discount || ""}
-                                      onChange={(e) =>
-                                        handleInputChange(e, combIndex, "discount")
-                                      }
-                                      className="form-control rounded-lg shadow border border-gray-300 p-2 w-[100px]"
-                                      placeholder="Discount Taka"
-                                    />
-                                  </td>
-
-                                  <td className="px-2 py-4 whitespace-nowrap">
-                                    <select
-                                      name="discount_type"
-                                      id="discount_type"
-                                      onChange={(e) =>
-                                        handleInputChange(e, combIndex, "discount_type")
-                                      }
-                                      defaultValue={combination.discount_type || "fixed"}
-                                      className="form-control items-center bg-white flex flex-col rounded-lg shadow border hover:border-blue-500 focus:outline-none focus:ring-blue-500 border-gray-300 px-2 py-2.5 w-[120]"
+                                      }}
+                                      className="flex flex-col items-center justify-center"
                                     >
-                                      <option value="fixed">Fixed</option>
-                                      <option value="percent">Percentage %</option>
-                                    </select>
-                                  </td>
-
-
-
-                                  <td className="px-2 py-4 whitespace-nowrap">
-
-                                    {
-
-                                      console.log(combination.discount_date)
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="30"
+                                        height="30"
+                                        viewBox="0 0 80 80"
+                                        fill="none"
+                                      >
+                                        <circle
+                                          cx="40"
+                                          cy="40"
+                                          r="40"
+                                          fill="#D9D9D9"
+                                        />
+                                        <line
+                                          x1="20"
+                                          y1="40"
+                                          x2="60"
+                                          y2="40"
+                                          stroke="white"
+                                          strokeWidth="4"
+                                        />
+                                        <line
+                                          x1="40"
+                                          y1="20"
+                                          x2="40"
+                                          y2="60"
+                                          stroke="white"
+                                          strokeWidth="4"
+                                        />
+                                      </svg>
+                                      <span>Add Image</span>
+                                    </div>
+                                  )}
+                                </td>
+                                <td className="px-2 py-4 whitespace-nowrap">
+                                  <input
+                                    type="number"
+                                    min="0"
+                                    required
+                                    value={combination.buying_price || ""}
+                                    onChange={(e) =>
+                                      handleInputChange(
+                                        e,
+                                        combIndex,
+                                        "buying_price"
+                                      )
                                     }
+                                    className="form-control rounded-lg shadow border border-gray-300 p-2  w-[100px]"
+                                    placeholder="cost price"
+                                  />
+                                </td>
 
+                                <td className="px-2 py-4 whitespace-nowrap">
+                                  <input
+                                    type="number"
+                                    required
+                                    min="0"
+                                    value={combination.price || ""}
+                                    onChange={(e) =>
+                                      handleInputChange(e, combIndex, "price")
+                                    }
+                                    className="form-control rounded-lg shadow border border-gray-300 p-2  w-[100px]"
+                                    placeholder="price"
+                                  />
+                                </td>
+                                <td className="px-2 py-4 whitespace-nowrap">
+                                  <input
+                                    type="number"
+                                    required
+                                    min="0"
+                                    value={combination.stock || ""}
+                                    onChange={(e) =>
+                                      handleInputChange(e, combIndex, "stock")
+                                    }
+                                    className="form-control rounded-lg shadow border border-gray-300 p-2 w-[100px]"
+                                    placeholder="stock"
+                                  />
+                                </td>
 
-                                    <input
-                                      type="date"
-                                      // value={formatToDateInputValue(Date(combination.discount_date)) || ""} // Ensure proper format before rendering
-                                      value={combination.discount_date || ""} // Ensure proper format before rendering
-                                      onChange={(e) =>
-                                        handleInputChange(e, combIndex, "discount_date")
-                                      }
-                                      className="form-control rounded-lg shadow border border-gray-300 p-2 w-[100px]"
-                                      placeholder="date"
-                                    />
+                                <td className="px-2 py-4 whitespace-nowrap">
+                                  <input
+                                    type="number"
+                                    min="0"
+                                    // value={editProduct.combinations[combIndex].discount_type == "fixed" ? editProduct.combinations[combIndex].discount || "" : editProduct.combinations[combIndex].discount_percent || ""}
+                                    value={combination.discount || ""}
+                                    onChange={(e) =>
+                                      handleInputChange(
+                                        e,
+                                        combIndex,
+                                        "discount"
+                                      )
+                                    }
+                                    className="form-control rounded-lg shadow border border-gray-300 p-2 w-[100px]"
+                                    placeholder="Discount Taka"
+                                  />
+                                </td>
 
-                                  </td>
+                                <td className="px-2 py-4 whitespace-nowrap">
+                                  <select
+                                    name="discount_type"
+                                    id="discount_type"
+                                    onChange={(e) =>
+                                      handleInputChange(
+                                        e,
+                                        combIndex,
+                                        "discount_type"
+                                      )
+                                    }
+                                    defaultValue="fixed"
+                                    className="form-control items-center bg-white flex flex-col rounded-lg shadow border hover:border-blue-500 focus:outline-none focus:ring-blue-500 border-gray-300 px-2 py-2.5 w-[120]"
+                                  >
+                                    <option value="fixed">Fixed</option>
+                                    <option value="percent">
+                                      Percentage %
+                                    </option>
+                                  </select>
+                                </td>
 
-                                  <td className="px-2 py-4 whitespace-nowrap">
-                                    <input
-                                      type="text"
-                                      value={combination.code || ""}
-                                      onChange={(e) =>
-                                        handleInputChange(e, combIndex, "code")
-                                      }
-                                      className="form-control rounded-lg shadow border border-gray-300 p-2 w-[100px]"
-                                      placeholder="Enter code"
-                                    />
-                                  </td>
-                                </tr>
-                              )
-                            })}
+                                <td className="px-2 py-4 whitespace-nowrap">
+                                  <input
+                                    type="date"
+                                    // value={formatToDateInputValue(Date(combination.discount_date)) || ""} // Ensure proper format before rendering
+                                    value={combination.discount_date || ""} // Ensure proper format before rendering
+                                    onChange={(e) =>
+                                      handleInputChange(
+                                        e,
+                                        combIndex,
+                                        "discount_date"
+                                      )
+                                    }
+                                    className="form-control rounded-lg shadow border border-gray-300 p-2 w-[100px]"
+                                    placeholder="date"
+                                  />
+                                </td>
+
+                                <td className="px-2 py-4 whitespace-nowrap">
+                                  <input
+                                    type="text"
+                                    value={combination.code || ""}
+                                    onChange={(e) =>
+                                      handleInputChange(e, combIndex, "code")
+                                    }
+                                    className="form-control rounded-lg shadow border border-gray-300 p-2 w-[100px]"
+                                    placeholder="Enter code"
+                                  />
+                                </td>
+                              </tr>
+                            ))}
                           </tbody>
                         </table>
                       </div>
@@ -1347,8 +1419,8 @@ const EditProduct = () => {
                 Update
               </button>
             </div>
-          </form>
-        </div>
+          </div>
+        </form>
 
         {/* Bottom Drawer */}
 
@@ -1362,16 +1434,14 @@ const EditProduct = () => {
         />
 
         <VideoDrawer
-
           onVideoSelect={handleVideoSelect} // Pass the handler to VideoDrawer
-
           isOpen={isVideoDrawerOpen}
           toggleDrawer={toggleVideoDrawer}
-        // productImage={productImage}
+          // productImage={productImage}
         />
         {/* end Bottom Drawer */}
-      </div >
-    </div >
+      </div>
+    </div>
   );
 };
 

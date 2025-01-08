@@ -19,9 +19,10 @@ import VideoDrawer from "../../Component/Product/VideoDrawer";
 import { MdClose } from "react-icons/md";
 
 const CreateProduct = () => {
-
   const [images, setImages] = useState([]);
 
+    const [orderStatus, setOrderStatus] = useState(0);
+  
 
   const [selectedVideoName, setSelectedVideoName] = useState("");
 
@@ -29,21 +30,15 @@ const CreateProduct = () => {
     setSelectedVideoName(videoName);
   };
 
-
-
-
   const [image, setImage] = useState("");
 
   const productImage = (images) => {
     setImages(images);
   };
 
-
-
   const [selectedImages, setSelectedImages] = useState([]);
 
   const funSelectedImages = (id, imagess) => {
-
     const selectedImage = imagess.find((image) => image.id === id);
 
     if (selectedImage) {
@@ -64,18 +59,18 @@ const CreateProduct = () => {
 
   const variationImageSelect = (name, index) => {
     const updatedCombinations = [...combinations]; // Copy the current combinations state
-    updatedCombinations[index]['vimage'] = name; // Update the specific field
+    updatedCombinations[index]["vimage"] = name; // Update the specific field
     setCombinations(updatedCombinations);
   };
 
   const variationImageRemove = (index) => {
     const updatedCombinations = [...combinations]; // Copy the current combinations state
-    updatedCombinations[index]['vimage'] = null; // Update the specific field
+    updatedCombinations[index]["vimage"] = null; // Update the specific field
     setCombinations(updatedCombinations);
   };
 
   const handleRemoveImage = (imagess, id) => {
-    const updatedImages = imagess.filter(image => image.id !== id);
+    const updatedImages = imagess.filter((image) => image.id !== id);
     setSelectedImages(updatedImages);
   };
 
@@ -83,10 +78,9 @@ const CreateProduct = () => {
 
   const [isVideoDrawerOpen, setIsVideoDrawerOpen] = useState(false);
 
-
   const navigate = useNavigate();
 
-  const [variationImageIdx, setVariationImageIdx] = useState(null)
+  const [variationImageIdx, setVariationImageIdx] = useState(null);
 
   const toggleDrawer = () => {
     setVariationImageIdx(null);
@@ -95,20 +89,17 @@ const CreateProduct = () => {
 
   //image
   const handleVariationImage = (index) => {
-    setVariationImageIdx(index)
-    setIsDrawerOpen(!isDrawerOpen)
-  }
+    setVariationImageIdx(index);
+    setIsDrawerOpen(!isDrawerOpen);
+  };
 
   const toggleVideoDrawer = () => {
     setIsVideoDrawerOpen(!isVideoDrawerOpen);
   };
 
-
   const handleVideoDelete = () => {
     setSelectedVideoName("");
-  }
-
-
+  };
 
   // Update selected image when an image is selected
 
@@ -216,8 +207,7 @@ const CreateProduct = () => {
     },
   ]);
 
-
-  // IF one variation selected then it will not show here again 
+  // IF one variation selected then it will not show here again
   // const [variationsDataFilter, setVariationsDataFilter] = useState([]);
 
   // useEffect(() => {
@@ -245,12 +235,8 @@ const CreateProduct = () => {
   //   // Update the state with unmatched variations
   //   const unmatchedVariations = getUnmatchedVariations(variations, variationsData);
 
-
-
   //   setVariationsDataFilter(unmatchedVariations);
   // }, [variations, variationsData]); // Dependencies
-
-
 
   const variationOptions = variationsData.map((variation) => ({
     id: variation.id,
@@ -281,16 +267,14 @@ const CreateProduct = () => {
   };
 
   const handleVariationChange = (selectedOption, index) => {
-
     const selectedVariationCheck = variations.find((variation, i) => {
-      return variation?.selectedVariation?.id === selectedOption?.id
+      return variation?.selectedVariation?.id === selectedOption?.id;
     });
     if (!selectedVariationCheck) {
       // Fix Id's Prblems in the same field
       setVariationIds((prevVariationId) => {
         return prevVariationId.filter((_, i) => i !== index); // Remove the ID
       });
-
 
       const updatedVariations = [...variations];
       updatedVariations[index].selectedVariation = selectedOption;
@@ -319,11 +303,9 @@ const CreateProduct = () => {
     setVariationValuesIds((prevVariationValuesId) => {
       return prevVariationValuesId.filter((_, i) => i !== index); // Remove values at the same index
     });
-
   };
 
   const handleValuesChange = (selectedOptions, index) => {
-
     const updatedVariations = [...variations];
     updatedVariations[index].selectedValues = selectedOptions;
     setVariations(updatedVariations);
@@ -363,7 +345,6 @@ const CreateProduct = () => {
     const updatedVariations = combinations.filter((_, i) => i !== index);
     setCombinations(updatedVariations);
   };
-
 
   const addVariation = () => {
     if (variations.length < variationsData.length) {
@@ -470,10 +451,9 @@ const CreateProduct = () => {
     formData.append("name", name);
     formData.append("short_desc", short_desc);
     formData.append("category_id", category_id);
+    formData.append("pre_order", orderStatus);
 
-
-
-    formData.append("image", selectedImages[0]?.name || '');
+    formData.append("image", selectedImages[0]?.name || "");
 
     formData.append("price", price);
     formData.append("stock", stock);
@@ -485,17 +465,18 @@ const CreateProduct = () => {
 
     formData.append("discount_type", discountType);
 
-    formData.append("more_images", selectedImages.map((image) => image.id).join(','));
-
+    formData.append(
+      "more_images",
+      selectedImages.map((image) => image.id).join(",")
+    );
 
     formData.append("video", selectedVideoName);
-
 
     formData.append("discount_amount", discountAmount);
     formData.append("buying_price", buyingPrice);
     formData.append("is_discount", 0);
 
-    formData.append("stock_location_id", stockLocationId);
+    formData.append("stock_location_id", "2");
 
     formData.append("variation_ids", JSON.stringify(variationIds));
     formData.append("variation_values", JSON.stringify(variationValuesIds));
@@ -572,7 +553,7 @@ const CreateProduct = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           {/* "Select Option" Div */}
           <div className="md:col-span-1 order-1 md:order-3">
-            <div className="bg-white flex flex-col mb-5">
+            {/* <div className="bg-white flex flex-col mb-5">
               <label
                 htmlFor="category_id"
                 className="block text-sm font-medium text-gray-700 required"
@@ -585,7 +566,25 @@ const CreateProduct = () => {
                   {errors.stock_location_id[0]}
                 </p>
               )}
-            </div>
+            </div> */}
+             <div className="mb-2 px-4 py-3 h-28 bg-white flex flex-col border border-gray-300 rounded-md shadow-sm transition duration-300 ease-in-out hover:border-teal-400 ">
+                <label
+                  htmlFor="product_status"
+                  className="block text-base font-semibold text-gray-800 mb-4"
+                >
+                  Pre Order
+                </label>
+                <select
+                  name="product_status"
+                  id="product_status"
+                  className="form-select text-sm rounded-md border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 py-2 px-3  focus:outline-none"
+                  onChange={(e) => setOrderStatus(e.target.value)}
+                >
+                  <option value="0">Off</option>
+                  <option value="1">On</option>
+                </select>
+                <span className="text-red-600 text-sm error-text product_status_error"></span>
+              </div>
 
             {/* <div className="relative rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"> */}
             <div className="relative rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full">
@@ -608,7 +607,8 @@ const CreateProduct = () => {
                     type="button"
                     onClick={() => {
                       handleVideoDelete();
-                    }} className="rounded w-full flex flex-col items-center cursor-pointer bg-white text-red-500 shadow py-3"
+                    }}
+                    className="rounded w-full flex flex-col items-center cursor-pointer bg-white text-red-500 shadow py-3"
                   >
                     Remove
                   </button>
@@ -616,53 +616,51 @@ const CreateProduct = () => {
                     type="button"
                     onClick={() => {
                       toggleVideoDrawer();
-                    }} className="rounded w-full flex flex-col items-center mt-2 cursor-pointer bg-white shadow py-3"
+                    }}
+                    className="rounded w-full flex flex-col items-center mt-2 cursor-pointer bg-white shadow py-3"
                   >
                     Change Video
                   </button>
                 </div>
-              )
-
-                : (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      toggleVideoDrawer();
-                    }} className="rounded w-full flex flex-col items-center cursor-pointer bg-white shadow py-3"
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => {
+                    toggleVideoDrawer();
+                  }}
+                  className="rounded w-full flex flex-col items-center cursor-pointer bg-white shadow py-3"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="70"
+                    height="70"
+                    viewBox="0 0 80 80"
+                    fill="none"
+                    className="mb-2"
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="70"
-                      height="70"
-                      viewBox="0 0 80 80"
-                      fill="none"
-                      className="mb-2"
-                    >
-                      <circle cx="40" cy="40" r="40" fill="#D9D9D9" />
-                      <line
-                        x1="20"
-                        y1="40"
-                        x2="60"
-                        y2="40"
-                        stroke="white"
-                        strokeWidth="4"
-                      />
-                      <line
-                        x1="40"
-                        y1="20"
-                        x2="40"
-                        y2="60"
-                        stroke="white"
-                        strokeWidth="4"
-                      />
-                    </svg>
-                    <div className="mt-2 text-center">Add Video</div>
-                  </button>
-                )}
+                    <circle cx="40" cy="40" r="40" fill="#D9D9D9" />
+                    <line
+                      x1="20"
+                      y1="40"
+                      x2="60"
+                      y2="40"
+                      stroke="white"
+                      strokeWidth="4"
+                    />
+                    <line
+                      x1="40"
+                      y1="20"
+                      x2="40"
+                      y2="60"
+                      stroke="white"
+                      strokeWidth="4"
+                    />
+                  </svg>
+                  <div className="mt-2 text-center">Add Video</div>
+                </button>
+              )}
             </div>
           </div>
-
-
 
           {/* Left Side Content */}
 
@@ -721,11 +719,9 @@ const CreateProduct = () => {
 
               <div className="relative">
                 {/* Drawer Toggle Button */}
-                <div
-                  className="w-full flex flex-col items-center cursor-pointer bg-white rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 mt-1"
-                >
+                <div className="w-full flex flex-col items-center cursor-pointer bg-white rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 mt-1">
                   <div className="flex flex-wrap gap-2 justify-center items-center">
-                    {selectedImages.length > 0 && (
+                    {selectedImages.length > 0 &&
                       selectedImages.map((img, index) => (
                         <div key={index} className="relative group">
                           <img
@@ -737,15 +733,17 @@ const CreateProduct = () => {
                           <button
                             type="button"
                             className="absolute -top-1 -right-1 flex items-center justify-center bg-red-600 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
-                            onClick={() => handleRemoveImage(selectedImages, img.id)}
+                            onClick={() =>
+                              handleRemoveImage(selectedImages, img.id)
+                            }
                           >
                             <MdClose />
                           </button>
                         </div>
-                      ))
-                    )}
+                      ))}
                     <div className="text-center">
-                      <svg onClick={toggleDrawer}
+                      <svg
+                        onClick={toggleDrawer}
                         xmlns="http://www.w3.org/2000/svg"
                         width="70"
                         height="70"
@@ -771,10 +769,11 @@ const CreateProduct = () => {
                           strokeWidth="4"
                         />
                       </svg>
-                      <span onClick={toggleDrawer} className="mt-2 text-center">Add Image</span>
+                      <span onClick={toggleDrawer} className="mt-2 text-center">
+                        Add Image
+                      </span>
                     </div>
                   </div>
-
                 </div>
               </div>
               {errors.image && (
@@ -910,9 +909,7 @@ const CreateProduct = () => {
 
                     <div className=" shadow-sm rounded-md hover:border-blue-500 focus:outline-none  focus:ring-blue-500 bg-white">
                       <div className="card-body p-4" id="section-7">
-                        <h5 className="text-lg font-semibold">
-                          Discount
-                        </h5>
+                        <h5 className="text-lg font-semibold">Discount</h5>
 
                         <div className="grid grid-cols-1 gap-3 md:grid-cols-4 items-center">
                           <div className="mb-2">
@@ -937,45 +934,54 @@ const CreateProduct = () => {
                             )}
                           </div>
 
-
-
                           <div className="col-span-1">
                             <div className="mb-3">
-                              <label className="form-label">Discount Amount</label>
+                              <label className="form-label">
+                                Discount Amount
+                              </label>
                               <input
                                 type="number"
                                 name="discount_value"
                                 defaultValue=""
                                 className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
-                                onChange={(e) => setDiscountAmount(e.target.value)}
+                                onChange={(e) =>
+                                  setDiscountAmount(e.target.value)
+                                }
                               />
                             </div>
                           </div>
 
                           <div className="col-span-1">
                             <div className="mb-3">
-                              <label className="form-label">Percent Or Fixed</label>
+                              <label className="form-label">
+                                Percent Or Fixed
+                              </label>
                               <select
                                 name="discount_type"
                                 className="h-10 form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
-                                onChange={(e) => setDiscountType(e.target.value)}
+                                onChange={(e) =>
+                                  setDiscountType(e.target.value)
+                                }
                                 defaultValue="fixed"
                               >
                                 <option value="fixed">Fixed</option>
                                 <option value="percent">Percent</option>
-
                               </select>
                             </div>
                           </div>
                           <div className="col-span-1">
                             <div className="mb-3">
-                              <label className="form-label">Discount Date</label>
+                              <label className="form-label">
+                                Discount Date
+                              </label>
                               <input
                                 type="date"
                                 onClick={(e) => e.target.showPicker()}
                                 className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
                                 placeholder="Enter discount"
-                                onChange={(e) => setDiscountDate(e.target.value)}
+                                onChange={(e) =>
+                                  setDiscountDate(e.target.value)
+                                }
                               />
                             </div>
                           </div>
@@ -1002,12 +1008,18 @@ const CreateProduct = () => {
                                     placeholder="Select a variation"
                                     isSearchable
                                     onChange={(selectedOption) =>
-                                      handleVariationChange(selectedOption, index)
+                                      handleVariationChange(
+                                        selectedOption,
+                                        index
+                                      )
                                     }
                                     value={variation.selectedVariation}
                                   />
-                                  <button type="button"
-                                    onClick={() => handleVariationDelete(variation, index)}
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      handleVariationDelete(variation, index)
+                                    }
                                     className="text-gray-500 hover:text-red-700 focus:outline-none"
                                   >
                                     X
@@ -1087,8 +1099,11 @@ const CreateProduct = () => {
                             {combinations.map((combination, combIndex) => (
                               <tr key={`comb-${combIndex}`}>
                                 <td className="capitalize text-center flex gap-2 items-center py-4">
-                                  <button type="button"
-                                    onClick={() => handleDelete(combination, combIndex)}
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      handleDelete(combination, combIndex)
+                                    }
                                     className="text-red-500 hover:text-red-700 focus:outline-none"
                                   >
                                     <RiDeleteBinLine />
@@ -1146,8 +1161,6 @@ const CreateProduct = () => {
                                   />
                                 </td>
 
-
-
                                 <td className="whitespace-nowrap">
                                   {combination.vimage ? (
                                     <div className="relative group">
@@ -1158,14 +1171,23 @@ const CreateProduct = () => {
                                       <button
                                         type="button"
                                         className="absolute -top-1 -right-1 flex items-center justify-center bg-red-600 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
-                                        onClick={() => handleRemoveImage(selectedImages, img.id)}
+                                        onClick={() =>
+                                          handleRemoveImage(
+                                            selectedImages,
+                                            img.id
+                                          )
+                                        }
                                       >
                                         <MdClose />
                                       </button>
-                                    </div>) : (
-                                    <div onClick={() => {
-                                      handleVariationImage(combIndex);
-                                    }} className="flex flex-col items-center justify-center">
+                                    </div>
+                                  ) : (
+                                    <div
+                                      onClick={() => {
+                                        handleVariationImage(combIndex);
+                                      }}
+                                      className="flex flex-col items-center justify-center"
+                                    >
                                       <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         width="30"
@@ -1173,7 +1195,12 @@ const CreateProduct = () => {
                                         viewBox="0 0 80 80"
                                         fill="none"
                                       >
-                                        <circle cx="40" cy="40" r="40" fill="#D9D9D9" />
+                                        <circle
+                                          cx="40"
+                                          cy="40"
+                                          r="40"
+                                          fill="#D9D9D9"
+                                        />
                                         <line
                                           x1="20"
                                           y1="40"
@@ -1202,7 +1229,11 @@ const CreateProduct = () => {
                                     min="0"
                                     value={combination.discount || ""}
                                     onChange={(e) =>
-                                      handleInputChange(e, combIndex, "discount")
+                                      handleInputChange(
+                                        e,
+                                        combIndex,
+                                        "discount"
+                                      )
                                     }
                                     className="form-control rounded-lg border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-[100px]"
                                     placeholder="discount"
@@ -1213,13 +1244,21 @@ const CreateProduct = () => {
                                     name="discount_type"
                                     id="discount_type"
                                     onChange={(e) =>
-                                      handleInputChange(e, combIndex, "discount_type")
+                                      handleInputChange(
+                                        e,
+                                        combIndex,
+                                        "discount_type"
+                                      )
                                     }
-                                    defaultValue={combination.discount || "fixed"}
+                                    defaultValue={
+                                      combination.discount || "fixed"
+                                    }
                                     className="form-control rounded-sm shadow-sm border border-gray-300 px-2 py-3 w-[120px]"
                                   >
                                     <option value="fixed">Fixed</option>
-                                    <option value="percent">Percentage %</option>
+                                    <option value="percent">
+                                      Percentage %
+                                    </option>
                                   </select>
                                 </td>
 
@@ -1252,8 +1291,11 @@ const CreateProduct = () => {
                                   />
                                 </td>
                                 <td className="px-2 py-4 whitespace-nowrap">
-                                  <button type="button"
-                                    onClick={() => handleDelete(combination, combIndex)}
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      handleDelete(combination, combIndex)
+                                    }
                                     className="text-red-500 hover:text-red-700 focus:outline-none"
                                   >
                                     Remove
@@ -1297,7 +1339,6 @@ const CreateProduct = () => {
 
         <ImageDrawer
           isOpen={isDrawerOpen}
-
           funSelectedImages={funSelectedImages}
           toggleDrawer={toggleDrawer}
           productImage={productImage}
@@ -1310,18 +1351,15 @@ const CreateProduct = () => {
         {/* Bottom video Drawer */}
 
         <VideoDrawer
-
           onVideoSelect={handleVideoSelect} // Pass the handler to VideoDrawer
-
           isOpen={isVideoDrawerOpen}
           toggleDrawer={toggleVideoDrawer}
-        // productImage={productImage}
+          // productImage={productImage}
         />
 
-
         {/* end Bottom video Drawer */}
-      </div >
-    </div >
+      </div>
+    </div>
   );
 };
 

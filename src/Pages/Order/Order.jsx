@@ -24,6 +24,7 @@ import { MdDeleteForever } from "react-icons/md";
 import { CiMenuKebab } from "react-icons/ci";
 import Footer_Backend from "../../Component/Backend/Footer_Backend";
 import { IoIosSearch } from "react-icons/io";
+import Swal from "sweetalert2";
 
 const Order = () => {
   const token = localStorage.getItem("token");
@@ -143,6 +144,55 @@ const Order = () => {
 
   const handlePrintInvoice = (order) => {
     printInvoice(order);
+  };
+
+
+  const handleDelete = async (id) => {
+    // Show a confirmation dialog
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        const response = await axios.delete(
+          `https://admin.attireidyll.com/api/order/delete/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response.data.status) {
+          Swal.fire(
+            "Deleted!",
+            response.data.message || "Order deleted successfullyyy."
+          );
+
+          // Remove the deleted SMS from the state
+          // setDisplayOrders((prevSms) => prevSms.filter((sms) => sms.id !== id));
+        } else {
+          Swal.fire(
+            "Error!",
+            response.data.message || "Failed to delete order.",
+            "error"
+          );
+        }
+      } catch (error) {
+        console.error(
+          "Error deleting order:",
+          error.response ? error.response.data : error.message
+        );
+        Swal.fire("Error!", "Failed to delete order.", "error");
+      }
+    }
   };
 
   function formatDate(dateString) {
@@ -378,8 +428,8 @@ const Order = () => {
                                 </a>
                               </li>
                               <li>
-                                <a>
-                                  <MdDeleteForever className="text-red-500 text-lg  " />
+                              <a onClick={() => handleDelete(order.id)}>
+                              <MdDeleteForever className="text-red-500 text-lg  " />
                                   Delete
                                 </a>
                               </li>

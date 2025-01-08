@@ -101,7 +101,7 @@ const AllProduct = () => {
         if (response.data.status) {
           Swal.fire(
             "Deleted!",
-            response.data.message || "SMS deleted successfully.",
+            response.data.message || "Product deleted successfully.",
             "success"
           );
 
@@ -122,7 +122,7 @@ const AllProduct = () => {
           "Error deleting SMS:",
           error.response ? error.response.data : error.message
         );
-        Swal.fire("Error!", "Failed to delete SMS.", "error");
+        Swal.fire("Error!", "Failed to delete product.", "error");
       }
     }
   };

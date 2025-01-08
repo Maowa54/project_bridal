@@ -535,7 +535,9 @@ const Dashboard = () => {
             <div className="ml-5">
               <h1 className="font-semibold">{currentDate}</h1>
               <div className="md:flex md:flex-col  lg:block">
-                <big className="text-lg md:text-2xl font-semibold">{greeting}</big>
+                <big className="text-lg md:text-2xl font-semibold">
+                  {greeting}
+                </big>
                 <small className="font-medium mx-2">
                   Here's What Happening in your store today!
                 </small>
@@ -545,7 +547,7 @@ const Dashboard = () => {
 
           <div className="flex items-center mb-2 flex-row">
             <div className="md:absolute static right-20 bottom-2 ">
-              <img src={userr}  className="w-16 md:w-32" alt="" />
+              <img src={userr} className="w-16 md:w-32" alt="" />
             </div>
             <div className="mt-2 mr-2">
               <h1>Every Time</h1>
@@ -809,45 +811,83 @@ const Dashboard = () => {
             </div>
           </div>
 
-{/* Top Selling Products Section */}
-<div className="col-span-12 md:col-span-3 rounded shadow">
-  <div className="bg-teal-100 p-3 py-4">
-    <h3 className="md:text-xl text-teal-800 font-bold">Top-Selling Products</h3>
-    <h3 className="text-xs text-nowrap text-gray-500 mt-1 ">We have listed 15 total products</h3>
-
-  </div>
-  <div className="max-h-72 overflow-y-auto scrollbar-customize">
-    <ul className="space-y-3">
-      {[
-        { name: "Product A", sales: 120 , image: "/public/assets/Images/kids-clothing.jpg" },
-        { name: "Product B", sales: 95 , image:  "/public/assets/Images/woo.jpg" },
-        { name: "Product C", sales: 80 , image:  "/public/assets/Images/men-clothing.jpg" },
-        { name: "Product D", sales: 75 , image:  "/public/assets/Images/men-clothing.png" },
-        { name: "Product E", sales: 60 , image:  "/public/assets/Images/women-clothing.jpg" },
-        { name: "Product F", sales: 50 , image:  "/public/assets/Images/kids-clothing.jpg" },
-        { name: "Product G", sales: 30 , image:  "/public/assets/Images/kids-clothing.jpg" },
-        { name: "Product H", sales: 25 , image:  "/public/assets/Images/kids-clothing.jpg" },
-        // Add more products as needed
-      ].map((product, index) => (
-        <li
-          key={index}
-          className="flex items-center   rounded p-3 border-b"
-        >
-          <img
-            src={product.image}
-            alt={product.name}
-            className="w-12 h-12 object-cover rounded"
-          />
-          <div className="ml-4">
-            <span className="text-gray-600 font-medium">{product.name}</span>
-            <div className="text-sm text-gray-500">Sold: {product.sales} Items</div>
+          {/* Top Selling Products Section */}
+          <div className="col-span-12 md:col-span-3 rounded border shadow">
+            <div className="bg-teal-100 p-3 py-4">
+              <h3 className="md:text-xl text-teal-800 font-bold">
+                Top-Selling Products
+              </h3>
+              <h3 className="text-xs text-nowrap text-gray-500 mt-1 ">
+                We have listed 15 total products
+              </h3>
+            </div>
+            <div className="max-h-72 overflow-y-auto scrollbar-customize">
+              <ul className="space-y-3">
+                {[
+                  {
+                    name: "Product A",
+                    sales: 120,
+                    image: "/public/assets/Images/kids-clothing.jpg",
+                  },
+                  {
+                    name: "Product B",
+                    sales: 95,
+                    image: "/public/assets/Images/woo.jpg",
+                  },
+                  {
+                    name: "Product C",
+                    sales: 80,
+                    image: "/public/assets/Images/men-clothing.jpg",
+                  },
+                  {
+                    name: "Product D",
+                    sales: 75,
+                    image: "/public/assets/Images/men-clothing.png",
+                  },
+                  {
+                    name: "Product E",
+                    sales: 60,
+                    image: "/public/assets/Images/women-clothing.jpg",
+                  },
+                  {
+                    name: "Product F",
+                    sales: 50,
+                    image: "/public/assets/Images/kids-clothing.jpg",
+                  },
+                  {
+                    name: "Product G",
+                    sales: 30,
+                    image: "/public/assets/Images/kids-clothing.jpg",
+                  },
+                  {
+                    name: "Product H",
+                    sales: 25,
+                    image: "/public/assets/Images/kids-clothing.jpg",
+                  },
+                  // Add more products as needed
+                ].map((product, index) => (
+                  <li
+                    key={index}
+                    className="flex items-center   rounded p-3 border-b"
+                  >
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="w-12 h-12 object-cover rounded"
+                    />
+                    <div className="ml-4">
+                      <span className="text-gray-600 font-medium">
+                        {product.name}
+                      </span>
+                      <div className="text-sm text-gray-500">
+                        Sold: {product.sales} Items
+                      </div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
-        </li>
-      ))}
-    </ul>
-  </div>
-</div>
-
         </div>
       </div>
 
