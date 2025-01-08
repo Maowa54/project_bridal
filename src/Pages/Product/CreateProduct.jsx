@@ -517,6 +517,7 @@ const CreateProduct = () => {
 
         setCategoryId("");
         setShort_desc("");
+        setOrderStatus("");
 
         setErrors({});
 
@@ -544,10 +545,13 @@ const CreateProduct = () => {
   // handle Svae .............
 
   return (
-    <div id="section-1" className="mx-4 md:mx-10">
-      <div className="w-full rounded-lg shadow border border-gray-300 p-2 py-4 flex pe-4 mb-4">
-        <h2 className="px-4 text-xl font-semibold">Create Product</h2>
-      </div>
+    <div id="section-1" className="">
+       <div className="rounded shadow mt-1 mb-5 py-2 px-4">
+                <h1 className="text-xl md:text-2xl text-nowrap font-semibold">
+                  Create Product
+                </h1>
+               
+              </div>
 
       <div id="section-1">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -628,7 +632,7 @@ const CreateProduct = () => {
                   onClick={() => {
                     toggleVideoDrawer();
                   }}
-                  className="rounded w-full flex flex-col items-center cursor-pointer bg-white shadow py-3"
+                  className="rounded w-full flex flex-col items-center cursor-pointer bg-white  py-2"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
