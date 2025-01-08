@@ -17,19 +17,10 @@
       {
         "title": "Invoice",
         "path": "/config/invoice"
-      },
-      {
-        "title": "Api",
-        "path": "/config/api"
-      },
-      {
-        "title": "SMS",
-        "path": "/config/sms"
-      },
-      {
-        "title": "Low Stock",
-        "path": "/config/low-stock"
       }
+      
+     
+      
       
     ]
   },
@@ -50,11 +41,8 @@
       {
         "title": "Variation",
         "path": "/product/variation"
-      },
-      {
-        "title": "Stock Location",
-        "path": "/product/stock-location"
       }
+     
     ]
   },
   {
@@ -67,49 +55,9 @@
     "path": "/order",
     "icon": "FaShoppingCart"
   },
-  {
-    "title": "Follow Up",
-    "path": "/follow-up",
-    "icon": "FaClipboardList"
-  },
-  {
-    "title": "Stock",
-    "icon": "FaWarehouse",
-    "submenu": [
-      {
-        "title": "Stock Adjust",
-        "path": "/stock/all"
-      },
-      {
-        "title": "Add Stock",
-        "path": "/stock/add"
-      }
-    ]
-  },
-  {
-    "title": "Access",
-    "path": "/access",
-    "icon": "FaLock"
-  },
-  {
-    "title": "Analytics",
-    "icon": "FaChartLine",
-    "submenu": [
-      {
-        "title": "Report",
-        "path": "/analytics/report"
-      },
-      {
-        "title": "Sales Target",
-        "path": "/analytics/sales-target"
-      }
-    ]
-  },
-  {
-    "title": "Profile",
-    "path": "/profile",
-    "icon": "FaUserGraduate"
-  },
+  
+
+ 
   {
     "title": "Customer",
     "path": "/customer",

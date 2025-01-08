@@ -2,20 +2,19 @@ import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import Swal from 'sweetalert2';
 import toast from 'react-hot-toast';
+import { Link } from 'react-router-dom';
 
 import {FaPlus , FaMinus}  from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom';
+import Footer_Backend from '../../Component/Backend/Footer_Backend';
 const CreateVariation = () => {
   const navigate = useNavigate();
   const [variationName, setVariationName] = useState('');
   const [inputFields, setInputFields] = useState([{ id: 1, value: '' }]);
-  const [selectedBusiness, setSelectedBusiness] = useState('');
-  const [businesses, setBusinesses] = useState([]);
   const [errors, setErrors] = useState({});
 
   const userId = localStorage.getItem("userId");
   const token = localStorage.getItem("token");
-  const clientId = localStorage.getItem("clientId");
 
 
   const cacheKey = `variations_${userId}`;
@@ -23,11 +22,7 @@ const CreateVariation = () => {
 
 
 
-  const handleBusinessChange = (event) => {
-    const businessId = event.target.value;
-    setSelectedBusiness(businessId);
-    localStorage.setItem('business_id', businessId);
-  };
+  
 
   const handleAddField = () => {
     setInputFields(prevFields => [...prevFields, { id: prevFields.length + 1, value: '' }]);
@@ -50,9 +45,7 @@ const CreateVariation = () => {
     setErrors({});
   
     const variationData = {
-      client_id: clientId,
       user_id: userId,
-      business_id: selectedBusiness,
       name: variationName,
       value: inputFields.map(field => field.value).filter(value => value.trim() !== '').join(', '),
     };
@@ -103,30 +96,32 @@ const CreateVariation = () => {
   
 
   return (
-    <div className="mx-4 md:mx-10">
-      <div className="w-full shadow py-4 flex justify-between items-center px-4">
-        <h2 className="text-xl font-semibold">Variation</h2>
  
-      </div>
+   <div>
+      <div>
+      <div className="flex shadow-md justify-between mt-1 mb-5 py-2 px-4 items-center">
+                 <h1 className="text-xl md:text-2xl font-semibold">Create Variation</h1>
+                
+               </div>
 
-      <div className="rounded-md shadow-[0_3px_10px_rgb(0,0,0,0.1)] h-auto mt-5 px-5 pt-5 pb-5">
-        <p className="mb-4">Value Name</p>
+      <div className="rounded-md shadow h-auto mt-5 px-5 pt-5 pb-5">
+        <p className="mb-4 text-sm md:text-base font-semibold">Value Name</p>
         <input
           type="text"
           name="variation_name"
-          className="form-control text-lowercase shadow-[0_3px_10px_rgb(0,0,0,0.2)] py-2 px-3 w-[50%] focus:outline-none focus:border-none"
+          className="form-control text-sm text-lowercase border shadow py-2 px-3 w-[50%] focus:outline-none "
           placeholder="Enter variation name"
           value={variationName}
           onChange={(e) => setVariationName(e.target.value)}
         />
         {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
 
-        <p className="mb-4 mt-5">Value</p>
+        <p className="mb-4 mt-5 text-sm md:text-base font-semibold">Value</p>
         {inputFields.map((field, index) => (
           <div key={field.id} className="flex items-center mb-2">
             <input
               type="text"
-              className="form-control text-lowercase shadow-[0_3px_10px_rgb(0,0,0,0.2)] py-2 px-3 w-[50%] focus:outline-none focus:border-none"
+              className="form-control text-sm text-lowercase border shadow py-2 px-3 w-[50%] focus:outline-none"
               placeholder={`Enter value ${field.id}`}
               value={field.value}
               onChange={(e) => handleInputChange(field.id, e.target.value)}
@@ -134,7 +129,7 @@ const CreateVariation = () => {
             {index === inputFields.length - 1 && (
               <button
                 type="button"
-                className="ml-2  bg-sky-400 text-white  px-2 py-2 cursor-pointer rounded-md"
+                className="ml-2  bg-teal-500 hover:bg-teal-400 text-white  px-2 py-2 cursor-pointer rounded-md"
                 onClick={handleAddField}
               >
                 <FaPlus/>
@@ -154,16 +149,25 @@ const CreateVariation = () => {
 
         {errors.value && <p className="text-red-500 text-sm mt-1">{errors.value}</p>}
 
-        <div className="flex justify-end mt-5">
+        <div className="flex gap-4 justify-end mt-5">
           <button
-            className="btn bg-[#28DEFC] hover:bg-[#28DEFC] text-white px-6 text-lg"
+            className="rounded bg-teal-500 hover:bg-teal-400 text-white px-4 py-2 font-semibold text-sm md:text-base"
             onClick={handleSave}
           >
             Save
           </button>
+          <Link
+            className="rounded bg-gray-500 hover:bg-gray-400 text-white px-4 py-2 font-semibold text-sm md:text-base"
+            to="/product/variation"
+          >
+            Back
+          </Link>
         </div>
       </div>
-    </div>
+      </div>
+      <Footer_Backend/>
+   </div>
+  
   );
 };
 

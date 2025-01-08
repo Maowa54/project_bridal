@@ -91,13 +91,14 @@ function App() {
     <div className="relative">
       <Router>
         <ScrollToTop /> {/* Add ScrollToTop component here */}
-        
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/allProduct" element={<AllProduct />} />
-          <Route path="/singleproduct/:product_info" element={<Singleproduct />} />
+          <Route
+            path="/singleproduct/:product_info"
+            element={<Singleproduct />}
+          />
           <Route path="/preorder" element={<PreOrder />} />
-
 
           <Route path="/checkout" element={<Order />} />
           <Route path="/thankyou/:order_id" element={<ThankYou />} />
@@ -137,20 +138,19 @@ function App() {
                         }}
                       >
                         <div className="flex gap-3">
-                          <button onClick={toggleSidebar} className="text-xl">
+                          <button onClick={toggleSidebar} className="text-2xl ">
                             {isSidebarOpen ? (
                               <HiMiniBars3CenterLeft />
                             ) : (
                               <FaBars />
                             )}
                           </button>
-                          <h1 className="text-2xl">Attire Idyll</h1>
                         </div>
                         <button className="text-xl">
                           <IoIosNotifications size={30} />
                         </button>
                       </header>
-                      <main className="pt-16 p-4">
+                      <main className="pt-16 px-4">
                         <MainContent userInfo={userInfo} error={error} />
                       </main>
                     </div>

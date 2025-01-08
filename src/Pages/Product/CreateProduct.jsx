@@ -12,25 +12,93 @@ import ImageDrawer from "../../Component/Product/ImageDrawer";
 
 import axios from "axios";
 import toast from "react-hot-toast";
-// import ProductSelectedBusiness from "./ProductSelectedBusiness";
 import StockLocation from "../../Component/Product/StockLocation";
-
-import { LuImagePlus } from "react-icons/lu";
+import { FaPlus } from "react-icons/fa";
+import { RiDeleteBinLine } from "react-icons/ri";
+import VideoDrawer from "../../Component/Product/VideoDrawer";
+import { MdClose } from "react-icons/md";
 
 const CreateProduct = () => {
+  const [images, setImages] = useState([]);
+
+    const [orderStatus, setOrderStatus] = useState(0);
+  
+
+  const [selectedVideoName, setSelectedVideoName] = useState("");
+
+  const handleVideoSelect = (videoName) => {
+    setSelectedVideoName(videoName);
+  };
+
   const [image, setImage] = useState("");
+
+  const productImage = (images) => {
+    setImages(images);
+  };
+
+  const [selectedImages, setSelectedImages] = useState([]);
+
+  const funSelectedImages = (id, imagess) => {
+    const selectedImage = imagess.find((image) => image.id === id);
+
+    if (selectedImage) {
+      setSelectedImages((prevSelectedImages) => {
+        // Check if the image is already selected
+        if (prevSelectedImages.some((image) => image.id === id)) {
+          // If already selected, remove it from the selection
+          return prevSelectedImages.filter((image) => image.id !== id);
+        } else {
+          // If not selected, add it to the selection
+          return [...prevSelectedImages, selectedImage];
+        }
+      });
+
+      setImages(selectedImages); // Handle the product image
+    }
+  };
+
+  const variationImageSelect = (name, index) => {
+    const updatedCombinations = [...combinations]; // Copy the current combinations state
+    updatedCombinations[index]["vimage"] = name; // Update the specific field
+    setCombinations(updatedCombinations);
+  };
+
+  const variationImageRemove = (index) => {
+    const updatedCombinations = [...combinations]; // Copy the current combinations state
+    updatedCombinations[index]["vimage"] = null; // Update the specific field
+    setCombinations(updatedCombinations);
+  };
+
+  const handleRemoveImage = (imagess, id) => {
+    const updatedImages = imagess.filter((image) => image.id !== id);
+    setSelectedImages(updatedImages);
+  };
+
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  const [isVideoDrawerOpen, setIsVideoDrawerOpen] = useState(false);
 
   const navigate = useNavigate();
 
+  const [variationImageIdx, setVariationImageIdx] = useState(null);
+
   const toggleDrawer = () => {
+    setVariationImageIdx(null);
     setIsDrawerOpen(!isDrawerOpen);
   };
 
-  const productImage = (id) => {
-    setImage(id);
+  //image
+  const handleVariationImage = (index) => {
+    setVariationImageIdx(index);
+    setIsDrawerOpen(!isDrawerOpen);
+  };
 
-    console.log(id);
+  const toggleVideoDrawer = () => {
+    setIsVideoDrawerOpen(!isVideoDrawerOpen);
+  };
+
+  const handleVideoDelete = () => {
+    setSelectedVideoName("");
   };
 
   // Update selected image when an image is selected
@@ -47,20 +115,14 @@ const CreateProduct = () => {
 
   const [stockLocationId, setStockLocationId] = useState("");
 
-  // const [businessId, setBusinessId] = useState("");
   const [price, setPrice] = useState("");
   const [stock, setStock] = useState("");
-  const [status, setStatus] = useState(0);
-
-  const [orderStatus, setOrderStatus] = useState(0);
-
+  const [status, setStatus] = useState("");
 
   const [code, setCode] = useState("");
   const [buyingPrice, setBuyingPrice] = useState("");
   const [discountAmount, setDiscountAmount] = useState("");
-
-  const [discountType, setDiscountType] = useState("fixed");
-
+  const [discountType, setDiscountType] = useState("");
 
   const [discountDate, setDiscountDate] = useState("");
 
@@ -85,20 +147,11 @@ const CreateProduct = () => {
 
   const handleLocationIdChange = (id) => {
     setStockLocationId(id);
-
-    console.log(stockLocationId);
   };
-
-  // const handleBusinessIdChange = (id) => {
-  //   setBusinessId(id);
-  //   // console.log('Updated category_id:', id);
-  // };
 
   const [isOpen, setIsOpen] = useState(false);
 
   // const [selectedFile, setSelectedFile] = useState(null);
-
-  const [images, setImages] = useState([]);
 
   const [errors, setErrors] = useState({});
 
@@ -108,7 +161,6 @@ const CreateProduct = () => {
   });
 
   const handleValueChange = (newValue) => {
-    console.log("newValue:", newValue);
     setValue(newValue);
   };
 
@@ -137,8 +189,6 @@ const CreateProduct = () => {
     fetchVariation();
   }, [token, clientId]);
 
-  // console.log(variationsData);
-
   const [variationIds, setVariationIds] = useState([]);
   const [variationValuesIds, setVariationValuesIds] = useState([]);
   const [hasVariations, setHasVariations] = useState(false);
@@ -150,9 +200,43 @@ const CreateProduct = () => {
       price: "",
       stock: "",
       discount: "",
+      discount_type: "fixed",
+      discount_date: "",
+      vimage: "",
       code: "",
     },
   ]);
+
+  // IF one variation selected then it will not show here again
+  // const [variationsDataFilter, setVariationsDataFilter] = useState([]);
+
+  // useEffect(() => {
+  //   // Function to filter unmatched variations
+  //   const getUnmatchedVariations = (variations, variationsData) => {
+  //     return variationsData.filter(data => {
+  //       // Check if this data matches any variation's selectedVariation.id
+  //       const matchingVariation = variations.find(
+  //         variation => variation.selectedVariation.id === data.id
+  //       );
+
+  //       if (!matchingVariation) return true; // No matching variation found
+
+  //       // Check if all selectedValues match the variation_values
+  //       const hasMismatch = matchingVariation.selectedValues.some(selectedValue => {
+  //         return !data.variation_values.some(
+  //           value => value.name.trim() === selectedValue.value.trim()
+  //         );
+  //       });
+
+  //       return hasMismatch; // Include in filter if mismatch exists
+  //     });
+  //   };
+
+  //   // Update the state with unmatched variations
+  //   const unmatchedVariations = getUnmatchedVariations(variations, variationsData);
+
+  //   setVariationsDataFilter(unmatchedVariations);
+  // }, [variations, variationsData]); // Dependencies
 
   const variationOptions = variationsData.map((variation) => ({
     id: variation.id,
@@ -164,24 +248,61 @@ const CreateProduct = () => {
     })),
   }));
 
+  // const [selectedVariationsOptions, setSelectedVariationsOptions] = useState([]);
+
+  // useEffect(() => {
+  //   const filteredVariations = variationsData.map((variation) => {
+  //     const isSelected = variations.filter(
+  //       (v) => v.selectedVariation.value !== variation.name.toLowerCase()
+  //     );
+  //   });
+
+  //   setSelectedVariationsOptions(isSelected);
+  // }, [variations, variationsData]);
+
   const handleCheckboxChange = (e) => {
     // e.preventDefault()
     setHasVariations(!hasVariations);
     setHasVariation(e.target.checked ? 1 : 0);
   };
 
-
-
   const handleVariationChange = (selectedOption, index) => {
-    const updatedVariations = [...variations];
-    updatedVariations[index].selectedVariation = selectedOption;
-    updatedVariations[index].options = getOptionsForVariation(
-      selectedOption.value
-    );
-    updatedVariations[index].selectedValues = []; // Reset selected values when changing variation
-    setVariations(updatedVariations);
+    const selectedVariationCheck = variations.find((variation, i) => {
+      return variation?.selectedVariation?.id === selectedOption?.id;
+    });
+    if (!selectedVariationCheck) {
+      // Fix Id's Prblems in the same field
+      setVariationIds((prevVariationId) => {
+        return prevVariationId.filter((_, i) => i !== index); // Remove the ID
+      });
 
-    // Do not setVariationIds yet. Only set it after values are selected.
+      const updatedVariations = [...variations];
+      updatedVariations[index].selectedVariation = selectedOption;
+      updatedVariations[index].options = getOptionsForVariation(
+        selectedOption.value
+      );
+      updatedVariations[index].selectedValues = [];
+      setVariations(updatedVariations);
+    }
+  };
+  console.log(variations);
+  console.log(variationIds);
+
+  const handleVariationDelete = (variation, index) => {
+    // Step 1: Remove the variation at the specified index
+    const deleteVariations = variations.filter((_, i) => i !== index);
+    setVariations(deleteVariations);
+
+    // Step 2: Remove variation ID if present
+    setVariationIds((prevVariationId) => {
+      const variationId = variations[index]?.selectedVariation?.id; // Safely access the ID
+      return prevVariationId.filter((id) => id !== variationId); // Remove the ID
+    });
+
+    // Step 3: Remove corresponding variation values
+    setVariationValuesIds((prevVariationValuesId) => {
+      return prevVariationValuesId.filter((_, i) => i !== index); // Remove values at the same index
+    });
   };
 
   const handleValuesChange = (selectedOptions, index) => {
@@ -200,10 +321,12 @@ const CreateProduct = () => {
     });
 
     // Once values are selected, we add the variation ID
-    setVariationIds((prevVariationId) => {
+    setVariationIds((prevVariationId, i) => {
       const variationId = updatedVariations[index].selectedVariation.id;
 
-      // Ensure the variationId is only added after selecting values
+      // if (prevVariationId) {
+      //   return prevVariationId.filter((id, i) => i !== index);
+      // }
       if (!prevVariationId.includes(variationId) && selectedValues.length > 0) {
         return [...prevVariationId, variationId]; // Append new id if values are selected
       }
@@ -218,32 +341,30 @@ const CreateProduct = () => {
     setCombinations(updatedCombinations); // Update state with new combinations
   };
 
-  const handleDelete = (index) => {
-    const updatedVariations = variations.filter((_, i) => i !== index);
-    setVariations(updatedVariations);
-    setVariationIds((prevIds) => prevIds.filter((_, i) => i !== index));
-    setVariationValuesIds((prevValues) =>
-      prevValues.filter((_, i) => i !== index)
-    );
+  const handleDelete = (combination, index) => {
+    const updatedVariations = combinations.filter((_, i) => i !== index);
+    setCombinations(updatedVariations);
   };
 
   const addVariation = () => {
-    setVariations([
-      ...variations,
-      {
-        selectedVariation: null,
-        options: [],
-        selectedValues: [],
-
-        buying_price: "",
-        price: "",
-        stock: "",
-        discount_date: "",
-        discount_type: "fixed",
-        discount: "",
-        code: "",
-      },
-    ]);
+    if (variations.length < variationsData.length) {
+      setVariations([
+        ...variations,
+        {
+          selectedVariation: null,
+          options: [],
+          selectedValues: [],
+          buying_price: "",
+          price: "",
+          stock: "",
+          discount_date: "",
+          discount_type: "fixed",
+          discount: "",
+          vimage: "",
+          code: "",
+        },
+      ]);
+    }
   };
 
   const getOptionsForVariation = (variationType) => {
@@ -279,11 +400,10 @@ const CreateProduct = () => {
             buying_price: "",
             price: "",
             stock: "",
-            discount_type: "fixed",
-
             discount_date: "",
-
+            discount_type: "",
             discount: "",
+            vimage: "",
             code: code,
           });
         } else {
@@ -296,9 +416,9 @@ const CreateProduct = () => {
               price: existingCombination.price || "",
               stock: existingCombination.stock || "",
               discount_date: existingCombination.discount_date || "",
-              discount_type: existingCombination.discount_type || "",
-
+              discount_type: existingCombination.discount_type || "fixed",
               discount: existingCombination.discount || "",
+              vimage: existingCombination.vimage || "",
               code: code,
             });
           });
@@ -315,14 +435,8 @@ const CreateProduct = () => {
     setCombinations(generateCombinations());
   }, [variations]);
 
-  // console.log('variationIds:' + variationIds);
-
-  // console.log('variationValuesIds:' + variationValuesIds);
-
-  // console.log(combinations);
-
-  const cacheKey = `products_${clientId}`;
-  const cacheTimeKey = `products_${clientId}_timestamp`;
+  const cacheKey = "allProducts";
+  const cacheTimeKey = "allProducts_timestamp";
 
   const [hasVariation, setHasVariation] = useState(0);
 
@@ -335,49 +449,46 @@ const CreateProduct = () => {
     formData.append("created_by", userId);
 
     formData.append("name", name);
-
-
-    formData.append("pre_order", orderStatus);
-
-
     formData.append("short_desc", short_desc);
     formData.append("category_id", category_id);
-    formData.append("image", image);
+    formData.append("pre_order", orderStatus);
+
+    formData.append("image", selectedImages[0]?.name || "");
+
     formData.append("price", price);
     formData.append("stock", stock);
     formData.append("code", code);
     formData.append("is_published", status);
     formData.append("has_variation", hasVariation);
 
-
     formData.append("discount_date", discountDate);
+
+    formData.append("discount_type", discountType);
+
+    formData.append(
+      "more_images",
+      selectedImages.map((image) => image.id).join(",")
+    );
+
+    formData.append("video", selectedVideoName);
 
     formData.append("discount_amount", discountAmount);
     formData.append("buying_price", buyingPrice);
     formData.append("is_discount", 0);
 
-
-    formData.append("stock_location_id", stockLocationId);
-
+    formData.append("stock_location_id", "2");
 
     formData.append("variation_ids", JSON.stringify(variationIds));
     formData.append("variation_values", JSON.stringify(variationValuesIds));
     formData.append("combinations", JSON.stringify(combinations));
 
-    // console.log(formData);
-
     for (let [key, value] of formData.entries()) {
       console.log(`${key}: ${value}`);
     }
 
-
-    setLoading(true); 
+    setLoading(true);
 
     try {
-
-
-
-
       const response = await axios.post(
         "https://admin.attireidyll.com/api/product/create",
         formData,
@@ -387,8 +498,6 @@ const CreateProduct = () => {
           },
         }
       );
-
-      console.log(response);
 
       if (response.data.status) {
         toast.success(response.data.message || "product upload successfully!", {
@@ -408,6 +517,7 @@ const CreateProduct = () => {
 
         setCategoryId("");
         setShort_desc("");
+        setOrderStatus("");
 
         setErrors({});
 
@@ -425,10 +535,8 @@ const CreateProduct = () => {
       toast.error(
         "An error occurred while saving the business. Please try again."
       );
-    }
-
-    finally {
-      setLoading(false); 
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -437,66 +545,123 @@ const CreateProduct = () => {
   // handle Svae .............
 
   return (
-    <div id="section-1" className="mx-4 md:mx-10">
-      <div className="w-full shadow-sm py-4 flex items-center pe-4 mb-4 rounded-md border border-gray-300">
-        <h2 className="px-4 text-xl font-semibold ">Create Product</h2>
-      </div>
+    <div id="section-1" className="">
+       <div className="rounded shadow mt-1 mb-5 py-2 px-4">
+                <h1 className="text-xl md:text-2xl text-nowrap font-semibold">
+                  Create Product
+                </h1>
+               
+              </div>
 
       <div id="section-1">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           {/* "Select Option" Div */}
-          <div className="md:col-span-1 order-1 md:order-2">
-            {/* <div className="mb-4 p-4 rounded-md shadow-sm transition duration-300 ease-in-out hover:border-blue-500 border border-gray-300">
-              <label
-                htmlFor="dropdown"
-                className="block text-sm font-semibold text-gray-800 mb-2"
-              >
-                Select Business
-              </label>
-              <ProductSelectedBusiness
-                onBusinessIdChange={handleBusinessIdChange}
-                className="rounded-lg border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500 py-2 px-3 transition duration-150 ease-in-out hover:border-blue-400"
-              />
-
-              {errors.business_ids && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.business_ids[0]}
-                </p>
-              )}
-            </div> */}
-
-             <div className="mb-2 px-4 py-3 h-28 bg-white flex flex-col border border-gray-300 rounded-md shadow-sm transition duration-300 ease-in-out hover:border-blue-400 ">
-                  <label
-                    htmlFor="product_status"
-                    className="block text-base font-semibold text-gray-800 mb-4"
-                  >
-                    Pre Order
-                  </label>
-                  <select
-                    name="product_status"
-                    id="product_status"
-                    className="form-select rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 py-2 px-3  focus:outline-none"
-                    onChange={(e) => setOrderStatus(e.target.value)}
-                  >
-                    <option value="0">Off</option>
-                    <option value="1">On</option>
-
-                  </select>
-                  <span className="text-red-600 text-sm error-text product_status_error"></span>
-                </div>
-
-            <div className=" p-4 rounded-md shadow-sm transition duration-300 ease-in-out hover:border-blue-500 border border-gray-300">
+          <div className="md:col-span-1 order-1 md:order-3">
+            {/* <div className="bg-white flex flex-col mb-5">
               <label
                 htmlFor="category_id"
-                className="block text-sm font-semibold text-gray-800 mb-2"
+                className="block text-sm font-medium text-gray-700 required"
               >
-                Warehouse Location
+                Stock Location
               </label>
               <StockLocation onLocationIdChange={handleLocationIdChange} />
               {errors.stock_location_id && (
                 <p className="text-red-500 text-sm">
                   {errors.stock_location_id[0]}
                 </p>
+              )}
+            </div> */}
+             <div className="mb-2 px-4 py-3 h-28 bg-white flex flex-col border border-gray-300 rounded-md shadow-sm transition duration-300 ease-in-out hover:border-teal-400 ">
+                <label
+                  htmlFor="product_status"
+                  className="block text-base font-semibold text-gray-800 mb-4"
+                >
+                  Pre Order
+                </label>
+                <select
+                  name="product_status"
+                  id="product_status"
+                  className="form-select text-sm rounded-md border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 py-2 px-3  focus:outline-none"
+                  onChange={(e) => setOrderStatus(e.target.value)}
+                >
+                  <option value="0">Off</option>
+                  <option value="1">On</option>
+                </select>
+                <span className="text-red-600 text-sm error-text product_status_error"></span>
+              </div>
+
+            {/* <div className="relative rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"> */}
+            <div className="relative rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full">
+              {/* Drawer Toggle Button */}
+
+              {selectedVideoName ? (
+                <div className="relative text-center">
+                  <video
+                    src={`https://pub-c053b04a208d402dac06392a3df4fd32.r2.dev/video/${selectedVideoName}`}
+                    width="350"
+                    height="450"
+                    autoPlay
+                    muted
+                    loop
+                    className="mb-2"
+                  >
+                    Your browser does not support the video tag.
+                  </video>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      handleVideoDelete();
+                    }}
+                    className="rounded w-full flex flex-col items-center cursor-pointer bg-white text-red-500 shadow py-3"
+                  >
+                    Remove
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      toggleVideoDrawer();
+                    }}
+                    className="rounded w-full flex flex-col items-center mt-2 cursor-pointer bg-white shadow py-3"
+                  >
+                    Change Video
+                  </button>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => {
+                    toggleVideoDrawer();
+                  }}
+                  className="rounded w-full flex flex-col items-center cursor-pointer bg-white  py-2"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="70"
+                    height="70"
+                    viewBox="0 0 80 80"
+                    fill="none"
+                    className="mb-2"
+                  >
+                    <circle cx="40" cy="40" r="40" fill="#D9D9D9" />
+                    <line
+                      x1="20"
+                      y1="40"
+                      x2="60"
+                      y2="40"
+                      stroke="white"
+                      strokeWidth="4"
+                    />
+                    <line
+                      x1="40"
+                      y1="20"
+                      x2="40"
+                      y2="60"
+                      stroke="white"
+                      strokeWidth="4"
+                    />
+                  </svg>
+                  <div className="mt-2 text-center">Add Video</div>
+                </button>
               )}
             </div>
           </div>
@@ -505,7 +670,7 @@ const CreateProduct = () => {
 
           <form
             onSubmit={handleSave}
-            className="md:col-span-2 order-2 md:order-1"
+            className="md:col-span-3 order-2 md:order-1"
           >
             <div className="mb-4">
               <label
@@ -514,27 +679,15 @@ const CreateProduct = () => {
               >
                 Product Name
               </label>
-              {/* <input
-                name="name"
-                type="text"
-                className="mt-1 block w-full rounded-3 shadow-[0_3px_10px_rgb(0,0,0,0.2)] hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 
-             0"
-                id="Product_name"
-                value={name}
-                placeholder="Product Name"
-                onChange={(e) => setName(e.target.value)}
-              /> */}
-
               <input
                 name="name"
                 type="text"
+                className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full mt-1"
                 id="Product_name"
                 value={name}
                 placeholder="Product Name"
                 onChange={(e) => setName(e.target.value)}
-                className="mt-1 block w-full rounded-md border border-gray-300 p-3 shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition hover:border-blue-500 placeholder-gray-400"
               />
-
               {errors.name && (
                 <p className="text-red-500 text-sm">{errors.name[0]}</p>
               )}
@@ -548,28 +701,17 @@ const CreateProduct = () => {
               >
                 Short Description
               </label>
-              {/* <textarea
-                value={short_desc}
-                onChange={(e) => setShort_desc(e.target.value)}
-                name="short_desc"
-                id="short_desc"
-                className="mt-1 w-full rounded-3 h-36 p-2 shadow-[0_3px_10px_rgb(0,0,0,0.2)] hover:border-blue-500 focus:outline-none  focus:ring-blue-500"
-              /> */}
-
               <textarea
                 value={short_desc}
                 onChange={(e) => setShort_desc(e.target.value)}
                 name="short_desc"
                 id="short_desc"
-                placeholder="Enter a brief description..."
-                className="mt-1 w-full h-36 p-3 border border-gray-300 rounded-lg shadow-sm hover:border-blue-500 focus:outline-none focus:ring-blue-500 transition duration-200 ease-in-out"
+                className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full mt-1 h-36"
               />
             </div>
             {/* {errors.short_desc && (
               <p className="text-red-500 text-sm">{errors.short_desc[0]}</p>
             )} */}
-
-            {/* Image Upload Start */}
 
             <div className="mb-4 " id="">
               <label
@@ -581,27 +723,31 @@ const CreateProduct = () => {
 
               <div className="relative">
                 {/* Drawer Toggle Button */}
-                <button
-                  type="button"
-                  onClick={toggleDrawer}
-                  className="rounded w-full flex flex-col items-center cursor-pointer bg-white shadow-[0_3px_10px_rgb(0,0,0,0.2)] hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 py-3"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="70"
-                    height="70"
-                    viewBox="0 0 80 80"
-                    fill="none"
-                    className="mb-2"
-                  >
-                    {image ? (
-                      <image
-                        href={`https://admin.attireidyll.com/public/storage/product/${image}`}
-                        width="90"
-                        height="90"
-                      />
-                    ) : (
+                <div className="w-full flex flex-col items-center cursor-pointer bg-white rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 mt-1">
+                  <div className="flex flex-wrap gap-2 justify-center items-center">
+                    {selectedImages.length > 0 &&
+                      selectedImages.map((img, index) => (
+                        <div key={index} className="relative group">
+                          <img
+                            src={`https://admin.attireidyll.com/public/storage/product/${img.name}`}
+                            alt={`Selected ${index + 1}`}
+                            className="rounded border shadow-sm h-40 w-auto"
+                          />
+                          {/* Remove Image */}
+                          <button
+                            type="button"
+                            className="absolute -top-1 -right-1 flex items-center justify-center bg-red-600 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                            onClick={() =>
+                              handleRemoveImage(selectedImages, img.id)
+                            }
+                          >
+                            <MdClose />
+                          </button>
+                        </div>
+                      ))}
+                    <div className="text-center">
                       <svg
+                        onClick={toggleDrawer}
                         xmlns="http://www.w3.org/2000/svg"
                         width="70"
                         height="70"
@@ -627,73 +773,67 @@ const CreateProduct = () => {
                           strokeWidth="4"
                         />
                       </svg>
-                    )}
-                  </svg>
-
-                  <div className="mt-2 text-center">Add Image</div>
-                </button>
+                      <span onClick={toggleDrawer} className="mt-2 text-center">
+                        Add Image
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </div>
               {errors.image && (
                 <p className="text-red-500 text-sm mx-4">{errors.image[0]}</p>
               )}
             </div>
-
-            {/* Image Upload End */}
-
-            {/* Product Category & Product Status Start*/}
             <div
-              className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"
+              className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 "
               id="section-3"
             >
-              <div>
-                <div className="mb-2 px-4 py-3 h-28 bg-white flex flex-col border border-gray-300 rounded-md shadow-sm transition duration-300 ease-in-out hover:border-blue-400 ">
-                  <label
-                    htmlFor="category_id"
-                    className="block text-base font-semibold text-gray-800 mb-4"
-                  >
-                    Product Category
-                  </label>
-                  <CategoryItems onCategoryIdChange={handleCategoryIdChange} />
-                  {errors.category_id && (
-                    <p className="text-red-600 text-sm ">
-                      {errors.category_id[0]}
-                    </p>
-                  )}
-                </div>
+              <div className="mb-3 px-4 pt-2 pb-4 bg-white flex flex-col rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full">
+                <label
+                  htmlFor="category_id"
+                  className="block text-sm font-medium text-gray-700 required"
+                >
+                  Product Category
+                </label>
+                <CategoryItems onCategoryIdChange={handleCategoryIdChange} />
+                {errors.category_id && (
+                  <p className="text-red-500 text-sm">
+                    {errors.category_id[0]}
+                  </p>
+                )}
               </div>
 
               <div>
-                <div className="mb-2 px-4 py-3 h-28 bg-white flex flex-col border border-gray-300 rounded-md shadow-sm transition duration-300 ease-in-out hover:border-blue-400 ">
+                <div className="mb-3 px-4 pt-2 pb-4 bg-white flex flex-col rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full">
                   <label
                     htmlFor="product_status"
-                    className="block text-base font-semibold text-gray-800 mb-4"
+                    className="block text-sm font-medium text-gray-700 required"
                   >
                     Product Status
                   </label>
                   <select
                     name="product_status"
                     id="product_status"
-                    className="form-select rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 py-2 px-3  focus:outline-none"
+                    className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
                     onChange={(e) => setStatus(e.target.value)}
                   >
                     <option value="1">On</option>
                     <option value="0">Off</option>
                   </select>
-                  <span className="text-red-600 text-sm error-text product_status_error"></span>
+                  <span className="text-danger error-text product_status_error"></span>
                 </div>
               </div>
             </div>
-            {/* Product Category & Product Status End */}
 
             {/* variation code start */}
 
-            <div className="col-span-12 shadow-sm border border-gray-300 rounded-md transition duration-300 ease-in-out hover:border-blue-400 ">
-              <div className="mb-3 py-4 shadow bg-white flex-shrink-0">
+            <div className="col-span-12 mb-4 rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 ">
+              <div className="py-4 shadow bg-white flex-shrink-0">
                 <div className="flex justify-between mb-2">
-                  <div className="mx-4 my-2 text-lg font-semibold">
+                  <div className="px-4 text-lg font-semibold">
                     Price, Stock, Code
                   </div>
-                  <div className="mx-4 my-2 flex items-center">
+                  <div className="px-4 flex items-center">
                     <input
                       type="checkbox"
                       className="toggle toggle-info scale-75"
@@ -706,364 +846,481 @@ const CreateProduct = () => {
                 </div>
 
                 {!hasVariations && (
-                  <div className="container-fluid">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 mx-5 items-center">
-                      <div className="col-span-1">
-                        <div className="mb-3">
-                          <label className="form-label">Cost Price</label>
+                  <>
+                    <div className="container-fluid">
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 mx-5 items-center">
+                        <div className="col-span-1">
+                          <div className="mb-3">
+                            <label className="form-label">Cost Price</label>
+                            <input
+                              type="number"
+                              className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
+                              id="price"
+                              placeholder="Enter cost price"
+                              aria-label="Price"
+                              onChange={(e) => setBuyingPrice(e.target.value)}
+                            />
+
+                            {errors.buying_price && (
+                              <p className="text-red-500 text-sm">
+                                {errors.buying_price[0]}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="mb-2">
+                          <label
+                            htmlFor="stock"
+                            className="block text-sm font-medium text-gray-700"
+                          >
+                            Stock
+                          </label>
                           <input
                             type="number"
                             className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
-                            id="price"
-                            placeholder="Enter cost price"
-                            aria-label="Price"
-                            onChange={(e) => setBuyingPrice(e.target.value)}
+                            id="stock"
+                            placeholder="Enter stock"
+                            aria-label="Stock"
+                            onChange={(e) => setStock(e.target.value)}
                           />
-
-                          {errors.buying_price && (
+                          {errors.stock && (
                             <p className="text-red-500 text-sm">
-                              {errors.buying_price[0]}
+                              {errors.stock[0]}
                             </p>
                           )}
                         </div>
-                      </div>
 
-                      <div className="mb-2">
-                        <label
-                          htmlFor="stock"
-                          className="block text-sm font-medium text-gray-700"
-                        >
-                          Stock
-                        </label>
-                        <input
-                          type="number"
-                          className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
-                          id="stock"
-                          placeholder="Enter stock"
-                          aria-label="Stock"
-                          onChange={(e) => setStock(e.target.value)}
-                        />
-                        {errors.stock && (
-                          <p className="text-red-500 text-sm">
-                            {errors.stock[0]}
-                          </p>
-                        )}
-                      </div>
-
-                      <div className="mb-2">
-                        <label
-                          htmlFor="code"
-                          className="block text-sm font-medium text-gray-700"
-                        >
-                          Code
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
-                          id="code"
-                          placeholder="Enter code"
-                          aria-label="Code"
-                          value={code} // Set the input field value to the generated code
-                          onChange={(e) => setCode(e.target.value)}
-                        />
+                        <div className="mb-2">
+                          <label
+                            htmlFor="code"
+                            className="block text-sm font-medium text-gray-700"
+                          >
+                            Code
+                          </label>
+                          <input
+                            type="text"
+                            className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
+                            id="code"
+                            placeholder="Enter code"
+                            aria-label="Code"
+                            value={code} // Set the input field value to the generated code
+                            onChange={(e) => setCode(e.target.value)}
+                          />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                )}
-              </div>
 
-              {hasVariations && (
-                <div className="mb-4 py-4 bg-white shadow">
-                  <div className="mx-5">
-                    {variations.map((variation, index) => (
-                      <div key={index} className="">
-                        <div className="mb-6">
-                          <div className="flex gap-4">
-                            <div className="flex-1">
-                              <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Select Variation
+                    <div className=" shadow-sm rounded-md hover:border-blue-500 focus:outline-none  focus:ring-blue-500 bg-white">
+                      <div className="card-body p-4" id="section-7">
+                        <h5 className="text-lg font-semibold">Discount</h5>
+
+                        <div className="grid grid-cols-1 gap-3 md:grid-cols-4 items-center">
+                          <div className="mb-2">
+                            <label
+                              htmlFor="Selling price"
+                              className="block text-sm font-medium text-gray-700"
+                            >
+                              Selling Price
+                            </label>
+                            <input
+                              type="number"
+                              className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
+                              id="price"
+                              placeholder="Enter price"
+                              aria-label="Price"
+                              onChange={(e) => setPrice(e.target.value)}
+                            />
+                            {errors.price && (
+                              <p className="text-red-500 text-sm">
+                                {errors.price[0]}
+                              </p>
+                            )}
+                          </div>
+
+                          <div className="col-span-1">
+                            <div className="mb-3">
+                              <label className="form-label">
+                                Discount Amount
                               </label>
-                              <Select
-                                options={variationOptions}
-                                className="rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300"
-                                placeholder="Select a variation"
-                                isSearchable
-                                onChange={(selectedOption) =>
-                                  handleVariationChange(selectedOption, index)
+                              <input
+                                type="number"
+                                name="discount_value"
+                                defaultValue=""
+                                className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
+                                onChange={(e) =>
+                                  setDiscountAmount(e.target.value)
                                 }
-                                value={variation.selectedVariation}
                               />
                             </div>
+                          </div>
 
-                            <div className="flex-1">
-                              <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Select Values
+                          <div className="col-span-1">
+                            <div className="mb-3">
+                              <label className="form-label">
+                                Percent Or Fixed
                               </label>
-                              <Select
-                                id="variation_value_ids"
-                                options={variation.options || []}
-                                className="rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300"
-                                placeholder="Select values"
-                                isSearchable
-                                isMulti
-                                onChange={(selectedOptions) =>
-                                  handleValuesChange(selectedOptions, index)
+                              <select
+                                name="discount_type"
+                                className="h-10 form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
+                                onChange={(e) =>
+                                  setDiscountType(e.target.value)
                                 }
-                                value={variation.selectedValues}
+                                defaultValue="fixed"
+                              >
+                                <option value="fixed">Fixed</option>
+                                <option value="percent">Percent</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div className="col-span-1">
+                            <div className="mb-3">
+                              <label className="form-label">
+                                Discount Date
+                              </label>
+                              <input
+                                type="date"
+                                onClick={(e) => e.target.showPicker()}
+                                className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
+                                placeholder="Enter discount"
+                                onChange={(e) =>
+                                  setDiscountDate(e.target.value)
+                                }
                               />
                             </div>
                           </div>
                         </div>
                       </div>
-                    ))}
+                    </div>
+                  </>
+                )}
+                {hasVariations && (
+                  <div className="mb-4 py-4 bg-white shadow">
+                    <div className="mx-5">
+                      {variations.map((variation, index) => (
+                        <div key={index} className="">
+                          <div className="mb-6">
+                            <div className="flex gap-4">
+                              <div className="flex-1">
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                  Select Variation
+                                </label>
+                                <div className="flex gap-2">
+                                  <Select
+                                    options={variationOptions}
+                                    className="form-control rounded-lg border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 w-full"
+                                    placeholder="Select a variation"
+                                    isSearchable
+                                    onChange={(selectedOption) =>
+                                      handleVariationChange(
+                                        selectedOption,
+                                        index
+                                      )
+                                    }
+                                    value={variation.selectedVariation}
+                                  />
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      handleVariationDelete(variation, index)
+                                    }
+                                    className="text-gray-500 hover:text-red-700 focus:outline-none"
+                                  >
+                                    X
+                                  </button>
+                                </div>
+                              </div>
 
-                    <button
-                      type="button"
-                      onClick={addVariation}
-                      className="text-blue-500 hover:text-blue-700 focus:outline-none mb-6"
-                    >
-                      + Add another variation
-                    </button>
-                  </div>
-                  <div className="mx-4 mb-6 overflow-x-auto">
-                    <div className="border rounded p-2 bg-gray-100">
-                      <table className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-gray-50">
-                          <tr>
-                            <th className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                              Variation & Value
-                            </th>
-                            <th className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                              Costing Price
-                            </th>
-                            <th className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                              selling Price
-                            </th>
-                            <th className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                              Stock
-                            </th>
-                            <th className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                              Discount
-                            </th>
-                            <th className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Fixed or %
-                            </th>
-
-                            <th className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                              Discount Date
-                            </th>
-                            <th className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                              Code
-                            </th>
-                            <th className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                              Remove
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
-                          {combinations.map((combination, combIndex) => (
-                            <tr key={`comb-${combIndex}`}>
-                              <td className="px-4 py-4 whitespace-nowrap">
-                                {combination.values.map((value, i) => (
-                                  <span key={i} className="block">
-                                    {value.label}
-                                  </span>
-                                ))}
-                              </td>
-
-                              <td className="px-2 py-4 whitespace-nowrap">
-                                <input
+                              <div className="flex-1">
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                  Select Values
+                                </label>
+                                <Select
+                                  id="variation_value_ids"
+                                  options={variation.options || []}
+                                  className="form-control rounded-lg border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 w-full"
+                                  placeholder="Select values"
+                                  isSearchable
                                   required
-                                  type="number"
-                                  value={combination.buying_price || ""}
-                                  onChange={(e) =>
-                                    handleInputChange(
-                                      e,
-                                      combIndex,
-                                      "buying_price"
-                                    )
+                                  isMulti
+                                  onChange={(selectedOptions) =>
+                                    handleValuesChange(selectedOptions, index)
                                   }
-                                  className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2  w-[120px]"
-                                  placeholder="cost price"
+                                  value={variation.selectedValues}
                                 />
-                              </td>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
 
-                              <td className="px-2 py-4 whitespace-nowrap">
-                                <input
-                                  required
-                                  type="number"
-                                  value={combination.price || ""}
-                                  onChange={(e) =>
-                                    handleInputChange(e, combIndex, "price")
-                                  }
-                                  className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2  w-[120px]"
-                                  placeholder="price"
-                                />
-                              </td>
-                              <td className="px-2 py-4 whitespace-nowrap">
-                                <input
-                                  required
-                                  type="number"
-                                  value={combination.stock || ""}
-                                  onChange={(e) =>
-                                    handleInputChange(e, combIndex, "stock")
-                                  }
-                                  className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-[120px]"
-                                  placeholder="stock"
-                                />
-                              </td>
-
-                              <td className="px-2 py-4 whitespace-nowrap">
-                                <input
-                                  type="number"
-                                  value={combination.discount || ""}
-                                  onChange={(e) =>
-                                    handleInputChange(e, combIndex, "discount")
-                                  }
-                                  className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-[120px]"
-                                  placeholder="discount"
-                                />
-                              </td>
-
-                              <td className="px-2 py-4 whitespace-nowrap">
-                                    <select
-                                  name=""
-                                  className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-[120px]"
-                                  onChange={(e) =>  handleInputChange(e, combIndex, "discount_type")}
-                                >
-                                  <option selected value="fixed">Fixed</option>
-                                  <option value="percent">Percent</option>
-
-                                </select>
-                              </td>
-
-                              <td className="px-2 py-4 whitespace-nowrap">
-                                <input
-                                  type="date"
-                                  value={combination.discount_date || ""}
-                                  onClick={(e) => e.target.showPicker()}
-                                  onChange={(e) =>
-                                    handleInputChange(
-                                      e,
-                                      combIndex,
-                                      "discount_date"
-                                    )
-                                  }
-                                  className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-[120px]"
-                                  placeholder="date"
-                                />
-                              </td>
-
-                              <td className="px-2 py-4 whitespace-nowrap">
-                                <input
-                                  type="text"
-                                  value={code}
-                                  onChange={(e) =>
-                                    handleInputChange(e, combIndex, "code")
-                                  }
-                                  className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-[120px]"
-                                  placeholder="Enter code"
-                                />
-                              </td>
-                              <td className="px-2 py-4 whitespace-nowrap">
-                                <button
-                                  onClick={() => handleDelete(combIndex)}
-                                  className="text-red-500 hover:text-red-700 focus:outline-none"
-                                >
-                                  Remove
-                                </button>
-                              </td>
+                      <button
+                        type="button"
+                        onClick={addVariation}
+                        className="text-blue-500 hover:text-blue-700 focus:outline-none mb-6"
+                      >
+                        + Add another variation
+                      </button>
+                    </div>
+                    <div className="mx-4 mb-6 overflow-x-auto">
+                      <div className="border rounded p-2 bg-gray-100">
+                        <table className="min-w-full divide-y divide-gray-200">
+                          <thead className="bg-gray-50">
+                            <tr className="text-center">
+                              <th className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Variation & Value
+                              </th>
+                              <th className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Costing Price
+                              </th>
+                              <th className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                selling Price
+                              </th>
+                              <th className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Stock
+                              </th>
+                              <th className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Image
+                              </th>
+                              <th className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Discount
+                              </th>
+                              <th className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Discount Type
+                              </th>
+                              <th className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Discount Date
+                              </th>
+                              <th className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Code
+                              </th>
+                              <th className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Remove
+                              </th>
                             </tr>
-                          ))}
-                        </tbody>
-                      </table>
+                          </thead>
+                          <tbody className="bg-white divide-y divide-gray-200">
+                            {combinations.map((combination, combIndex) => (
+                              <tr key={`comb-${combIndex}`}>
+                                <td className="capitalize text-center flex gap-2 items-center py-4">
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      handleDelete(combination, combIndex)
+                                    }
+                                    className="text-red-500 hover:text-red-700 focus:outline-none"
+                                  >
+                                    <RiDeleteBinLine />
+                                  </button>
+                                  <div className="whitespace-nowrap">
+                                    {combination.values.map((value, i) => (
+                                      <span key={i} className="block">
+                                        {value.label}
+                                      </span>
+                                    ))}
+                                  </div>
+                                </td>
+                                <td className="px-2 py-4 whitespace-nowrap">
+                                  <input
+                                    required
+                                    type="number"
+                                    min="0"
+                                    value={combination.buying_price || ""}
+                                    onChange={(e) =>
+                                      handleInputChange(
+                                        e,
+                                        combIndex,
+                                        "buying_price"
+                                      )
+                                    }
+                                    className="form-control rounded-lg border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-[100px]"
+                                    placeholder="cost price"
+                                  />
+                                </td>
+
+                                <td className="px-2 py-4 whitespace-nowrap">
+                                  <input
+                                    required
+                                    type="number"
+                                    min="0"
+                                    value={combination.price || ""}
+                                    onChange={(e) =>
+                                      handleInputChange(e, combIndex, "price")
+                                    }
+                                    className="form-control rounded-lg border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-[100px]"
+                                    placeholder="price"
+                                  />
+                                </td>
+                                <td className="px-2 py-4 whitespace-nowrap">
+                                  <input
+                                    required
+                                    type="number"
+                                    min="0"
+                                    value={combination.stock || ""}
+                                    onChange={(e) =>
+                                      handleInputChange(e, combIndex, "stock")
+                                    }
+                                    className="form-control rounded-lg border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-[100px]"
+                                    placeholder="stock"
+                                  />
+                                </td>
+
+                                <td className="whitespace-nowrap">
+                                  {combination.vimage ? (
+                                    <div className="relative group">
+                                      <img
+                                        src={`https://admin.attireidyll.com/public/storage/product/${combination.vimage}`}
+                                        className="rounded border max-h-20"
+                                      />
+                                      <button
+                                        type="button"
+                                        className="absolute -top-1 -right-1 flex items-center justify-center bg-red-600 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                                        onClick={() =>
+                                          handleRemoveImage(
+                                            selectedImages,
+                                            img.id
+                                          )
+                                        }
+                                      >
+                                        <MdClose />
+                                      </button>
+                                    </div>
+                                  ) : (
+                                    <div
+                                      onClick={() => {
+                                        handleVariationImage(combIndex);
+                                      }}
+                                      className="flex flex-col items-center justify-center"
+                                    >
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="30"
+                                        height="30"
+                                        viewBox="0 0 80 80"
+                                        fill="none"
+                                      >
+                                        <circle
+                                          cx="40"
+                                          cy="40"
+                                          r="40"
+                                          fill="#D9D9D9"
+                                        />
+                                        <line
+                                          x1="20"
+                                          y1="40"
+                                          x2="60"
+                                          y2="40"
+                                          stroke="white"
+                                          strokeWidth="4"
+                                        />
+                                        <line
+                                          x1="40"
+                                          y1="20"
+                                          x2="40"
+                                          y2="60"
+                                          stroke="white"
+                                          strokeWidth="4"
+                                        />
+                                      </svg>
+                                      <span>Add Image</span>
+                                    </div>
+                                  )}
+                                </td>
+
+                                <td className="px-2 py-4 whitespace-nowrap">
+                                  <input
+                                    type="number"
+                                    min="0"
+                                    value={combination.discount || ""}
+                                    onChange={(e) =>
+                                      handleInputChange(
+                                        e,
+                                        combIndex,
+                                        "discount"
+                                      )
+                                    }
+                                    className="form-control rounded-lg border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-[100px]"
+                                    placeholder="discount"
+                                  />
+                                </td>
+                                <td className="px-2 py-4 whitespace-nowrap">
+                                  <select
+                                    name="discount_type"
+                                    id="discount_type"
+                                    onChange={(e) =>
+                                      handleInputChange(
+                                        e,
+                                        combIndex,
+                                        "discount_type"
+                                      )
+                                    }
+                                    defaultValue={
+                                      combination.discount || "fixed"
+                                    }
+                                    className="form-control rounded-sm shadow-sm border border-gray-300 px-2 py-3 w-[120px]"
+                                  >
+                                    <option value="fixed">Fixed</option>
+                                    <option value="percent">
+                                      Percentage %
+                                    </option>
+                                  </select>
+                                </td>
+
+                                <td className="px-2 py-4 whitespace-nowrap">
+                                  <input
+                                    type="date"
+                                    value={combination.discount_date || ""}
+                                    onClick={(e) => e.target.showPicker()}
+                                    onChange={(e) =>
+                                      handleInputChange(
+                                        e,
+                                        combIndex,
+                                        "discount_date"
+                                      )
+                                    }
+                                    className="form-control rounded-lg border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-[100px]"
+                                    placeholder="date"
+                                  />
+                                </td>
+
+                                <td className="px-2 py-4 whitespace-nowrap">
+                                  <input
+                                    type="text"
+                                    value={code}
+                                    onChange={(e) =>
+                                      handleInputChange(e, combIndex, "code")
+                                    }
+                                    className="form-control rounded-lg border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-[100px]"
+                                    placeholder="Enter code"
+                                  />
+                                </td>
+                                <td className="px-2 py-4 whitespace-nowrap">
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      handleDelete(combination, combIndex)
+                                    }
+                                    className="text-red-500 hover:text-red-700 focus:outline-none"
+                                  >
+                                    Remove
+                                  </button>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
                   </div>
-                </div>
-              )}
-
-              {!hasVariations && (
-                <div className=" shadow-sm rounded-md hover:border-blue-500 focus:outline-none  focus:ring-blue-500 bg-white">
-                  <div className="card-body p-4" id="section-7">
-                    <h5 className="mb-4 text-lg font-semibold">
-                      Product Costing / Discount
-                    </h5>
-
-                    <div className="grid grid-cols-1 gap-3 md:grid-cols-4 items-center">
-                      <div className="mb-2">
-                        <label
-                          htmlFor="Selling price"
-                          className="block text-sm font-medium text-gray-700"
-                        >
-                          Selling Price
-                        </label>
-                        <input
-                          type="number"
-                          className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
-                          id="price"
-                          placeholder="Enter price"
-                          aria-label="Price"
-                          onChange={(e) => setPrice(e.target.value)}
-                        />
-                        {errors.price && (
-                          <p className="text-red-500 text-sm">
-                            {errors.price[0]}
-                          </p>
-                        )}
-                      </div>
-
-                     
-
-                      <div className="col-span-1">
-                        <div className="mb-3">
-                          <label className="form-label">Discount Amount</label>
-                          <input
-                            type="number"
-                            name="discount_value"
-                            defaultValue=""
-                            className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
-                            onChange={(e) => setDiscountAmount(e.target.value)}
-                          />
-                        </div>
-                      </div>
-
-                      <div className="col-span-1">
-                        <div className="mb-3">
-                          <label className="form-label">Percent Or Fixed</label>
-                          <select
-                            name="discount_type"
-                            className="py-[9px] rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
-                            onChange={(e) => setDiscountType(e.target.value)}
-                          >
-                            <option selected value="fixed">Fixed</option>
-                            <option  value="percent">Percent</option>
-
-                          </select>
-                        </div>
-                      </div>
-                      <div className="col-span-1">
-                        <div className="mb-3">
-                          <label className="form-label">Discount Date</label>
-                          <input
-                            type="date"
-                            onClick={(e) => e.target.showPicker()}
-                            className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
-                            placeholder="Enter discount"
-                            onChange={(e) => setDiscountDate(e.target.value)}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
 
             {/* variation code end */}
 
             <div className="flex justify-end mt-4">
               <button
-                className="btn hover:bg-[#444CB4] bg-[#28DEFC] text-white px-5 text-lg"
+                className="btn bg-[#444CB4] hover:bg-[#28DEFC] text-white px-5 text-lg"
                 type="submit"
               >
                 {loading ? (
@@ -1072,10 +1329,10 @@ const CreateProduct = () => {
                       className="animate-spin text-white"
                       size={20}
                     />
-                    <span className="px-2">Uploading...</span>
+                    <span className="px-2">Saving...</span>
                   </div>
                 ) : (
-                  <>Upload</>
+                  <>save</>
                 )}
               </button>
             </div>
@@ -1086,11 +1343,25 @@ const CreateProduct = () => {
 
         <ImageDrawer
           isOpen={isDrawerOpen}
+          funSelectedImages={funSelectedImages}
           toggleDrawer={toggleDrawer}
           productImage={productImage}
+          variationImageIdx={variationImageIdx && variationImageIdx}
+          variationImageSelect={variationImageSelect}
         />
 
         {/* end Bottom Drawer */}
+
+        {/* Bottom video Drawer */}
+
+        <VideoDrawer
+          onVideoSelect={handleVideoSelect} // Pass the handler to VideoDrawer
+          isOpen={isVideoDrawerOpen}
+          toggleDrawer={toggleVideoDrawer}
+          // productImage={productImage}
+        />
+
+        {/* end Bottom video Drawer */}
       </div>
     </div>
   );
