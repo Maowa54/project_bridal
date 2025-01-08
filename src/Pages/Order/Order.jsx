@@ -177,7 +177,7 @@ const Order = () => {
           );
 
           // Remove the deleted SMS from the state
-          // setDisplayOrders((prevSms) => prevSms.filter((sms) => sms.id !== id));
+          setDisplayOrders((prevSms) => prevSms.filter((sms) => sms.id !== id));
         } else {
           Swal.fire(
             "Error!",

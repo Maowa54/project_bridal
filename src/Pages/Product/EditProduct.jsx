@@ -67,7 +67,7 @@ const EditProduct = () => {
   const [orderStatus, setOrderStatus] = useState(
     editProduct?.pre_order?.toString() || "0" // Ensure it's a string
   );
-  const [status, setStatus] = useState(editProduct?.status || "");
+  const [status, setStatus] = useState(editProduct?.is_published || "");
 
   const [short_desc, setShort_desc] = useState(editProduct?.short_desc || "");
   const [category_id, setCategoryId] = useState(editProduct?.category_id || "");
@@ -805,7 +805,7 @@ const EditProduct = () => {
                       {selectedImages.map((img, index) => (
                         <div key={index} className="relative group">
                           <img
-                            src={`https://admin.attireidyll.com/public/storage/product/${img.name}`}
+                            src={`https://pub-c053b04a208d402dac06392a3df4fd32.r2.dev/Attire_Idyll/image/${img.name}`}
                             alt={`Selected ${(index, img.id)}`}
                             className="rounded border shadow-sm h-40 w-auto"
                           />

@@ -169,7 +169,7 @@ const Order = () => {
                               </p>
                             </div>
                             <img
-                              src={`https://admin.attireidyll.com/public/storage/product/${product?.image}`}
+                              src={`https://pub-c053b04a208d402dac06392a3df4fd32.r2.dev/Attire_Idyll/image/${product.image}`}
                               className="size-16 md:size-20"
                               alt={product?.name}
                             />
@@ -361,30 +361,28 @@ const Order = () => {
 
                 {/* Action Buttons */}
                 <div className="text-center mt-6 mb-4">
-                <button
-                  type="submit"
-                  className="hidden md:block mx-auto   bg-gradient-to-r from-teal-500 to-teal-700 text-white font-semibold py-2 px-6 text-lg rounded-md w-full"
-                  disabled={loading} // Disable button while loading
-                  onClick={handleSave}
-                >
-                  {loading ? (
-                    <div className="flex justify-center w-full">
-                      <ImSpinner10
-                        className="animate-spin text-white"
-                        size={20}
-                      />
-                      <span className="px-2">Processing...</span>
-                    </div>
-                  ) : (
-                    <>
-                      <span className="me-2">Place Order</span>
-                      <i className="fas fa-shopping-bag text-white text-lg animate-bounce"></i>
-                    </>
-                  )}
-                </button>
+                  <button
+                    type="submit"
+                    className="hidden md:block mx-auto   bg-gradient-to-r from-teal-500 to-teal-700 text-white font-semibold py-2 px-6 text-lg rounded-md w-full"
+                    disabled={loading} // Disable button while loading
+                    onClick={handleSave}
+                  >
+                    {loading ? (
+                      <div className="flex justify-center w-full">
+                        <ImSpinner10
+                          className="animate-spin text-white"
+                          size={20}
+                        />
+                        <span className="px-2">Processing...</span>
+                      </div>
+                    ) : (
+                      <>
+                        <span className="me-2">Place Order</span>
+                        <i className="fas fa-shopping-bag text-white text-lg animate-bounce"></i>
+                      </>
+                    )}
+                  </button>
                 </div>
-
-                
               </form>
               <div
                 className="gap-2 mx-auto  md:hidden fixed flex flex-col items-center justify-center bottom-0 w-full bg-gradient-to-t from-gray-50 to-white shadow-lg z-30 

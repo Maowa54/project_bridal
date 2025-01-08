@@ -167,7 +167,7 @@ export default function ImageDrawer({ isOpen, toggleDrawer, productImage }) {
     onClick={() => handleImageSelect(image.id)} // Pass image.id to handleImageSelect
   >
     <img
-      src={`https://admin.attireidyll.com/public/storage/product/${image.name}`}
+      src={`https://pub-c053b04a208d402dac06392a3df4fd32.r2.dev/Attire_Idyll/image/${image.name}`}
       alt="img"
       className="h-full w-full object-cover"
     />
@@ -266,7 +266,7 @@ export default function ImageDrawer({ isOpen, toggleDrawer, productImage }) {
                       onClick={() => handleImageSelect(image.id)} // Pass image.id to handleImageSelect
                     >
                       <img
-                        src={`https://admin.attireidyll.com/public/storage/product/${image.name}`}
+                        src={`https://pub-c053b04a208d402dac06392a3df4fd32.r2.dev/Attire_Idyll/image/${image.name}`}
                         alt="img"
                         className="h-full w-full object-cover"
                       />

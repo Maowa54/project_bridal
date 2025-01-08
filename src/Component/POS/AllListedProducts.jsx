@@ -209,7 +209,7 @@ const ProductList = ({
                       className="flex  md:flex-row xl:flex-row  items-center gap-1 p-1 shadow-lg bg-white    rounded-lg cursor-pointer"
                     >
                       <img
-                        src={`https://admin.attireidyll.com/public/storage/product/${product.image}`}
+                        src={`https://pub-c053b04a208d402dac06392a3df4fd32.r2.dev/Attire_Idyll/image/${product.image}`}
                         alt={product.name}
                         className="w-[50%] rounded-md"
                       />
@@ -240,7 +240,7 @@ const ProductList = ({
                       className="flex p-1  md:flex-row xl:flex-row  items-center gap-1 shadow-lg bg-white    rounded-lg cursor-pointer"
                     >
                       <img
-                        src={`https://admin.attireidyll.com/public/storage/product/${product.image}`}
+                        src={`https://pub-c053b04a208d402dac06392a3df4fd32.r2.dev/Attire_Idyll/image/${product.image}`}
                         alt={product.name}
                         className="w-[50%] rounded-md"
                       />
@@ -305,7 +305,7 @@ const ProductList = ({
               <div className="flex gap-5 mt-4">
                 <div>
                   <img
-                    src={`https://admin.attireidyll.com/public/storage/product/${selectedProduct.image}`}
+                    src={`https://pub-c053b04a208d402dac06392a3df4fd32.r2.dev/Attire_Idyll/image/${selectedProduct.image}`}
                     alt={selectedProduct.name}
                     className="w-full h-40 object-cover rounded-lg"
                   />

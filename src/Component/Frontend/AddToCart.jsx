@@ -65,7 +65,7 @@ const AddToCart = ({ onClose }) => {
             {cart.map((product) => (
               <li key={product.id} className="flex items-center space-x-6">
                 <img
-                  src={`https://admin.attireidyll.com/public/storage/product/${product.image}`}
+                  src={`https://pub-c053b04a208d402dac06392a3df4fd32.r2.dev/Attire_Idyll/image/${product.image}`}
                   alt={product.title}
                   className="size-16 md:size-20"
                 />

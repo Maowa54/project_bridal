@@ -114,7 +114,7 @@ const BillingSection = ({
                   <div className="flex gap-6">
                     <div>
                       <img
-                        src={`https://admin.attireidyll.com/public/storage/product/${product.image}`}
+                        src={`https://pub-c053b04a208d402dac06392a3df4fd32.r2.dev/Attire_Idyll/image/${product.image}`}
                         className="md:w-20 lg:w-24 w-20 rounded-lg"
                         alt={product.name}
                       />

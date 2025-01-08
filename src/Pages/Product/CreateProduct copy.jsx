@@ -567,7 +567,7 @@ const cacheTimeKey = 'products_timestamp';
                     >
                       {image ? (
                         <image
-                          href={`https://admin.attireidyll.com/public/storage/product/${image}`}
+                          href={`https://pub-c053b04a208d402dac06392a3df4fd32.r2.dev/Attire_Idyll/image/${image}`}
                           width="90"
                           height="90"
                         />
