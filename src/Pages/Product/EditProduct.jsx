@@ -65,12 +65,9 @@ const EditProduct = () => {
 
   const [name, setName] = useState(editProduct?.name || "");
   const [orderStatus, setOrderStatus] = useState(
-    editProduct?.orderStatus || ""
+    editProduct?.pre_order?.toString() || "0" // Ensure it's a string
   );
-
-  const [pre_order, setPreOrder] = useState(
-    editProduct?.pre_order || ""
-  );
+  const [status, setStatus] = useState(editProduct?.status || "");
 
   const [short_desc, setShort_desc] = useState(editProduct?.short_desc || "");
   const [category_id, setCategoryId] = useState(editProduct?.category_id || "");
@@ -81,7 +78,6 @@ const EditProduct = () => {
   const [businessId, setBusinessId] = useState("");
   const [price, setPrice] = useState(editProduct?.price || "");
   const [stock, setStock] = useState(editProduct?.stock || "");
-  const [status, setStatus] = useState("");
 
   const [code, setCode] = useState(editProduct?.code || "");
   const [buyingPrice, setBuyingPrice] = useState(
@@ -109,8 +105,14 @@ const EditProduct = () => {
     setStockLocationId(id);
   };
 
-  const handleCategoryIdChange = (id) => {
-    setCategoryId(id);
+  const handleCategoryIdChange = (categoryId) => {
+    console.log("Selected category ID:", categoryId);
+    // Update the product with the selected category
+    // For example, set it in your product state or update form data
+    setEditProduct((prevState) => ({
+      ...prevState,
+      category_id: categoryId,
+    }));
   };
 
   const handleBusinessIdChange = (id) => {
@@ -481,7 +483,7 @@ const EditProduct = () => {
     formData.append("buying_price", buyingPrice);
     formData.append("is_published", status);
     formData.append("has_variation", hasVariation);
-    formData.append("pre_order", pre_order);
+    formData.append("pre_order", orderStatus);
 
     formData.append("video", selectedVideoName);
     formData.append(
@@ -608,15 +610,20 @@ const EditProduct = () => {
       setCombinations(existingCombinations);
     }
   }, [editProduct, variationsDataSet]);
+  console.log("Pre-order Value:", orderStatus);
+
 
   return (
-    <div id="section-1" className="mx-4 md:mx-10">
+    <div id="section-1" className="">
       <div className="w-full rounded-lg shadow border border-gray-300 p-2 py-4 flex pe-4 mb-4">
         <h2 className="px-4 text-xl font-semibold">Edit Product</h2>
       </div>
 
       <div id="section-1">
-        <form   onSubmit={handleSave} className="grid grid-cols-1 md:grid-cols-4 gap-4 ">
+        <form
+          onSubmit={handleSave}
+          className="grid grid-cols-1 md:grid-cols-4 gap-4 "
+        >
           {/* "Select Option" Div */}
           <div className="md:col-span-1 order-1 md:order-2">
             {/* <div className="px-4 pt-2 pb-4 mb-5 bg-white flex flex-col shadow">
@@ -639,23 +646,25 @@ const EditProduct = () => {
 
             <div className="mb-2 px-4 py-3 h-28 bg-white flex flex-col border border-gray-300 rounded-md shadow-sm transition duration-300 ease-in-out hover:border-teal-400 ">
               <label
-                htmlFor="product_status"
+                htmlFor="product_pre_order"
                 className="block text-base font-semibold text-gray-800 mb-4"
               >
                 Pre Order
               </label>
               <select
-                name="product_status"
-                id="product_status"
-                className="form-select text-sm rounded-md border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 py-2 px-3  focus:outline-none"
-                defaultValue={editProduct.pre_order}
-                onChange={(e) => setPreOrder(e.target.value)}
+                name="pre_order"
+                id="product_pre_order"
+                className="form-select text-sm rounded-md border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 py-2 px-3 focus:outline-none"
+                value={orderStatus} // Bind to state
+                onChange={(e) => setOrderStatus(e.target.value)} // Update state
               >
                 <option value="0">Off</option>
                 <option value="1">On</option>
               </select>
-              <span className="text-red-600 text-sm error-text product_status_error"></span>
+              <span className="text-red-600 text-sm error-text product_pre_order_error"></span>
             </div>
+
+
 
             <div className="relative rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full">
               {/* Drawer Toggle Button */}
@@ -698,7 +707,7 @@ const EditProduct = () => {
                   onClick={() => {
                     toggleVideoDrawer();
                   }}
-                  className="rounded w-full flex flex-col items-center cursor-pointer bg-white shadow py-3"
+                  className="rounded w-full flex flex-col items-center cursor-pointer bg-white  py-3"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -734,10 +743,7 @@ const EditProduct = () => {
 
           {/* Left Side Content */}
 
-          <div
-          
-            className="md:col-span-3 order-2 md:order-1"
-          >
+          <div className="md:col-span-3 order-2 md:order-1">
             <div className="mb-4">
               <label
                 htmlFor="Product_name"
@@ -889,6 +895,7 @@ const EditProduct = () => {
                 <select
                   name="product_status"
                   id="product_status"
+                  defaultValue={editProduct.is_published}
                   className="form-control items-center bg-white flex flex-col rounded-lg shadow border hover:border-blue-500 focus:outline-none focus:ring-blue-500 border-gray-300 px-2 py-2.5 w-full"
                   onChange={(e) => setStatus(e.target.value)}
                 >
