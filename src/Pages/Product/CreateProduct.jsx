@@ -729,7 +729,7 @@ const CreateProduct = () => {
                       selectedImages.map((img, index) => (
                         <div key={index} className="relative group">
                           <img
-                            src={`https://admin.attireidyll.com/public/storage/product/${img.name}`}
+                            src={`https://pub-c053b04a208d402dac06392a3df4fd32.r2.dev/Attire_Idyll/image/${img.name}`}
                             alt={`Selected ${index + 1}`}
                             className="rounded border shadow-sm h-40 w-auto"
                           />
@@ -1169,7 +1169,7 @@ const CreateProduct = () => {
                                   {combination.vimage ? (
                                     <div className="relative group">
                                       <img
-                                        src={`https://admin.attireidyll.com/public/storage/product/${combination.vimage}`}
+                                        src={`https://pub-c053b04a208d402dac06392a3df4fd32.r2.dev/Attire_Idyll/image/${combination.vimage}`}
                                         className="rounded border max-h-20"
                                       />
                                       <button

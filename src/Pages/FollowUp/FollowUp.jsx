@@ -709,7 +709,7 @@ console.log(orders)
               {selectedOrderForEdit?.order_variable_products?.map((product) => (
   <div key={product.id} className="flex gap-3 items-center mb-4">
     <img
-      src={`https://admin.attireidyll.com/public/storage/product/${product.product.image}`}
+      src={`https://pub-c053b04a208d402dac06392a3df4fd32.r2.dev/Attire_Idyll/image/${product.product.image}`}
       alt={product.product.name}
       className="w-24 h-24 object-cover rounded-md"
     />

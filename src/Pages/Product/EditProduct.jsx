@@ -805,7 +805,7 @@ const EditProduct = () => {
                       {selectedImages.map((img, index) => (
                         <div key={index} className="relative group">
                           <img
-                            src={`https://admin.attireidyll.com/public/storage/product/${img.name}`}
+                            src={`https://pub-c053b04a208d402dac06392a3df4fd32.r2.dev/Attire_Idyll/image/${img.name}`}
                             alt={`Selected ${(index, img.id)}`}
                             className="rounded border shadow-sm h-40 w-auto"
                           />

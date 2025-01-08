@@ -884,13 +884,13 @@ const Dashboard = () => {
                     <td className="px-4 py-2">
                       {order?.order_products?.length > 0 ? (
                         <img
-                          src={`https://admin.attireidyll.com/public/storage/product/${order.order_products[0].image}`}
+                          src={`https://pub-c053b04a208d402dac06392a3df4fd32.r2.dev/Attire_Idyll/image/${order.order_products[0].image}`}
                           alt={order.order_products[0].name}
                           className="w-12 h-12 rounded object-cover"
                         />
                       ) : (
                         // <img
-                        //   src={`https://admin.attireidyll.com/public/storage/product/${order?.order_variable_products[0]?.product?.image}`}
+                        //   src={`https://pub-c053b04a208d402dac06392a3df4fd32.r2.dev/Attire_Idyll/image/${order?.order_variable_products[0]?.product?.image}`}
                         //   alt={order.order_products[0].name}
                         //   className="w-12 h-12 rounded object-cover"
                         // />
@@ -899,7 +899,7 @@ const Dashboard = () => {
                           {order.order_variable_products.map((pr) => (
                             <div key={pr.id}>
                               <img
-                                src={`https://admin.attireidyll.com/public/storage/product/${pr?.product?.image}`}
+                                src={`https://pub-c053b04a208d402dac06392a3df4fd32.r2.dev/Attire_Idyll/image/${pr?.product?.image}`}
                                 alt="imageee"
                                 className="w-12 h-12 rounded object-cover"
                               />

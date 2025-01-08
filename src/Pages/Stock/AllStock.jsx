@@ -166,7 +166,7 @@ const AllStock = () => {
               <th className="text-[15px]">{index + 1}</th>
               <td>
               <img
-                                    src={`https://admin.attireidyll.com/public/storage/product/${product.image}`}// Update the path as necessary
+                                    src={`https://pub-c053b04a208d402dac06392a3df4fd32.r2.dev/Attire_Idyll/image/${product.image}`}// Update the path as necessary
                                     alt={product.name}
                                     className="h-16 w-16 object-cover"
                                 />

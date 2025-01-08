@@ -127,7 +127,7 @@ const Singleproduct = () => {
             {/* Image Section */}
             <div className="">
               <img
-                src={`https://admin.attireidyll.com/public/storage/product/${product.image}`}
+                src={`https://pub-c053b04a208d402dac06392a3df4fd32.r2.dev/Attire_Idyll/image/${product.image}`}
                 alt={product.name}
                 className="  mx-auto object-cover"
               />
@@ -331,7 +331,7 @@ const Singleproduct = () => {
                     state={{ product }}
                   >
                     <img
-                      src={`https://admin.attireidyll.com/public/storage/product/${product.image}`}
+                      src={`https://pub-c053b04a208d402dac06392a3df4fd32.r2.dev/Attire_Idyll/image/${product.image}`}
                       alt={product.name || "Product image"}
                       className="w-full h-auto transition-transform duration-300 ease-in-out hover:scale-105"
                     />

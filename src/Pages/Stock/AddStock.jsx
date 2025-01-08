@@ -272,7 +272,7 @@ const AddStock = () => {
               <td className="text-center p-5 border-b">
                 <div className="w-16 h-16 mx-auto">
                   <img
-                    src={`https://admin.attireidyll.com/public/storage/product/${selectedProduct.image}`}
+                    src={`https://pub-c053b04a208d402dac06392a3df4fd32.r2.dev/Attire_Idyll/image/${selectedProduct.image}`}
                     alt={selectedProduct.name}
                     className="object-cover rounded-md"
                   />
@@ -324,7 +324,7 @@ const AddStock = () => {
               <td className="text-center p-5 border-b">
                 <div className="w-16 h-16 mx-auto">
                   <img
-                    src={`https://admin.attireidyll.com/public/storage/product/${selectedProduct.image}`}
+                    src={`https://pub-c053b04a208d402dac06392a3df4fd32.r2.dev/Attire_Idyll/image/${selectedProduct.image}`}
                     alt={selectedProduct.name}
                     className="object-cover rounded-md"
                   />

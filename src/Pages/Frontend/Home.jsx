@@ -7,10 +7,7 @@ import Footer from "../../Component/Frontend/Footer";
 import ImageCarousel from "../../Component/Frontend/Home/ImageCarousel";
 import ScrollToTopButton from "../../Component/Frontend/ScrollToTopButton";
 
-
 const Home = () => {
-
-
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
 
@@ -101,9 +98,9 @@ const Home = () => {
 
   useEffect(() => {
     fetchApiData();
-    const storedProducts = localStorage.getItem('allProducts');
+    const storedProducts = localStorage.getItem("allProducts");
 
-    console.log()
+    console.log();
   }, []);
   console.log(products);
 
@@ -117,11 +114,11 @@ const Home = () => {
   return (
     <div className=" ">
       <Navbar />
-      <ScrollToTopButton/>
+      <ScrollToTopButton />
       <div className="container mx-auto pt-16 md:pt-20 ">
         <div className="w-full md:w-[90%] mx-auto overflow-hidden relative">
           <SocialMedia />
-            <ImageCarousel/>
+          <ImageCarousel />
           {/* Buttons Section */}
           <div className="mt-8">
             {/* Top Row: First Three Buttons */}
@@ -227,11 +224,9 @@ const Home = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8 justify-items-center">
             {products.slice(0, visibleCount).map((product) => (
               <div className="mb-2" key={product.id}>
-                <Link
-                to= {`/singleproduct/${product.name}-${product.id}`}
-                >
+                <Link to={`/singleproduct/${product.name}-${product.id}`}>
                   <img
-                    src={`https://admin.attireidyll.com/public/storage/product/${product.image}`}
+                    src={`https://pub-c053b04a208d402dac06392a3df4fd32.r2.dev/Attire_Idyll/image/${product.image}`}
                     className="w-full h-auto transition-transform duration-300 ease-in-out hover:scale-105"
                     alt={product.name || "Product"}
                   />

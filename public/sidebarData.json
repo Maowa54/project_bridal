@@ -52,8 +52,19 @@
   },
   {
     "title": "Order",
-    "path": "/order",
-    "icon": "FaShoppingCart"
+    "icon": "FaShoppingCart",
+    "submenu": [
+     
+      {
+        "title": "Online Order",
+        "path": "/online-order"
+      },
+      {
+        "title": "Order",
+        "path": "/order"
+      }
+   
+    ]
   },
   
 

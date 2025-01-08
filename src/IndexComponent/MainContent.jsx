@@ -32,6 +32,7 @@ import Subscription from '../Pages/Subscription/Subscription';
 import Log from '../Pages/Stock/Log';
 import SmsHistory from '../Pages/Marketing/SmsHistory';
 import CheckOut from '../Pages/CheckOut/CheckOut';
+import OnlineOrder from '../Pages/Order/OnlineOrder/OnlineOrder';
 // import EditSingleProduct from '../Pages/Product/EditSingleProduct';
 
 const MainContent = ({ userInfo ,error}) => {
@@ -47,6 +48,9 @@ const MainContent = ({ userInfo ,error}) => {
         <Route path="/config/business" element={<Business />} />
         <Route path="/config/user" element={<User />} />
         <Route path="/order" element={<Order />} />
+
+        <Route path="/online-order" element={<OnlineOrder />} />
+
         {/* <Route path="/access" element={<Access />} /> */}
         <Route path="/notice" element={<Notice />} />
         <Route path="/pos" element={<Pos />} />

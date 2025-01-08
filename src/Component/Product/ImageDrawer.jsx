@@ -241,7 +241,7 @@ export default function ImageDrawer({ isOpen, toggleDrawer, productImage, funSel
                         }
                       }}>
                       <img
-                        src={`https://admin.attireidyll.com/public/storage/product/${image.name}`}
+                        src={`https://pub-c053b04a208d402dac06392a3df4fd32.r2.dev/Attire_Idyll/image/${image.name}`}
                         alt={image.name || "Image"} // Use a meaningful alt tag
                         className={` h-40 w-full object-cover ${selectedTopIndex === image.id ? "border-2 border-blue-500" : ""
                           }`}
@@ -352,7 +352,7 @@ export default function ImageDrawer({ isOpen, toggleDrawer, productImage, funSel
                       }}
                     >
                       <img
-                        src={`https://admin.attireidyll.com/public/storage/product/${image.name}`}
+                        src={`https://pub-c053b04a208d402dac06392a3df4fd32.r2.dev/Attire_Idyll/image/${image.name}`}
                         alt={image.name || "Image"} // Use a meaningful alt tag
                         className={`h-40 w-full object-cover border-2 ${selectedTopIndex === image.id ? " border-blue-500" : ""
                           }`}

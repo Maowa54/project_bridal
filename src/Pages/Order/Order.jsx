@@ -73,7 +73,7 @@ const Order = () => {
       try {
         setIsLoading(true);
         const response = await axios.get(
-          `https://admin.attireidyll.com/api/online/orders/get`,
+          `https://admin.attireidyll.com/api/orders/all/get`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

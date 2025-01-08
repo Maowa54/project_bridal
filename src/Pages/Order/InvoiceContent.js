@@ -38,7 +38,7 @@ export function InvoiceContent({ order, sampleImage }) {
               (product) => `
               <tr>
                 <td class="px-2 py-2">
-                  <img src="https://admin.attireidyll.com/public/storage/product/${product.image}" class="w-20 h-20 object-cover rounded-lg" alt="${product.name}" />
+                  <img src="https://pub-c053b04a208d402dac06392a3df4fd32.r2.dev/Attire_Idyll/image/${product.image}" class="w-20 h-20 object-cover rounded-lg" alt="${product.name}" />
                 </td>
                 <td class="px-2 py-2">${product.name}</td>
                 <td class="px-2 py-2">N/A</td>
@@ -51,7 +51,7 @@ export function InvoiceContent({ order, sampleImage }) {
               (product) => `
               <tr>
                 <td class="px-2 py-2">
-                  <img src="https://admin.attireidyll.com/public/storage/product/${product.product.image}" class="w-20 h-20 object-cover rounded-lg" alt="${product.product.name}" />
+                  <img src="https://pub-c053b04a208d402dac06392a3df4fd32.r2.dev/Attire_Idyll/image/${product.product.image}" class="w-20 h-20 object-cover rounded-lg" alt="${product.product.name}" />
                 </td>
                 <td class="px-2 py-2">${product.product.name}</td>
                 <td class="px-2 py-2">${product.values}</td>
