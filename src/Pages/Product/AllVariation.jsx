@@ -135,7 +135,7 @@ const AllVariation = () => {
   return (
     <div>
       <div className="pb-8">
-        <div className="flex shadow-md justify-between mt-1 px-4 py-2 items-center">
+        <div className="flex shadow-md justify-between mt-1 px-4 py-2 rounded items-center">
           <h1 className="text-xl md:text-2xl font-semibold">Variation</h1>
           <Link to="/product/variation/create">
             <button className="ml-auto bg-teal-500 hover:bg-teal-400 text-white font-semibold py-1 px-6  text-sm md:text-base rounded  transition duration-200">
@@ -144,7 +144,7 @@ const AllVariation = () => {
           </Link>
         </div>
 
-        <div className="overflow-x-auto my-6">
+        <div className="overflow-x-auto overflow-y-hidden my-6">
           <div className="w-full">
             <table className="table text-nowrap">
               <thead className="text-base  text-gray-700 border-b-2">

@@ -130,7 +130,7 @@ const AllProduct = () => {
   return (
     <div>
       <div className="pb-8">
-        <div className="flex flex-col md:flex-row md:items-center justify-between shadow-md mt-1 mb-5 py-2 px-4">
+        <div className="flex flex-col rounded md:flex-row md:items-center justify-between shadow-md mt-1 mb-5 py-2 px-4">
           <h1 className="text-xl md:text-2xl text-nowrap font-semibold">
             All Products
           </h1>
@@ -188,7 +188,7 @@ const AllProduct = () => {
           </form>
         </div>
 
-        <div className="overflow-x-auto my-6">
+        <div className="overflow-x-auto overflow-y-hidden my-6">
           <div className="w-full">
             <table className="table text-nowrap">
               <thead className="text-base  text-gray-700 border-b-2">

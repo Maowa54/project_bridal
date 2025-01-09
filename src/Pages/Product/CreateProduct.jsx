@@ -545,7 +545,7 @@ const CreateProduct = () => {
   // handle Svae .............
 
   return (
-    <div id="section-1" className="">
+    <div id="section-1" className=" text-gray-700">
        <div className="rounded shadow mt-1 mb-5 py-2 px-4">
                 <h1 className="text-xl md:text-2xl text-nowrap font-semibold">
                   Create Product
@@ -554,7 +554,7 @@ const CreateProduct = () => {
               </div>
 
       <div id="section-1">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 px-2">
           {/* "Select Option" Div */}
           <div className="md:col-span-1 order-1 md:order-3">
             {/* <div className="bg-white flex flex-col mb-5">
@@ -571,10 +571,10 @@ const CreateProduct = () => {
                 </p>
               )}
             </div> */}
-             <div className="mb-2 px-4 py-3 h-28 bg-white flex flex-col border border-gray-300 rounded-md shadow-sm transition duration-300 ease-in-out hover:border-teal-400 ">
+             <div className="mb-2 px-4 py-3  h-28 bg-white flex flex-col border border-gray-300 rounded-md shadow-sm transition duration-300 ease-in-out hover:border-teal-400 ">
                 <label
                   htmlFor="product_status"
-                  className="block text-base font-semibold text-gray-800 mb-4"
+                  className="block text-sm md:text-base font-semibold  mb-4"
                 >
                   Pre Order
                 </label>
@@ -590,8 +590,8 @@ const CreateProduct = () => {
                 <span className="text-red-600 text-sm error-text product_status_error"></span>
               </div>
 
-            {/* <div className="relative rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"> */}
-            <div className="relative rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full">
+            {/* <div className="relative rounded-lg shadow border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full"> */}
+            <div className="relative rounded-lg shadow border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full">
               {/* Drawer Toggle Button */}
 
               {selectedVideoName ? (
@@ -660,7 +660,7 @@ const CreateProduct = () => {
                       strokeWidth="4"
                     />
                   </svg>
-                  <div className="mt-2 text-center">Add Video</div>
+                  <div className="mt-2 text-center text-sm">Add Video</div>
                 </button>
               )}
             </div>
@@ -675,14 +675,14 @@ const CreateProduct = () => {
             <div className="mb-4">
               <label
                 htmlFor="Product_name"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm md:text-base font-semibold "
               >
                 Product Name
               </label>
               <input
                 name="name"
                 type="text"
-                className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full mt-1"
+                className="form-control text-sm rounded-lg shadow border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full mt-1"
                 id="Product_name"
                 value={name}
                 placeholder="Product Name"
@@ -697,7 +697,7 @@ const CreateProduct = () => {
             <div className="mb-4">
               <label
                 htmlFor="short_desc"
-                className="block text-sm font-medium text-gray-700"
+                className="block  text-sm md:text-base font-semibold"
               >
                 Short Description
               </label>
@@ -706,7 +706,7 @@ const CreateProduct = () => {
                 onChange={(e) => setShort_desc(e.target.value)}
                 name="short_desc"
                 id="short_desc"
-                className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full mt-1 h-36"
+                className="form-control text-sm  rounded-lg shadow border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full mt-1 h-36"
               />
             </div>
             {/* {errors.short_desc && (
@@ -716,14 +716,14 @@ const CreateProduct = () => {
             <div className="mb-4 " id="">
               <label
                 htmlFor="category_id"
-                className="block text-sm font-medium text-gray-700 required"
+                className="block  text-sm md:text-base font-semibold required"
               >
                 Image
               </label>
 
               <div className="relative">
                 {/* Drawer Toggle Button */}
-                <div className="w-full flex flex-col items-center cursor-pointer bg-white rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 mt-1">
+                <div className="w-full flex flex-col items-center cursor-pointer bg-white rounded-lg shadow border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 mt-1">
                   <div className="flex flex-wrap gap-2 justify-center items-center">
                     {selectedImages.length > 0 &&
                       selectedImages.map((img, index) => (
@@ -773,7 +773,7 @@ const CreateProduct = () => {
                           strokeWidth="4"
                         />
                       </svg>
-                      <span onClick={toggleDrawer} className="mt-2 text-center">
+                      <span onClick={toggleDrawer} className="mt-2 text-sm text-center">
                         Add Image
                       </span>
                     </div>
@@ -788,10 +788,10 @@ const CreateProduct = () => {
               className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 "
               id="section-3"
             >
-              <div className="mb-3 px-4 pt-2 pb-4 bg-white flex flex-col rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full">
+              <div className="mb-3 px-4 pt-2 pb-4 bg-white flex flex-col rounded-lg shadow border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full">
                 <label
                   htmlFor="category_id"
-                  className="block text-sm font-medium text-gray-700 required"
+                  className="block mb-2  text-sm md:text-base font-semibold required"
                 >
                   Product Category
                 </label>
@@ -804,17 +804,17 @@ const CreateProduct = () => {
               </div>
 
               <div>
-                <div className="mb-3 px-4 pt-2 pb-4 bg-white flex flex-col rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full">
+                <div className="mb-3 px-4 pt-2 pb-4 bg-white flex flex-col rounded-lg shadow border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full">
                   <label
                     htmlFor="product_status"
-                    className="block text-sm font-medium text-gray-700 required"
+                    className="block mb-2 text-sm md:text-base font-semibold required"
                   >
                     Product Status
                   </label>
                   <select
                     name="product_status"
                     id="product_status"
-                    className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
+                    className="form-control text-sm rounded-lg shadow border  focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full"
                     onChange={(e) => setStatus(e.target.value)}
                   >
                     <option value="1">On</option>
@@ -827,8 +827,8 @@ const CreateProduct = () => {
 
             {/* variation code start */}
 
-            <div className="col-span-12 mb-4 rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 ">
-              <div className="py-4 shadow bg-white flex-shrink-0">
+            <div className="col-span-12 mb-4 rounded-lg shadow  border-gray-300 ">
+              <div className="py-4 rounded-lg  border hover:border-teal-500 shadow bg-white flex-shrink-0">
                 <div className="flex justify-between mb-2">
                   <div className="px-4 text-lg font-semibold">
                     Price, Stock, Code
@@ -841,7 +841,7 @@ const CreateProduct = () => {
                       onChange={handleCheckboxChange}
                       aria-label="Toggle Variations"
                     />
-                    <span className="ml-2">Has Variations?</span>
+                    <span className="ml-2 font-medium">Has Variations?</span>
                   </div>
                 </div>
 
@@ -851,10 +851,10 @@ const CreateProduct = () => {
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 mx-5 items-center">
                         <div className="col-span-1">
                           <div className="mb-3">
-                            <label className="form-label">Cost Price</label>
+                            <label className="form-label  text-sm md:text-base font-semibold">Cost Price</label>
                             <input
                               type="number"
-                              className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
+                              className="form-control text-sm rounded-lg shadow border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full"
                               id="price"
                               placeholder="Enter cost price"
                               aria-label="Price"
@@ -872,13 +872,13 @@ const CreateProduct = () => {
                         <div className="mb-2">
                           <label
                             htmlFor="stock"
-                            className="block text-sm font-medium text-gray-700"
+                            className="block   text-sm md:text-base font-semibold"
                           >
                             Stock
                           </label>
                           <input
                             type="number"
-                            className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
+                            className="form-control text-sm rounded-lg shadow border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full"
                             id="stock"
                             placeholder="Enter stock"
                             aria-label="Stock"
@@ -894,13 +894,13 @@ const CreateProduct = () => {
                         <div className="mb-2">
                           <label
                             htmlFor="code"
-                            className="block text-sm font-medium text-gray-700"
+                            className="block text-sm md:text-base font-semibold"
                           >
                             Code
                           </label>
                           <input
                             type="text"
-                            className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
+                            className="form-control text-sm  rounded-lg shadow border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full"
                             id="code"
                             placeholder="Enter code"
                             aria-label="Code"
@@ -911,7 +911,7 @@ const CreateProduct = () => {
                       </div>
                     </div>
 
-                    <div className=" shadow-sm rounded-md hover:border-blue-500 focus:outline-none  focus:ring-blue-500 bg-white">
+                    <div className=" shadow-sm rounded-md hover:border-teal-500 focus:outline-none  focus:ring-teal-500 bg-white">
                       <div className="card-body p-4" id="section-7">
                         <h5 className="text-lg font-semibold">Discount</h5>
 
@@ -919,13 +919,13 @@ const CreateProduct = () => {
                           <div className="mb-2">
                             <label
                               htmlFor="Selling price"
-                              className="block text-sm font-medium text-gray-700"
+                              className="block text-sm md:text-base font-semibold"
                             >
                               Selling Price
                             </label>
                             <input
                               type="number"
-                              className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
+                              className="form-control text-sm rounded-lg shadow border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full"
                               id="price"
                               placeholder="Enter price"
                               aria-label="Price"
@@ -940,14 +940,14 @@ const CreateProduct = () => {
 
                           <div className="col-span-1">
                             <div className="mb-3">
-                              <label className="form-label">
+                              <label className="form-label  text-sm md:text-base font-semibold">
                                 Discount Amount
                               </label>
                               <input
                                 type="number"
                                 name="discount_value"
                                 defaultValue=""
-                                className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
+                                className="form-control text-sm  rounded-lg shadow border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full"
                                 onChange={(e) =>
                                   setDiscountAmount(e.target.value)
                                 }
@@ -957,12 +957,12 @@ const CreateProduct = () => {
 
                           <div className="col-span-1">
                             <div className="mb-3">
-                              <label className="form-label">
+                              <label className="form-label  text-sm md:text-base font-semibold">
                                 Percent Or Fixed
                               </label>
                               <select
                                 name="discount_type"
-                                className="h-10 form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
+                                className="h-10 form-control text-sm rounded-lg shadow border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full"
                                 onChange={(e) =>
                                   setDiscountType(e.target.value)
                                 }
@@ -975,13 +975,13 @@ const CreateProduct = () => {
                           </div>
                           <div className="col-span-1">
                             <div className="mb-3">
-                              <label className="form-label">
+                              <label className="form-label  text-sm md:text-base font-semibold">
                                 Discount Date
                               </label>
                               <input
                                 type="date"
                                 onClick={(e) => e.target.showPicker()}
-                                className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
+                                className="form-control text-sm  rounded-lg shadow border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full"
                                 placeholder="Enter discount"
                                 onChange={(e) =>
                                   setDiscountDate(e.target.value)
@@ -995,20 +995,20 @@ const CreateProduct = () => {
                   </>
                 )}
                 {hasVariations && (
-                  <div className="mb-4 py-4 bg-white shadow">
+                  <div className="mb-4 py-2 bg-white shadow">
                     <div className="mx-5">
                       {variations.map((variation, index) => (
                         <div key={index} className="">
-                          <div className="mb-6">
+                          <div className="mb-4">
                             <div className="flex gap-4">
                               <div className="flex-1">
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                <label className="block  text-sm md:text-base font-semibold mb-2">
                                   Select Variation
                                 </label>
                                 <div className="flex gap-2">
                                   <Select
                                     options={variationOptions}
-                                    className="form-control rounded-lg border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 w-full"
+                                    className="form-control text-sm rounded-lg border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 w-full"
                                     placeholder="Select a variation"
                                     isSearchable
                                     onChange={(selectedOption) =>
@@ -1024,7 +1024,7 @@ const CreateProduct = () => {
                                     onClick={() =>
                                       handleVariationDelete(variation, index)
                                     }
-                                    className="text-gray-500 hover:text-red-700 focus:outline-none"
+                                    className="text-gray-500 mx-2 hover:text-red-700 focus:outline-none"
                                   >
                                     X
                                   </button>
@@ -1032,13 +1032,13 @@ const CreateProduct = () => {
                               </div>
 
                               <div className="flex-1">
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                <label className="block  text-sm md:text-base font-semibold mb-2">
                                   Select Values
                                 </label>
                                 <Select
                                   id="variation_value_ids"
                                   options={variation.options || []}
-                                  className="form-control rounded-lg border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 w-full"
+                                  className="form-control text-sm  rounded-lg border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 w-full"
                                   placeholder="Select values"
                                   isSearchable
                                   required
@@ -1057,12 +1057,12 @@ const CreateProduct = () => {
                       <button
                         type="button"
                         onClick={addVariation}
-                        className="text-blue-500 hover:text-blue-700 focus:outline-none mb-6"
+                        className="text-teal-500 text-sm md:text-base font-medium hover:text-teal-700 focus:outline-none mb-4"
                       >
                         + Add another variation
                       </button>
                     </div>
-                    <div className="mx-4 mb-6 overflow-x-auto">
+                    <div className="mx-4 mb-6 overflow-x-auto ">
                       <div className="border rounded p-2 bg-gray-100">
                         <table className="min-w-full divide-y divide-gray-200">
                           <thead className="bg-gray-50">
@@ -1133,7 +1133,7 @@ const CreateProduct = () => {
                                         "buying_price"
                                       )
                                     }
-                                    className="form-control rounded-lg border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-[100px]"
+                                    className="form-control rounded-lg border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-[100px]"
                                     placeholder="cost price"
                                   />
                                 </td>
@@ -1147,7 +1147,7 @@ const CreateProduct = () => {
                                     onChange={(e) =>
                                       handleInputChange(e, combIndex, "price")
                                     }
-                                    className="form-control rounded-lg border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-[100px]"
+                                    className="form-control rounded-lg border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-[100px]"
                                     placeholder="price"
                                   />
                                 </td>
@@ -1160,7 +1160,7 @@ const CreateProduct = () => {
                                     onChange={(e) =>
                                       handleInputChange(e, combIndex, "stock")
                                     }
-                                    className="form-control rounded-lg border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-[100px]"
+                                    className="form-control rounded-lg border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-[100px]"
                                     placeholder="stock"
                                   />
                                 </td>
@@ -1222,7 +1222,7 @@ const CreateProduct = () => {
                                           strokeWidth="4"
                                         />
                                       </svg>
-                                      <span>Add Image</span>
+                                      <span className="text-sm">Add Image</span>
                                     </div>
                                   )}
                                 </td>
@@ -1239,7 +1239,7 @@ const CreateProduct = () => {
                                         "discount"
                                       )
                                     }
-                                    className="form-control rounded-lg border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-[100px]"
+                                    className="form-control rounded-lg border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-[100px]"
                                     placeholder="discount"
                                   />
                                 </td>
@@ -1278,7 +1278,7 @@ const CreateProduct = () => {
                                         "discount_date"
                                       )
                                     }
-                                    className="form-control rounded-lg border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-[100px]"
+                                    className="form-control rounded-lg border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-[100px]"
                                     placeholder="date"
                                   />
                                 </td>
@@ -1290,7 +1290,7 @@ const CreateProduct = () => {
                                     onChange={(e) =>
                                       handleInputChange(e, combIndex, "code")
                                     }
-                                    className="form-control rounded-lg border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-[100px]"
+                                    className="form-control rounded-lg border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-[100px]"
                                     placeholder="Enter code"
                                   />
                                 </td>
@@ -1318,9 +1318,9 @@ const CreateProduct = () => {
 
             {/* variation code end */}
 
-            <div className="flex justify-end mt-4">
+            <div className="flex justify-end my-5">
               <button
-                className="btn bg-[#444CB4] hover:bg-[#28DEFC] text-white px-5 text-lg"
+                className=" bg-teal-500 hover:bg-teal-600 text-white px-6 py-2 text-sm md:text-base rounded font-medium "
                 type="submit"
               >
                 {loading ? (
@@ -1332,7 +1332,7 @@ const CreateProduct = () => {
                     <span className="px-2">Saving...</span>
                   </div>
                 ) : (
-                  <>save</>
+                  <>Save</>
                 )}
               </button>
             </div>

@@ -89,8 +89,8 @@ const AddCategory = () => {
         </div>
 
         <form onSubmit={handleSave} className="rounded-md shadow-md mt-5 p-4">
-          <div>
-            <div className="mb-2  h-28 bg-white flex flex-col ">
+          
+            <div className="mb-6 w-full md:w-1/2 bg-white flex flex-col ">
               <label
                 htmlFor="category_id"
                 className="block  font-semibold text-gray-800 mb-4"
@@ -102,7 +102,7 @@ const AddCategory = () => {
                 <p className="text-red-600 text-sm ">{errors.category_id[0]}</p>
               )}
             </div>
-          </div>
+          
           <label
             htmlFor="category-name"
             className="mb-3 block text-sm md:text-base font-semibold"
@@ -112,7 +112,7 @@ const AddCategory = () => {
           <input
             id="category-name"
             type="text"
-            className="form-control text-sm border rounded-md border-gray-300 py-2 px-3 w-1/2 focus:outline-none"
+            className="form-control text-sm border rounded-md border-gray-300 py-2 px-3 w-full md:w-1/2 focus:outline-none"
             placeholder="Enter category name "
             value={name}
             onChange={(e) => setName(e.target.value)}

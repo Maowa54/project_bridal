@@ -65,7 +65,7 @@ const Customer = () => {
           <h1 className="text-xl md:text-2xl font-semibold">Customer</h1>
         </div>
 
-        <div className="overflow-x-auto my-6">
+        <div className="overflow-x-auto overflow-y-hidden my-6">
           <div className="w-full">
             <table className="table text-nowrap">
               {/* head */}

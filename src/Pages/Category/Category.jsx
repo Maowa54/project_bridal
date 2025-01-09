@@ -171,7 +171,7 @@ const Category = () => {
           <tr className="hover cursor-pointer">
             <td className="text-gray-600">{sl}</td>
             <td
-              className="flex items-center"
+              className="flex items-center "
               style={{ paddingLeft: `${level * 20}px` }}
             >
               {level > 0 && (
@@ -216,7 +216,7 @@ const Category = () => {
   return (
     <div>
       <div className="pb-8">
-        <div className="flex shadow-md justify-between mt-1 mb-5 py-2 px-4 items-center">
+        <div className="flex shadow-md justify-between mt-1 mb-5 py-2 px-4 rounded items-center">
           <h1 className="text-xl md:text-2xl font-semibold">Category</h1>
           <Link to="/category/addcategory">
             <button className="ml-auto bg-teal-500 hover:bg-teal-400 text-white font-semibold py-1 px-6  text-sm md:text-base rounded  transition duration-200">
@@ -261,13 +261,13 @@ const Category = () => {
           </form>
         </div>
 
-        <div className="overflow-x-auto my-6">
+        <div className="overflow-x-auto overflow-y-hidden my-6 ">
           <div className="w-full">
             <table className="table text-nowrap">
               <thead className="text-base text-gray-700 border-b-2">
                 <tr>
                   <th>SL</th>
-                  <th>Name</th>
+                  <th className="">Name</th>
                   <th>Action</th>
                 </tr>
               </thead>

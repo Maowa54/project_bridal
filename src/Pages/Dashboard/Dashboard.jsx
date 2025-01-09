@@ -908,7 +908,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="overflow-x-auto mt-2">
+        <div className="overflow-x-auto overflow-y-hidden mt-2">
           <div className="w-full">
             <table className="table text-nowrap">
               <thead className="text-base  text-gray-700 border-b">
@@ -1023,7 +1023,7 @@ const Dashboard = () => {
               <card.icon className={card.textColor} />
             </div>
             <div className="ml-4">
-              <h4 className="text-2xl font-bold text-gray-800">{card.value}</h4>
+              <h4 className="text-2xl font-semibold text-gray-800">{card.value}</h4>
               <p className="text-sm text-gray-500">{card.label}</p>
             </div>
           </div>

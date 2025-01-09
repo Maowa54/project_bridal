@@ -612,17 +612,18 @@ const EditProduct = () => {
   }, [editProduct, variationsDataSet]);
   console.log("Pre-order Value:", orderStatus);
 
-
   return (
-    <div id="section-1" className="">
-      <div className="w-full rounded-lg shadow border border-gray-300 p-2 py-4 flex pe-4 mb-4">
-        <h2 className="px-4 text-xl font-semibold">Edit Product</h2>
+    <div id="section-1" className="text-gray-700">
+      <div className="rounded shadow mt-1 mb-5 py-2 px-4">
+        <h1 className="text-xl md:text-2xl text-nowrap font-semibold">
+          Edit Product
+        </h1>
       </div>
 
       <div id="section-1">
         <form
           onSubmit={handleSave}
-          className="grid grid-cols-1 md:grid-cols-4 gap-4 "
+          className="grid grid-cols-1 md:grid-cols-4 gap-4 px-2 "
         >
           {/* "Select Option" Div */}
           <div className="md:col-span-1 order-1 md:order-2">
@@ -647,7 +648,7 @@ const EditProduct = () => {
             <div className="mb-2 px-4 py-3 h-28 bg-white flex flex-col border border-gray-300 rounded-md shadow-sm transition duration-300 ease-in-out hover:border-teal-400 ">
               <label
                 htmlFor="product_pre_order"
-                className="block text-base font-semibold text-gray-800 mb-4"
+                className="block  text-sm md:text-base font-semibold mb-4"
               >
                 Pre Order
               </label>
@@ -664,9 +665,7 @@ const EditProduct = () => {
               <span className="text-red-600 text-sm error-text product_pre_order_error"></span>
             </div>
 
-
-
-            <div className="relative rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full">
+            <div className="mt-4 relative rounded-lg shadow border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full">
               {/* Drawer Toggle Button */}
 
               {selectedVideoName ? (
@@ -735,7 +734,7 @@ const EditProduct = () => {
                       strokeWidth="4"
                     />
                   </svg>
-                  <div className="mt-2 text-center">Add Video</div>
+                  <div className="mt-2 text-center text-sm">Add Video</div>
                 </button>
               )}
             </div>
@@ -747,14 +746,14 @@ const EditProduct = () => {
             <div className="mb-4">
               <label
                 htmlFor="Product_name"
-                className="block text-sm font-medium text-gray-700"
+                className="block  text-sm md:text-base font-semibold"
               >
                 Product Name
               </label>
               <input
                 name="name"
                 type="text"
-                className="form-control rounded-lg border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
+                className="form-control text-sm rounded-lg border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full"
                 id="Product_name"
                 defaultValue={editProduct.name}
                 placeholder="Product Name"
@@ -769,7 +768,7 @@ const EditProduct = () => {
             <div className="mb-4">
               <label
                 htmlFor="short_desc"
-                className="block text-sm font-medium text-gray-700"
+                className="block  text-sm md:text-base font-semibold"
               >
                 Short Description
               </label>
@@ -778,7 +777,7 @@ const EditProduct = () => {
                 onChange={(e) => setShort_desc(e.target.value)}
                 name="short_desc"
                 id="short_desc"
-                className="form-control rounded-lg border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full h-36"
+                className="form-control text-sm  rounded-lg border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full h-36"
               />
             </div>
             {/* {errors.short_desc && (
@@ -788,7 +787,7 @@ const EditProduct = () => {
             <div className="mb-4 " id="">
               <label
                 htmlFor="category_id"
-                className="block text-sm font-medium text-gray-700 required"
+                className="block  text-sm md:text-base font-semibold required"
               >
                 Image
               </label>
@@ -798,7 +797,7 @@ const EditProduct = () => {
                 {/* Drawer Toggle Button */}
                 <div
                   type="button"
-                  className="w-full flex flex-col items-center cursor-pointer bg-white rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 mt-1"
+                  className="w-full flex flex-col items-center cursor-pointer bg-white rounded-lg shadow border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 mt-1"
                 >
                   {selectedImages ? (
                     <div className="flex flex-wrap gap-2 justify-center">
@@ -852,7 +851,7 @@ const EditProduct = () => {
                     </svg>
                   )}
 
-                  <span onClick={toggleDrawer} className="mt-2 text-center">
+                  <span onClick={toggleDrawer} className="mt-2 text-sm text-center">
                     Add Image
                   </span>
                 </div>
@@ -867,10 +866,10 @@ const EditProduct = () => {
               className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"
               id="section-3"
             >
-              <div className="mb-3 px-4 pt-2 pb-4 bg-white flex flex-col rounded-lg shadow border border-gray-300 p-2 w-full">
+              <div className="mb-3 px-4 pt-2 pb-4 bg-white  hover:border-teal-500 flex flex-col rounded-lg shadow border border-gray-300 p-2 w-full">
                 <label
                   htmlFor="category_id"
-                  className="block text-sm font-medium text-gray-700 required"
+                  className="block  text-sm md:text-base font-semibold required mb-2"
                 >
                   Product Category
                 </label>
@@ -885,10 +884,10 @@ const EditProduct = () => {
                 )}
               </div>
 
-              <div className="mb-3 px-4 pt-2 pb-4 bg-white flex flex-col rounded-lg shadow border focus:outline-none   border-gray-300 p-2 w-full">
+              <div className="mb-3 px-4 pt-2 pb-4 bg-white flex flex-col rounded-lg shadow border focus:outline-none  hover:border-teal-500  border-gray-300 p-2 w-full">
                 <label
                   htmlFor="product_status"
-                  className="block text-sm font-medium text-gray-700 required"
+                  className="block  text-sm md:text-base font-semibold required mb-2"
                 >
                   Product Status
                 </label>
@@ -896,7 +895,7 @@ const EditProduct = () => {
                   name="product_status"
                   id="product_status"
                   defaultValue={editProduct.is_published}
-                  className="form-control items-center bg-white flex flex-col rounded-lg shadow border hover:border-blue-500 focus:outline-none focus:ring-blue-500 border-gray-300 px-2 py-2.5 w-full"
+                  className="form-control text-sm items-center bg-white flex flex-col rounded-lg shadow border focus:outline-none focus:ring-teal-500 border-gray-300 px-2 py-2.5 w-full"
                   onChange={(e) => setStatus(e.target.value)}
                 >
                   <option value="1">On</option>
@@ -910,10 +909,10 @@ const EditProduct = () => {
 
             {/* variation code start */}
 
-            <div className="col-span-12 mb-4 rounded-lg shadow border border-gray-300">
-              <div className="py-4 shadow bg-white flex-shrink-0">
+            <div className="col-span-12 mb-4 rounded-lg shadow  ">
+              <div className="py-4 rounded-lg border border-gray-300 hover:border-teal-500 shadow bg-white flex-shrink-0">
                 <div className="flex justify-between mb-2">
-                  <div className="px-4 text-lg font-semibold">
+                  <div className="px-4  md:text-lg font-semibold">
                     Price, Stock, Code
                   </div>
                   <div className="px-4 flex items-center">
@@ -924,22 +923,22 @@ const EditProduct = () => {
                       onChange={handleCheckboxChange}
                       aria-label="Toggle Variations"
                     />
-                    <span className="ml-2">Has Variations?</span>
+                    <span className="ml-2 font-medium">Has Variations?</span>
                   </div>
                 </div>
 
                 {!hasVariations && (
                   <>
-                    <div className="px-3">
+                    <div className="">
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 mx-5 items-center">
                         <div className="col-span-1">
                           <div className="mb-2">
-                            <label className="form-label mb-1">
+                            <label className="form-label  text-sm md:text-base font-semibold mb-1">
                               Cost Price
                             </label>
                             <input
                               type="number"
-                              className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
+                              className="form-control text-sm rounded-lg shadow border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full"
                               placeholder="Enter cost price"
                               defaultValue={editProduct?.buying_price || ""}
                               onChange={(e) => setBuyingPrice(e.target.value)}
@@ -955,13 +954,13 @@ const EditProduct = () => {
                         <div className="mb-2">
                           <label
                             htmlFor="stock"
-                            className="block font-medium text-gray-700 mb-1"
+                            className="block  text-sm md:text-base font-semibold mb-1"
                           >
                             Stock
                           </label>
                           <input
                             type="number"
-                            className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
+                            className="form-control text-sm rounded-lg shadow border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full"
                             id="stock"
                             defaultValue={editProduct?.stock || ""}
                             placeholder="Enter stock"
@@ -978,13 +977,13 @@ const EditProduct = () => {
                         <div className="mb-2">
                           <label
                             htmlFor="code"
-                            className="block font-medium text-gray-700 mb-1"
+                            className="block  text-sm md:text-base font-semibold mb-1"
                           >
                             Code
                           </label>
                           <input
                             type="text"
-                            className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
+                            className="form-control text-sm rounded-lg shadow border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full"
                             id="code"
                             placeholder="Enter code"
                             aria-label="Code"
@@ -995,14 +994,14 @@ const EditProduct = () => {
                       </div>
                     </div>
 
-                    <div className=" shadow-sm rounded-md hover:border-blue-500 focus:outline-none  focus:ring-blue-500 bg-white">
+                    <div className=" shadow-sm rounded-md hover:border-teal-500 focus:outline-none  focus:ring-teal-500 bg-white">
                       <div className="card-body p-4" id="section-7">
-                        <h5 className="text-lg font-semibold">Discount</h5>
+                        <h5 className="md:text-lg font-semibold">Discount</h5>
 
-                        <div className="grid grid-cols-1 gap-3 md:grid-cols-4 items-center px-4">
+                        <div className="grid grid-cols-1 gap-3 md:grid-cols-4 items-center ">
                           <div className="col-span-1">
                             <div className="mb-3">
-                              <label className="form-label mb-1">
+                              <label className="form-label  text-sm md:text-base font-semibold mb-1">
                                 Selling Price
                               </label>
                               <input
@@ -1011,7 +1010,7 @@ const EditProduct = () => {
                                 placeholder="Enter price"
                                 aria-label="Price"
                                 defaultValue={editProduct?.price || ""}
-                                className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
+                                className="form-control text-sm rounded-lg shadow border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full"
                                 onChange={(e) => setPrice(e.target.value)}
                               />
                             </div>
@@ -1023,7 +1022,7 @@ const EditProduct = () => {
                           </div>
                           <div className="col-span-1">
                             <div className="mb-3">
-                              <label className="form-label mb-1">
+                              <label className="form-label  text-sm md:text-base font-semibold mb-1">
                                 Discount Amount
                               </label>
                               <input
@@ -1033,7 +1032,7 @@ const EditProduct = () => {
                                   editProduct?.discount_amount || ""
                                 }
                                 placeholder="Enter Discount price"
-                                className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
+                                className="form-control text-sm rounded-lg shadow border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full"
                                 onChange={(e) =>
                                   setDiscountAmount(e.target.value)
                                 }
@@ -1043,12 +1042,12 @@ const EditProduct = () => {
 
                           <div className="col-span-1">
                             <div className="mb-3">
-                              <label className="form-label mb-1">
+                              <label className="form-label  text-sm md:text-base font-semibold mb-1">
                                 Percent Or Fixed
                               </label>
                               <select
                                 name="discount_type"
-                                className="h-10 form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 p-2 w-full"
+                                className="h-10 form-control text-sm rounded-lg shadow border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full"
                                 defaultValue="fixed"
                                 onChange={(e) =>
                                   setDiscountType(e.target.value)
@@ -1061,14 +1060,14 @@ const EditProduct = () => {
                           </div>
                           <div className="col-span-1">
                             <div className="mb-3">
-                              <label className="form-label mb-1">
+                              <label className="form-label  text-sm md:text-base font-semibold mb-1">
                                 Discount Date
                               </label>
                               <input
                                 type="date"
                                 defaultValue={editProduct?.discount_date || ""}
                                 onClick={(e) => e.target.showPicker()}
-                                className="form-control rounded-lg shadow border hover:border-blue-500 focus:outline-none  focus:ring-blue-500 border-gray-300 px-2 py-1.5 w-full"
+                                className="form-control text-sm rounded-lg shadow border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 px-2 py-1.5 w-full"
                                 placeholder="Enter discount"
                                 onChange={(e) =>
                                   setDiscountDate(e.target.value)
@@ -1169,7 +1168,7 @@ const EditProduct = () => {
                           <button
                             type="button"
                             onClick={addVariation}
-                            className="text-blue-500 hover:text-blue-700 focus:outline-none mb-6"
+                            className="text-teal-500 hover:text-teal-700 focus:outline-none mb-6"
                           >
                             + Add another variation
                           </button>
@@ -1371,7 +1370,7 @@ const EditProduct = () => {
                                       )
                                     }
                                     defaultValue="fixed"
-                                    className="form-control items-center bg-white flex flex-col rounded-lg shadow border hover:border-blue-500 focus:outline-none focus:ring-blue-500 border-gray-300 px-2 py-2.5 w-[120]"
+                                    className="form-control items-center bg-white flex flex-col rounded-lg shadow border hover:border-teal-500 focus:outline-none focus:ring-teal-500 border-gray-300 px-2 py-2.5 w-[120]"
                                   >
                                     <option value="fixed">Fixed</option>
                                     <option value="percent">
@@ -1418,10 +1417,9 @@ const EditProduct = () => {
                 )}
               </div>
             </div>
-            <div className="flex justify-end mt-4">
+            <div className="flex justify-end my-5">
               <button
-                className="btn bg-[#28DEFC] hover:bg-[#28DEFC] text-white px-6 text-lg"
-                type="submit"
+                className=" bg-teal-500 hover:bg-teal-600 rounded px-6 py-2 text-white text-sm md:text-base font-medium"
               >
                 Update
               </button>

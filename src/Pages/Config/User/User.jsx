@@ -197,7 +197,7 @@ const User = () => {
     <div>
       <div className="pb-8">
         <div>
-          <div className="flex shadow-md justify-between mt-1 mb-5 py-2 px-4 items-center">
+          <div className="flex rounded shadow-md justify-between mt-1 mb-5 py-2 px-4 items-center">
             <h1 className="text-xl md:text-2xl font-semibold">User</h1>
             <button
               onClick={() => document.getElementById("my_modal_3").showModal()}
@@ -320,7 +320,7 @@ const User = () => {
           </form>
         </div>
 
-        <div className="overflow-x-auto my-6">
+        <div className="overflow-x-auto overflow-y-hidden my-6">
           <div className="w-full">
             <table className="table text-nowrap">
               <thead className="text-base  text-gray-700 border-b-2">
