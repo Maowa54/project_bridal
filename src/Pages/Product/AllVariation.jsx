@@ -6,6 +6,8 @@ import { FaEye, FaRegEdit, FaPlus, FaMinus } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
 import toast from "react-hot-toast";
 import Footer_Backend from "../../Component/Backend/Footer_Backend";
+import { Tooltip as ReactTooltip } from "react-tooltip";
+import Swal from "sweetalert2";
 
 const AllVariation = () => {
   const [selectedVariation, setSelectedVariation] = useState(null);
@@ -132,86 +134,166 @@ const AllVariation = () => {
     }
   };
 
+  const handleDelete = async (id) => {
+    // Show a confirmation dialog
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    });
+  
+    if (result.isConfirmed) {
+      try {
+        const response = await axios.delete(
+          `https://admin.attireidyll.com/api/variation/delete/${variation_id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+  
+        if (response.data.status) {
+          Swal.fire(
+            "Deleted!",
+            response.data.message || "variation deleted successfully.",
+            "success"  // Added success to indicate proper action
+          );
+  
+          // Corrected the state update to setUsers instead of setDisplayOrders
+          setVariations((prevUsers) => prevUsers.filter((variation) => variation_id !== id));
+        } else {
+          Swal.fire(
+            "Error!",
+            response.data.message || "Failed to delete variation.",
+            "error"
+          );
+        }
+      } catch (error) {
+        console.error(
+          "Error deleting variation:",
+          error.response ? error.response.data : error.message
+        );
+        Swal.fire("Error!", "Failed to delete variation.", "error");
+      }
+    }
+  };
+  
+
   return (
     <div>
       <div className="pb-8">
-        <div className="flex shadow-md justify-between mt-1 px-4 py-2 rounded items-center">
-          <h1 className="text-xl md:text-2xl font-semibold">Variation</h1>
+        <div className="flex  border border-gray-300 justify-between mt-1 px-4 py-3 rounded items-center">
+          <h1 className="text-lg md:text-lg font-medium text-gray-700 ">
+            Variation{" "}
+          </h1>{" "}
           <Link to="/product/variation/create">
-            <button className="ml-auto bg-teal-500 hover:bg-teal-400 text-white font-semibold py-1 px-6  text-sm md:text-base rounded  transition duration-200">
+            <button className="ml-auto bg-teal-500 hover:bg-teal-400 text-white font-medium py-1 px-4  text-sm  rounded  transition duration-200">
               Add New
             </button>
           </Link>
         </div>
 
-        <div className="overflow-x-auto overflow-y-hidden my-6">
-          <div className="w-full">
-            <table className="table text-nowrap">
-              <thead className="text-base  text-gray-700 border-b-2">
-                <tr>
-                  <th className="">SL</th>
-                  <th className="">Variation Name</th>
-                  <th className="">Value</th>
-                  <th className="">Action</th>
+        <div className="overflow-x-auto  my-6 ">
+          <table className="min-w-full text-nowrap">
+            <thead className="">
+              <tr>
+                <th className="px-4 py-2 border-b border-gray-300 text-left text-sm font-medium text-gray-800">
+                  SL
+                </th>
+                <th className="px-4 py-2 border-b border-gray-300 text-left text-sm font-medium text-gray-800">
+                  Variation Name
+                </th>
+                <th className="px-4 py-2 border-b border-gray-300 text-left text-sm font-medium text-gray-800">
+                  Value
+                </th>
+                <th className="px-4 py-2 border-b border-gray-300 text-left text-sm font-medium text-gray-800">
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody className="">
+              {variations.map((variation, index) => (
+                <tr
+                  key={variation.variation_id}
+                  className="hover border-b cursor-pointer"
+                >
+                  <td className="px-4 py-2  text-sm text-gray-700">
+                    {index + 1}
+                  </td>
+                  <td className="px-4 py-2  text-sm text-gray-700">
+                    {variation.variation_name}
+                  </td>
+                  <td className=" px-4 py-2  text-sm text-gray-700">
+                    {variation.values.join(", ")}
+                  </td>
+                  <td className="px-4 py-2  text-sm text-gray-700">
+                    <div className="flex gap-2">
+                      <button data-tooltip-id="viewTooltipId">
+                        <FaEye className="text-blue-500 text-lg   pl-1" />
+                      </button>
+                      <ReactTooltip
+                        id="viewTooltipId"
+                        place="top"
+                        content="View Details"
+                        style={{
+                          fontSize: "11px", // Adjust text size
+                          padding: "4px 8px", // Adjust padding
+                        }}
+                      />
+
+                      <button
+                        data-tooltip-id="editTooltipId"
+                        onClick={() => openModal(variation)}
+                      >
+                        <FaRegEdit className="text-green-500 text-lg   pl-1" />
+                      </button>
+                      <ReactTooltip
+                        id="editTooltipId"
+                        place="top"
+                        content="Edit"
+                        style={{
+                          fontSize: "11px", // Adjust text size
+                          padding: "4px 8px", // Adjust padding
+                        }}
+                      />
+                      <button
+                        data-tooltip-id="DeleteTooltipId"
+                        onClick={() => handleDelete(variation.variation_id)}
+                      >
+                        <MdDeleteForever className="text-red-500 text-lg  " />
+                      </button>
+                      <ReactTooltip
+                        id="DeleteTooltipId"
+                        place="top"
+                        content="Delete"
+                        style={{
+                          fontSize: "11px", // Adjust text size
+                          padding: "4px 8px", // Adjust padding
+                        }}
+                      />
+                    </div>
+                  </td>
                 </tr>
-              </thead>
-              <tbody className="text-sm  text-gray-700 font-medium">
-                {variations.map((variation, index) => (
-                  <tr key={variation.variation_id} className="hover">
-                    <th className="text-gray-600">{index + 1}</th>
-                    <td className="">{variation.variation_name}</td>
-                    <td className=" w-[30%]">{variation.values.join(", ")}</td>
-                    <td>
-                      <div className="dropdown dropdown-end">
-                      <button className="md:text-lg ml-5">
-                      <CiMenuKebab />
-                        </button>
-                        <ul
-                          tabIndex={0}
-                          className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
-                        >
-                          <li>
-                            <a>
-                              <FaEye className="text-blue-500 text-lg   pl-1" />
-                              View
-                            </a>
-                          </li>
-                          <li>
-                            <a onClick={() => openModal(variation)}>
-                              <FaRegEdit className="text-green-500 text-lg   pl-1" />
-                              Edit
-                            </a>
-                          </li>
-                          <li>
-                            <a
-                              onClick={() =>
-                                console.log("Delete", variation.variation_id)
-                              }
-                            >
-                              <MdDeleteForever className="text-red-500 text-lg  " />
-                              Delete
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+              ))}
+            </tbody>
+          </table>
         </div>
 
         {modalOpen && (
           <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-            <div className="bg-white p-6 rounded shadow-md w-1/3">
+            <div className="bg-white p-6 rounded -md w-1/3">
               <h2 className="text-xl mb-4">Edit Variation</h2>
               <form onSubmit={handleEditSubmit}>
                 <p className="mb-4">Value Name</p>
                 <input
                   type="text"
                   name="variation_name"
-                  className="form-control text-lowercase shadow-[0_3px_10px_rgb(0,0,0,0.2)] py-2 px-3 w-full focus:outline-none focus:border-none"
+                  className="form-control text-lowercase -[0_3px_10px_rgb(0,0,0,0.2)] py-2 px-3 w-full focus:outline-none focus:border-none"
                   placeholder="Enter variation name"
                   value={variationName}
                   onChange={(e) => setVariationName(e.target.value)}
@@ -225,7 +307,7 @@ const AllVariation = () => {
                   <div key={field.id} className="flex items-center mb-2">
                     <input
                       type="text"
-                      className="form-control text-lowercase shadow-[0_3px_10px_rgb(0,0,0,0.2)] py-2 px-3 w-[50%] focus:outline-none focus:border-none"
+                      className="form-control text-lowercase -[0_3px_10px_rgb(0,0,0,0.2)] py-2 px-3 w-[50%] focus:outline-none focus:border-none"
                       placeholder={`Enter value ${index + 1}`}
                       value={field.value}
                       onChange={(e) =>
@@ -235,7 +317,7 @@ const AllVariation = () => {
                     {index === inputFields.length - 1 && (
                       <button
                         type="button"
-                        className="ml-2 bg-sky-400 text-white px-2 py-2 cursor-pointer rounded-md"
+                        className="ml-2 bg-sky-400 text-white px-2 py-2 cursor-pointer rounded"
                         onClick={handleAddField}
                       >
                         <FaPlus />
@@ -244,7 +326,7 @@ const AllVariation = () => {
                     {inputFields.length > 1 && (
                       <button
                         type="button"
-                        className="ml-2 bg-slate-500 text-white px-2 py-2 cursor-pointer rounded-md"
+                        className="ml-2 bg-slate-500 text-white px-2 py-2 cursor-pointer rounded"
                         onClick={() => handleDeleteField(field.id)}
                       >
                         <FaMinus />
@@ -276,8 +358,9 @@ const AllVariation = () => {
           </div>
         )}
       </div>
-
-      <Footer_Backend />
+      <div className="pt-56">
+        <Footer_Backend />
+      </div>{" "}
     </div>
   );
 };

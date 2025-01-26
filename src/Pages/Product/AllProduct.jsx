@@ -10,6 +10,7 @@ import axios from "axios";
 import AllSelectedBusiness from "../../Component/AllSelectedBusiness";
 import Swal from "sweetalert2";
 import Footer_Backend from "../../Component/Backend/Footer_Backend";
+import { Tooltip as ReactTooltip } from "react-tooltip";
 
 const AllProduct = () => {
   const navigate = useNavigate();
@@ -129,20 +130,21 @@ const AllProduct = () => {
 
   return (
     <div>
-      <div className="pb-8">
-        <div className="flex flex-col rounded md:flex-row md:items-center justify-between shadow-md mt-1 mb-5 py-2 px-4">
-          <h1 className="text-xl md:text-2xl text-nowrap font-semibold">
+      <div className="">
+        <div className="flex  border justify-between mt-1 px-4 py-3 border-gray-300 items-center rounded">
+          <h1 className="text-lg md:text-lg font-medium text-gray-700 ">
             All Products
           </h1>
+
           <div className="flex md:justify-end text-sm font-medium mt-3 md:mt-0">
             <Link
               to="/product/createproduct"
-              className="flex items-center px-4 py-2 bg-teal-500 hover:bg-teal-400 text-white rounded shadow focus:outline-none focus:ring-2 mr-4"
+              className="flex items-center text-sm px-4 py-2 bg-teal-500 hover:bg-teal-400 text-white rounded  focus:outline-none focus:ring-2 mr-4"
             >
               <FaPlus className="mr-2" />
               Create
             </Link>
-            <button className="flex items-center px-4 py-2 bg-gray-500 hover:bg-gray-400 text-white rounded shadow focus:outline-none focus:ring-2">
+            <button className="flex items-center text-sm px-4 py-2 bg-gray-500 hover:bg-gray-400 text-white rounded  focus:outline-none focus:ring-2">
               <FaFilter className="mr-2" />
               Filter
             </button>
@@ -152,7 +154,7 @@ const AllProduct = () => {
         <div className="mt-4 flex flex-col md:flex-row md:items-center justify-between  px-1">
           <div className="flex space-x-3 mb-2 md:mb-0">
             <select
-              className="rounded border border-[#2B2F67] bg-white shadow-md h-8 w-24 md:w-20 flex"
+              className="rounded border text-sm border-[#2B2F67] bg-white -md h-8 w-24 md:w-20 flex"
               id="paginate_input"
               value={itemsPerPage}
               onChange={handleItemsPerPageChange}
@@ -164,7 +166,7 @@ const AllProduct = () => {
               <option value="100">100</option>
               <option value="200">200</option>
             </select>
-            <button className="bg-gray-500 hover:bg-gray-400 text-sm md:text-base text-white px-4 py-1 rounded shadow-md flex items-center transition">
+            <button className="bg-gray-500 hover:bg-gray-400 text-sm  text-white px-4 py-1 rounded -md flex items-center transition">
               <FaFileExport className="mr-2" />
               Export
             </button>
@@ -173,7 +175,7 @@ const AllProduct = () => {
           <form className="w-full md:w-auto mt-2 md:mt-0">
             <div className="max-w-xl w-full">
               <div className="flex space-x-4">
-                <div className="flex rounded-md overflow-hidden w-full">
+                <div className="flex rounded overflow-hidden w-full">
                   <input
                     type="text"
                     className="w-full text-sm border border-gray-300 px-2 rounded-l-md rounded-r-none focus:outline-none focus:ring-2 focus:ring-indigo-600"
@@ -188,130 +190,174 @@ const AllProduct = () => {
           </form>
         </div>
 
-        <div className="overflow-x-auto overflow-y-hidden my-6">
-          <div className="w-full">
-            <table className="table text-nowrap">
-              <thead className="text-base  text-gray-700 border-b-2">
-                <tr>
-                  <th className="">SL</th>
-                  <th className="">Image</th>
-                  <th className="">name</th>
-                  <th className="">Type</th>
-                  <th className="">Code</th>
-                  <th className="">Category</th>
-                  <th className="">Product Cost</th>
-                  <th className="">Stock</th>
-                  <th className="">Action</th>
-                </tr>
-              </thead>
-              <tbody className="text-sm  text-gray-700 font-medium">
-                {products.map((product, index) => {
-                  // Calculate price range for products with variations
-                  const priceRange =
-                    product.has_variation === 1
-                      ? getPriceRange(product.variation_combinations)
-                      : null;
+        <div className="overflow-x-auto  my-6 ">
+          <table className="min-w-full text-nowrap">
+            <thead className="">
+              <tr>
+                <th className="px-4 py-2 border-b border-gray-300 text-left text-sm font-medium text-gray-800">
+                  SL
+                </th>
+                <th className="px-4 py-2 border-b border-gray-300 text-left text-sm font-medium text-gray-800">
+                  Image
+                </th>
+                <th className="px-4 py-2 border-b border-gray-300 text-left text-sm font-medium text-gray-800">
+                  name
+                </th>
+                <th className="px-4 py-2 border-b border-gray-300 text-left text-sm font-medium text-gray-800">
+                  Type
+                </th>
+                <th className="px-4 py-2 border-b border-gray-300 text-left text-sm font-medium text-gray-800">
+                  Code
+                </th>
+                <th className="px-4 py-2 border-b border-gray-300 text-left text-sm font-medium text-gray-800">
+                  Category
+                </th>
+                <th className="px-4 py-2 border-b border-gray-300 text-left text-sm font-medium text-gray-800">
+                  Product Cost
+                </th>
+                <th className="px-4 py-2 border-b border-gray-300 text-left text-sm font-medium text-gray-800">
+                  Stock
+                </th>
+                <th className="px-4 py-2 border-b border-gray-300 text-left text-sm font-medium text-gray-800">
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody className="text-sm  text-gray-700 font-medium">
+              {products.map((product, index) => {
+                // Calculate price range for products with variations
+                const priceRange =
+                  product.has_variation === 1
+                    ? getPriceRange(product.variation_combinations)
+                    : null;
 
-                  const totalStock =
-                    product.has_variation === 1
-                      ? product.variation_combinations.reduce(
-                          (sum, variation) => sum + variation.stock,
-                          0
-                        )
-                      : product.stock;
+                const totalStock =
+                  product.has_variation === 1
+                    ? product.variation_combinations.reduce(
+                        (sum, variation) => sum + variation.stock,
+                        0
+                      )
+                    : product.stock;
 
-                  return (
-                    <tr key={product.id} className="hover cursor-pointer">
-                      <th className="text-gray-600">
-                        {startIndex + index + 1}
-                      </th>
+                return (
+                  <tr
+                    key={product.id}
+                    className="hover border-b cursor-pointer"
+                  >
+                    <td className="px-4 py-2  text-sm text-gray-600">
+                      {startIndex + index + 1}
+                    </td>
 
-                      <td>
-                        <img
-                          src={`https://pub-c053b04a208d402dac06392a3df4fd32.r2.dev/Attire_Idyll/image/${product.image}`}
-                          alt="Logo"
-                          className="h-12 w-12"
+                    <td className="px-4 py-2  text-sm text-gray-600">
+                      <img
+                        src={`https://pub-c053b04a208d402dac06392a3df4fd32.r2.dev/Attire_Idyll/image/${product.image}`}
+                        alt="Logo"
+                        className="h-12 w-12"
+                      />
+                    </td>
+                    <td className="px-4 py-2  text-sm text-gray-600">
+                      {product.name}
+                    </td>
+
+                    <td className="px-4 py-2  text-sm text-gray-600">
+                      {product.has_variation === 1 ? "Variant" : "Single"}
+                    </td>
+                    <td className="px-4 py-2  text-sm text-gray-600">
+                      {product.code}
+                    </td>
+                    <td className="px-4 py-2  text-sm text-gray-600">
+                      {product.category ? product.category.name : "N/A"}
+                    </td>
+                    <td className="px-4 py-2  text-sm text-gray-600">
+                      {product.has_variation === 1
+                        ? `৳${priceRange.minPrice} - ৳${priceRange.maxPrice}`
+                        : `৳${product.price}`}
+                    </td>
+                    <td className="px-4 py-2  text-sm text-gray-600">
+                      {totalStock}pc
+                    </td>
+                    <td className="px-4 py-2  text-sm text-gray-600">
+                      <div className="flex gap-2">
+                        <Link
+                          to={`/singleproduct/${product.name}-${product.id}`}
+                          data-tooltip-id="viewTooltipId"
+                        >
+                          <FaEye className="text-teal-500 text-lg pl-1" />
+                        </Link>
+                        <ReactTooltip
+                          id="viewTooltipId"
+                          place="top"
+                          content="View Details"
+                          style={{
+                            fontSize: "11px", // Adjust text size
+                            padding: "4px 8px", // Adjust padding
+                          }}
                         />
-                      </td>
-                      <td className="">{product.name}</td>
 
-                      <td className="">
-                        {product.has_variation === 1 ? "Variant" : "Single"}
-                      </td>
-                      <td className="">{product.code}</td>
-                      <td className="">
-                        {product.category ? product.category.name : "N/A"}
-                      </td>
-                      <td className="">
-                        {product.has_variation === 1
-                          ? `৳${priceRange.minPrice} - ৳${priceRange.maxPrice}`
-                          : `৳${product.price}`}
-                      </td>
-                      <td className="">{totalStock}pc</td>
-                      <td>
-                        <div className="dropdown dropdown-end">
-                          <button className="md:text-lg ml-5">
-                            <CiMenuKebab />
-                          </button>
-                          <ul
-                            tabIndex={0}
-                            className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
-                          >
-                            <li>
-                              <a>
-                                <FaEye className="text-teal-500 text-lg pl-1" />
-                                View
-                              </a>
-                            </li>
-                            <li>
-                              <a onClick={() => handleEdit(product.id)}>
-                                <FaRegEdit className="text-yellow-500 text-lg pl-1" />
-                                Edit
-                              </a>
-                            </li>
-                            <li>
-                              <a onClick={() => handleDelete(product.id)}>
-                                <MdDeleteForever className="text-red-500 text-lg" />
-                                Delete
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                        <button
+                          data-tooltip-id="editTooltipId"
+                          onClick={() => handleEdit(product.id)}
+                        >
+                          <FaRegEdit className="text-yellow-500 text-lg pl-1" />
+                        </button>
+                        <ReactTooltip
+                          id="editTooltipId"
+                          place="top"
+                          content="Edit"
+                          style={{
+                            fontSize: "11px", // Adjust text size
+                            padding: "4px 8px", // Adjust padding
+                          }}
+                        />
 
-            {/* Pagination */}
-            <div className="flex flex-col md:flex-row justify-between px-4 items-center mt-4">
-              <div className="text-sm mb-2 md:mb-0">
-                Showing {startIndex + 1} to{" "}
-                {Math.min(endIndex, filteredProducts.length)} of{" "}
-                {filteredProducts.length} entries
-              </div>
-              <div className="flex items-center gap-2">
-                <button
-                  className="p-2 text-sm font-semibold text-teal-600 border border-teal-600 rounded-lg hover:bg-teal-100 disabled:opacity-50"
-                  onClick={() =>
-                    setCurrentPage((prev) => Math.max(prev - 1, 1))
-                  }
-                  disabled={currentPage === 1}
-                >
-                  « Previous
-                </button>
-                <span className="text-sm font-semibold">{currentPage}</span>
-                <button
-                  className="px-4 py-2 text-sm font-semibold text-teal-600 border border-teal-600 rounded-lg hover:bg-teal-100 disabled:opacity-50"
-                  onClick={() =>
-                    setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-                  }
-                  disabled={currentPage === totalPages}
-                >
-                  Next »
-                </button>
-              </div>
+                        <button
+                          data-tooltip-id="deleteTooltipId"
+                          onClick={() => handleDelete(product.id)}
+                        >
+                          <MdDeleteForever className="text-red-500 text-lg" />
+                        </button>
+                        <ReactTooltip
+                          id="deleteTooltipId"
+                          place="top"
+                          content="Delete "
+                          style={{
+                            fontSize: "11px", // Adjust text size
+                            padding: "4px 8px", // Adjust padding
+                          }}
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+
+          {/* Pagination */}
+          <div className="flex flex-col md:flex-row justify-between px-4 items-center mt-4">
+            <div className="text-sm mb-2 md:mb-0">
+              Showing {startIndex + 1} to{" "}
+              {Math.min(endIndex, filteredProducts.length)} of{" "}
+              {filteredProducts.length} entries
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                className="p-2 text-sm font-semibold text-teal-600 border border-teal-600 rounded hover:bg-teal-100 disabled:opacity-50"
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+              >
+                « Previous
+              </button>
+              <span className="text-sm font-semibold">{currentPage}</span>
+              <button
+                className="px-4 py-2 text-sm font-semibold text-teal-600 border border-teal-600 rounded hover:bg-teal-100 disabled:opacity-50"
+                onClick={() =>
+                  setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                }
+                disabled={currentPage === totalPages}
+              >
+                Next »
+              </button>
             </div>
           </div>
         </div>

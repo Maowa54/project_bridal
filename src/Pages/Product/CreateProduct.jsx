@@ -17,6 +17,7 @@ import { FaPlus } from "react-icons/fa";
 import { RiDeleteBinLine } from "react-icons/ri";
 import VideoDrawer from "../../Component/Product/VideoDrawer";
 import { MdClose } from "react-icons/md";
+import Footer_Backend from "../../Component/Backend/Footer_Backend";
 
 const CreateProduct = () => {
   const [images, setImages] = useState([]);
@@ -546,12 +547,11 @@ const CreateProduct = () => {
 
   return (
     <div id="section-1" className=" text-gray-700">
-       <div className="rounded shadow mt-1 mb-5 py-2 px-4">
-                <h1 className="text-xl md:text-2xl text-nowrap font-semibold">
-                  Create Product
-                </h1>
-               
-              </div>
+      <div className="flex  justify-between mt-1 mb-5 px-4 py-3 border border-gray-300  items-center rounded">
+          <h1 className="text-lg md:text-lg font-medium text-gray-700 ">
+            Create Product
+          </h1>
+        </div>
 
       <div id="section-1">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 px-2">
@@ -571,17 +571,17 @@ const CreateProduct = () => {
                 </p>
               )}
             </div> */}
-             <div className="mb-2 px-4 py-3  h-28 bg-white flex flex-col border border-gray-300 rounded-md shadow-sm transition duration-300 ease-in-out hover:border-teal-400 ">
+             <div className="mb-4 px-4 py-3  h-28 bg-white flex flex-col border border-gray-300 rounded transition duration-300 ease-in-out hover:border-teal-400 ">
                 <label
                   htmlFor="product_status"
-                  className="block text-sm md:text-base font-semibold  mb-4"
+                  className="block text-sm  font-medium  mb-4"
                 >
                   Pre Order
                 </label>
                 <select
                   name="product_status"
                   id="product_status"
-                  className="form-select text-sm rounded-md border border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 py-2 px-3  focus:outline-none"
+                  className="form-select text-sm rounded-md border border-gray-300  focus:border-teal-500 focus:ring-teal-500 py-2 px-3  focus:outline-none"
                   onChange={(e) => setOrderStatus(e.target.value)}
                 >
                   <option value="0">Off</option>
@@ -590,8 +590,8 @@ const CreateProduct = () => {
                 <span className="text-red-600 text-sm error-text product_status_error"></span>
               </div>
 
-            {/* <div className="relative rounded-lg shadow border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full"> */}
-            <div className="relative rounded-lg shadow border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full">
+            {/* <div className="relative rounded border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full"> */}
+            <div className="relative rounded   border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full">
               {/* Drawer Toggle Button */}
 
               {selectedVideoName ? (
@@ -612,7 +612,7 @@ const CreateProduct = () => {
                     onClick={() => {
                       handleVideoDelete();
                     }}
-                    className="rounded w-full flex flex-col items-center cursor-pointer bg-white text-red-500 shadow py-3"
+                    className="rounded w-full flex flex-col items-center cursor-pointer bg-white text-red-500  py-3"
                   >
                     Remove
                   </button>
@@ -621,7 +621,7 @@ const CreateProduct = () => {
                     onClick={() => {
                       toggleVideoDrawer();
                     }}
-                    className="rounded w-full flex flex-col items-center mt-2 cursor-pointer bg-white shadow py-3"
+                    className="rounded w-full flex flex-col items-center mt-2 cursor-pointer bg-white  py-3"
                   >
                     Change Video
                   </button>
@@ -675,14 +675,14 @@ const CreateProduct = () => {
             <div className="mb-4">
               <label
                 htmlFor="Product_name"
-                className="block text-sm md:text-base font-semibold "
+                className="block text-sm  font-medium "
               >
                 Product Name
               </label>
               <input
                 name="name"
                 type="text"
-                className="form-control text-sm rounded-lg shadow border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full mt-1"
+                className="form-control text-sm rounded border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full mt-1"
                 id="Product_name"
                 value={name}
                 placeholder="Product Name"
@@ -697,7 +697,7 @@ const CreateProduct = () => {
             <div className="mb-4">
               <label
                 htmlFor="short_desc"
-                className="block  text-sm md:text-base font-semibold"
+                className="block  text-sm  font-medium"
               >
                 Short Description
               </label>
@@ -706,7 +706,7 @@ const CreateProduct = () => {
                 onChange={(e) => setShort_desc(e.target.value)}
                 name="short_desc"
                 id="short_desc"
-                className="form-control text-sm  rounded-lg shadow border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full mt-1 h-36"
+                className="form-control text-sm  rounded border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full mt-1 h-36"
               />
             </div>
             {/* {errors.short_desc && (
@@ -716,14 +716,14 @@ const CreateProduct = () => {
             <div className="mb-4 " id="">
               <label
                 htmlFor="category_id"
-                className="block  text-sm md:text-base font-semibold required"
+                className="block  text-sm  font-medium required"
               >
                 Image
               </label>
 
               <div className="relative">
                 {/* Drawer Toggle Button */}
-                <div className="w-full flex flex-col items-center cursor-pointer bg-white rounded-lg shadow border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 mt-1">
+                <div className="w-full flex flex-col items-center cursor-pointer bg-white rounded border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 mt-1">
                   <div className="flex flex-wrap gap-2 justify-center items-center">
                     {selectedImages.length > 0 &&
                       selectedImages.map((img, index) => (
@@ -731,7 +731,7 @@ const CreateProduct = () => {
                           <img
                             src={`https://pub-c053b04a208d402dac06392a3df4fd32.r2.dev/Attire_Idyll/image/${img.name}`}
                             alt={`Selected ${index + 1}`}
-                            className="rounded border shadow-sm h-40 w-auto"
+                            className="rounded border  h-40 w-auto"
                           />
                           {/* Remove Image */}
                           <button
@@ -788,10 +788,10 @@ const CreateProduct = () => {
               className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 "
               id="section-3"
             >
-              <div className="mb-3 px-4 pt-2 pb-4 bg-white flex flex-col rounded-lg shadow border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full">
+              <div className="mb-3 px-4 pt-2 pb-4 bg-white flex flex-col rounded border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full">
                 <label
                   htmlFor="category_id"
-                  className="block mb-2  text-sm md:text-base font-semibold required"
+                  className="block mb-2  text-sm  font-medium required"
                 >
                   Product Category
                 </label>
@@ -804,17 +804,17 @@ const CreateProduct = () => {
               </div>
 
               <div>
-                <div className="mb-3 px-4 pt-2 pb-4 bg-white flex flex-col rounded-lg shadow border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full">
+                <div className="mb-3 px-4 pt-2 pb-4 bg-white flex flex-col rounded border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full">
                   <label
                     htmlFor="product_status"
-                    className="block mb-2 text-sm md:text-base font-semibold required"
+                    className="block mb-2 text-sm  font-medium required"
                   >
                     Product Status
                   </label>
                   <select
                     name="product_status"
                     id="product_status"
-                    className="form-control text-sm rounded-lg shadow border  focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full"
+                    className="form-control text-sm rounded border  focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full"
                     onChange={(e) => setStatus(e.target.value)}
                   >
                     <option value="1">On</option>
@@ -827,10 +827,10 @@ const CreateProduct = () => {
 
             {/* variation code start */}
 
-            <div className="col-span-12 mb-4 rounded-lg shadow  border-gray-300 ">
-              <div className="py-4 rounded-lg  border hover:border-teal-500 shadow bg-white flex-shrink-0">
+            <div className="col-span-12 mb-4 rounded  border-gray-300 ">
+              <div className="py-4 rounded border hover:border-teal-500  bg-white flex-shrink-0">
                 <div className="flex justify-between mb-2">
-                  <div className="px-4 text-lg font-semibold">
+                  <div className="px-4  font-medium">
                     Price, Stock, Code
                   </div>
                   <div className="px-4 flex items-center">
@@ -851,10 +851,10 @@ const CreateProduct = () => {
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 mx-5 items-center">
                         <div className="col-span-1">
                           <div className="mb-3">
-                            <label className="form-label  text-sm md:text-base font-semibold">Cost Price</label>
+                            <label className="form-label  text-sm  font-medium">Cost Price</label>
                             <input
                               type="number"
-                              className="form-control text-sm rounded-lg shadow border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full"
+                              className="form-control text-sm rounded border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full"
                               id="price"
                               placeholder="Enter cost price"
                               aria-label="Price"
@@ -872,13 +872,13 @@ const CreateProduct = () => {
                         <div className="mb-2">
                           <label
                             htmlFor="stock"
-                            className="block   text-sm md:text-base font-semibold"
+                            className="block   text-sm  font-medium"
                           >
                             Stock
                           </label>
                           <input
                             type="number"
-                            className="form-control text-sm rounded-lg shadow border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full"
+                            className="form-control text-sm rounded border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full"
                             id="stock"
                             placeholder="Enter stock"
                             aria-label="Stock"
@@ -894,13 +894,13 @@ const CreateProduct = () => {
                         <div className="mb-2">
                           <label
                             htmlFor="code"
-                            className="block text-sm md:text-base font-semibold"
+                            className="block text-sm  font-medium"
                           >
                             Code
                           </label>
                           <input
                             type="text"
-                            className="form-control text-sm  rounded-lg shadow border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full"
+                            className="form-control text-sm  rounded border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full"
                             id="code"
                             placeholder="Enter code"
                             aria-label="Code"
@@ -911,21 +911,21 @@ const CreateProduct = () => {
                       </div>
                     </div>
 
-                    <div className=" shadow-sm rounded-md hover:border-teal-500 focus:outline-none  focus:ring-teal-500 bg-white">
+                    <div className=" -sm rounded-md hover:border-teal-500 focus:outline-none  focus:ring-teal-500 bg-white">
                       <div className="card-body p-4" id="section-7">
-                        <h5 className="text-lg font-semibold">Discount</h5>
+                        <h5 className=" font-medium">Discount</h5>
 
                         <div className="grid grid-cols-1 gap-3 md:grid-cols-4 items-center">
                           <div className="mb-2">
                             <label
                               htmlFor="Selling price"
-                              className="block text-sm md:text-base font-semibold"
+                              className="block text-sm  font-medium"
                             >
                               Selling Price
                             </label>
                             <input
                               type="number"
-                              className="form-control text-sm rounded-lg shadow border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full"
+                              className="form-control text-sm rounded border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full"
                               id="price"
                               placeholder="Enter price"
                               aria-label="Price"
@@ -940,14 +940,14 @@ const CreateProduct = () => {
 
                           <div className="col-span-1">
                             <div className="mb-3">
-                              <label className="form-label  text-sm md:text-base font-semibold">
+                              <label className="form-label  text-sm  font-medium">
                                 Discount Amount
                               </label>
                               <input
                                 type="number"
                                 name="discount_value"
                                 defaultValue=""
-                                className="form-control text-sm  rounded-lg shadow border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full"
+                                className="form-control text-sm  rounded border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full"
                                 onChange={(e) =>
                                   setDiscountAmount(e.target.value)
                                 }
@@ -957,12 +957,12 @@ const CreateProduct = () => {
 
                           <div className="col-span-1">
                             <div className="mb-3">
-                              <label className="form-label  text-sm md:text-base font-semibold">
+                              <label className="form-label  text-sm  font-medium">
                                 Percent Or Fixed
                               </label>
                               <select
                                 name="discount_type"
-                                className="h-10 form-control text-sm rounded-lg shadow border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full"
+                                className="h-10 form-control text-sm rounded border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full"
                                 onChange={(e) =>
                                   setDiscountType(e.target.value)
                                 }
@@ -975,13 +975,13 @@ const CreateProduct = () => {
                           </div>
                           <div className="col-span-1">
                             <div className="mb-3">
-                              <label className="form-label  text-sm md:text-base font-semibold">
+                              <label className="form-label  text-sm  font-medium">
                                 Discount Date
                               </label>
                               <input
                                 type="date"
                                 onClick={(e) => e.target.showPicker()}
-                                className="form-control text-sm  rounded-lg shadow border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full"
+                                className="form-control text-sm  rounded border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-full"
                                 placeholder="Enter discount"
                                 onChange={(e) =>
                                   setDiscountDate(e.target.value)
@@ -995,20 +995,20 @@ const CreateProduct = () => {
                   </>
                 )}
                 {hasVariations && (
-                  <div className="mb-4 py-2 bg-white shadow">
+                  <div className="mb-4 py-2 bg-white ">
                     <div className="mx-5">
                       {variations.map((variation, index) => (
                         <div key={index} className="">
                           <div className="mb-4">
                             <div className="flex gap-4">
                               <div className="flex-1">
-                                <label className="block  text-sm md:text-base font-semibold mb-2">
+                                <label className="block  text-sm  font-medium mb-2">
                                   Select Variation
                                 </label>
                                 <div className="flex gap-2">
                                   <Select
                                     options={variationOptions}
-                                    className="form-control text-sm rounded-lg border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 w-full"
+                                    className="form-control text-sm roundedborder hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 w-full"
                                     placeholder="Select a variation"
                                     isSearchable
                                     onChange={(selectedOption) =>
@@ -1032,13 +1032,13 @@ const CreateProduct = () => {
                               </div>
 
                               <div className="flex-1">
-                                <label className="block  text-sm md:text-base font-semibold mb-2">
+                                <label className="block  text-sm  font-medium mb-2">
                                   Select Values
                                 </label>
                                 <Select
                                   id="variation_value_ids"
                                   options={variation.options || []}
-                                  className="form-control text-sm  rounded-lg border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 w-full"
+                                  className="form-control text-sm  roundedborder hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 w-full"
                                   placeholder="Select values"
                                   isSearchable
                                   required
@@ -1057,7 +1057,7 @@ const CreateProduct = () => {
                       <button
                         type="button"
                         onClick={addVariation}
-                        className="text-teal-500 text-sm md:text-base font-medium hover:text-teal-700 focus:outline-none mb-4"
+                        className="text-teal-500 text-sm  font-medium hover:text-teal-700 focus:outline-none mb-4"
                       >
                         + Add another variation
                       </button>
@@ -1133,7 +1133,7 @@ const CreateProduct = () => {
                                         "buying_price"
                                       )
                                     }
-                                    className="form-control rounded-lg border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-[100px]"
+                                    className="form-control roundedborder hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-[100px]"
                                     placeholder="cost price"
                                   />
                                 </td>
@@ -1147,7 +1147,7 @@ const CreateProduct = () => {
                                     onChange={(e) =>
                                       handleInputChange(e, combIndex, "price")
                                     }
-                                    className="form-control rounded-lg border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-[100px]"
+                                    className="form-control roundedborder hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-[100px]"
                                     placeholder="price"
                                   />
                                 </td>
@@ -1160,7 +1160,7 @@ const CreateProduct = () => {
                                     onChange={(e) =>
                                       handleInputChange(e, combIndex, "stock")
                                     }
-                                    className="form-control rounded-lg border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-[100px]"
+                                    className="form-control roundedborder hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-[100px]"
                                     placeholder="stock"
                                   />
                                 </td>
@@ -1239,7 +1239,7 @@ const CreateProduct = () => {
                                         "discount"
                                       )
                                     }
-                                    className="form-control rounded-lg border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-[100px]"
+                                    className="form-control roundedborder hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-[100px]"
                                     placeholder="discount"
                                   />
                                 </td>
@@ -1257,7 +1257,7 @@ const CreateProduct = () => {
                                     defaultValue={
                                       combination.discount || "fixed"
                                     }
-                                    className="form-control rounded-sm shadow-sm border border-gray-300 px-2 py-3 w-[120px]"
+                                    className="form-control rounded-sm -sm border border-gray-300 px-2 py-3 w-[120px]"
                                   >
                                     <option value="fixed">Fixed</option>
                                     <option value="percent">
@@ -1278,7 +1278,7 @@ const CreateProduct = () => {
                                         "discount_date"
                                       )
                                     }
-                                    className="form-control rounded-lg border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-[100px]"
+                                    className="form-control roundedborder hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-[100px]"
                                     placeholder="date"
                                   />
                                 </td>
@@ -1290,7 +1290,7 @@ const CreateProduct = () => {
                                     onChange={(e) =>
                                       handleInputChange(e, combIndex, "code")
                                     }
-                                    className="form-control rounded-lg border hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-[100px]"
+                                    className="form-control roundedborder hover:border-teal-500 focus:outline-none  focus:ring-teal-500 border-gray-300 p-2 w-[100px]"
                                     placeholder="Enter code"
                                   />
                                 </td>
@@ -1320,7 +1320,7 @@ const CreateProduct = () => {
 
             <div className="flex justify-end my-5">
               <button
-                className=" bg-teal-500 hover:bg-teal-600 text-white px-6 py-2 text-sm md:text-base rounded font-medium "
+                className=" bg-teal-500 hover:bg-teal-600 text-white px-6 py-2 text-sm  rounded font-medium "
                 type="submit"
               >
                 {loading ? (
@@ -1363,6 +1363,9 @@ const CreateProduct = () => {
 
         {/* end Bottom video Drawer */}
       </div>
+
+      
+      <Footer_Backend />
     </div>
   );
 };

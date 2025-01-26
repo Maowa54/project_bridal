@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import axios from "axios";
 import toast from "react-hot-toast";
+import { Tooltip as ReactTooltip } from "react-tooltip";
 
 import { CiMenuKebab } from "react-icons/ci";
 import { IoClose } from "react-icons/io5";
@@ -9,6 +10,7 @@ import { FaEye } from "react-icons/fa";
 import { FaRegEdit } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
 import Footer_Backend from "../../../Component/Backend/Footer_Backend";
+import Swal from "sweetalert2";
 
 const User = () => {
   const [editData, setEditData] = useState([]);
@@ -193,15 +195,66 @@ const User = () => {
     setIsModalOpen(false);
   };
 
+  const handleDelete = async (id) => {
+    // Show a confirmation dialog
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    });
+  
+    if (result.isConfirmed) {
+      try {
+        const response = await axios.delete(
+          `https://admin.attireidyll.com/api/user/delete/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+  
+        if (response.data.status) {
+          Swal.fire(
+            "Deleted!",
+            response.data.message || "User deleted successfully.",
+            "success"  // Added success to indicate proper action
+          );
+  
+          // Corrected the state update to setUsers instead of setDisplayOrders
+          setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
+        } else {
+          Swal.fire(
+            "Error!",
+            response.data.message || "Failed to delete user.",
+            "error"
+          );
+        }
+      } catch (error) {
+        console.error(
+          "Error deleting user:",
+          error.response ? error.response.data : error.message
+        );
+        Swal.fire("Error!", "Failed to delete user.", "error");
+      }
+    }
+  };
+  
   return (
     <div>
-      <div className="pb-8">
+      <div className="">
         <div>
-          <div className="flex rounded shadow-md justify-between mt-1 mb-5 py-2 px-4 items-center">
-            <h1 className="text-xl md:text-2xl font-semibold">User</h1>
+          <div className="flex justify-between mt-1 px-4 py-3 rounded border border-gray-300 items-center">
+            <h1 className="text-lg md:text-lg font-medium text-gray-700 ">
+              User{" "}
+            </h1>{" "}
             <button
               onClick={() => document.getElementById("my_modal_3").showModal()}
-              className="ml-auto bg-teal-500 hover:bg-teal-400 text-white font-semibold py-1 px-6  text-sm md:text-base rounded  transition duration-200"
+              className="ml-auto bg-teal-500 hover:bg-teal-400 text-white font-medium py-1 px-4  text-sm  rounded  transition duration-200"
             >
               Add New
             </button>
@@ -320,165 +373,199 @@ const User = () => {
           </form>
         </div>
 
-        <div className="overflow-x-auto overflow-y-hidden my-6">
-          <div className="w-full">
-            <table className="table text-nowrap">
-              <thead className="text-base  text-gray-700 border-b-2">
-                <tr>
-                  <th className="">SL</th>
-                  <th className="">Name</th>
-                  <th className="">Number</th>
-                  <th className="">Mail</th>
-                  <th className="">Password</th>
-                  <th className="">Action</th>
-                </tr>
-              </thead>
-              <tbody className="text-sm  text-gray-700 font-medium">
-                {users.map((user, index) => (
-                  <tr key={user.id || index} className="hover">
-                    <th className="text-gray-600">{index + 1}</th>
-                    <td className="">{user.name || "No Name"}</td>
-                    <td className="">{user.phone || "No Phone"}</td>
-                    <td className="">{user.email || "No Email"}</td>
-                    <td className="">{user.pass || "No Password"}</td>
-                    <td>
-                      <div className="dropdown">
-                        <button className="md:text-lg ml-5">
-                          <CiMenuKebab />
-                        </button>
-                        <ul
-                          tabIndex={0}
-                          className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
-                        >
-                          <li>
-                            <a onClick={() => handleEdit(user)}>
-                              <FaRegEdit className="text-green-500 text-lg pl-1" />
-                              Edit
-                            </a>
-                          </li>
-                          <li>
-                            <a>
-                              <MdDeleteForever className="text-red-500 text-lg" />
-                              Delete
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-
-            {isModalOpen && (
-              <dialog id="" className="modal w-full" open>
-                <form onSubmit={handleEditSave}>
-                  <div className="modal-box px-13 ">
-                    <div className="flex justify-between items-center  mb-2">
-                      <p className="text-2xl">
-                        <b>Edit User</b>
-                      </p>
+        <div className="overflow-x-auto  my-6 ">
+          <table className="min-w-full text-nowrap">
+            <thead className="">
+              <tr>
+                <th className="px-4 py-2 border-b border-gray-300 text-left text-sm font-medium text-gray-800">
+                  SL
+                </th>
+                <th className="px-4 py-2 border-b border-gray-300 text-left text-sm font-medium text-gray-800">
+                  Name
+                </th>
+                <th className="px-4 py-2 border-b border-gray-300 text-left text-sm font-medium text-gray-800">
+                  Number
+                </th>
+                <th className="px-4 py-2 border-b border-gray-300 text-left text-sm font-medium text-gray-800">
+                  Mail
+                </th>
+                <th className="px-4 py-2 border-b border-gray-300 text-left text-sm font-medium text-gray-800">
+                  Password
+                </th>
+                <th className="px-4 py-2 border-b border-gray-300 text-left text-sm font-medium text-gray-800">
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody className="">
+              {users.map((user, index) => (
+                <tr
+                  key={user.id || index}
+                  className="hover cursor-pointer border-b"
+                >
+                  <td className="px-4 py-3  text-sm text-gray-700">
+                    {index + 1}
+                  </td>
+                  <td className="px-4 py-3  text-sm text-gray-700">
+                    {user.name || "No Name"}
+                  </td>
+                  <td className="px-4 py-3  text-sm text-gray-700">
+                    {user.phone || "No Phone"}
+                  </td>
+                  <td className="px-4 py-3  text-sm text-gray-700">
+                    {user.email || "No Email"}
+                  </td>
+                  <td className="px-4 py-3  text-sm text-gray-700">
+                    {user.pass || "No Password"}
+                  </td>
+                  <td className="px-4 py-3  text-sm text-gray-700">
+                    <div className="flex gap-2">
                       <button
-                        type="button"
-                        onClick={closeModal}
-                        className="btn btn-sm btn-circle btn-ghost text-2xl"
+                        data-tooltip-id="editTooltipId"
+                        onClick={() => handleEdit(user)}
                       >
-                        <IoClose />
+                        <FaRegEdit className="text-green-500 text-lg pl-1" />
                       </button>
-                    </div>
+                      <ReactTooltip
+                        id="editTooltipId"
+                        place="top"
+                        content="Edit "
+                        style={{
+                          fontSize: "11px", // Adjust text size
+                          padding: "4px 8px", // Adjust padding
+                        }}
+                      />
 
-                    {/* Form fields */}
-                    <div className="w-full max-w-md mx-auto mb-4">
-                      <label className="text-gray-700 text-sm font-bold mb-2">
-                        User Name
-                      </label>
-                      <input
-                        className="shadow text-sm border rounded w-full py-2 px-3 text-gray-700 focus:outline-none"
-                        id="username"
-                        type="text"
-                        placeholder="Enter name"
-                        value={editName}
-                        onChange={(e) => setEditName(e.target.value)}
+                      <button
+                        onClick={() => handleDelete(user.id)}
+                        data-tooltip-id="deleteTooltipId"
+                      >
+                        <MdDeleteForever className="text-red-500 text-lg" />
+                      </button>
+                      <ReactTooltip
+                        id="deleteTooltipId"
+                        place="top"
+                        content="Delete "
+                        style={{
+                          fontSize: "11px", // Adjust text size
+                          padding: "4px 8px", // Adjust padding
+                        }}
                       />
                     </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
 
-                    <div className="w-full max-w-md mx-auto mb-4">
-                      <label className="text-gray-700 text-sm font-bold mb-2">
-                        User Phone Number
-                      </label>
-                      <input
-                        className="shadow border text-sm rounded w-full py-2 px-3 text-gray-700 focus:outline-none"
-                        id="usernumber"
-                        type="number"
-                        placeholder="Enter your number"
-                        value={editPhone}
-                        onChange={(e) => setEditPhone(e.target.value)}
-                      />
-                      {/* {errors.phone && (
+          {isModalOpen && (
+            <dialog id="" className="modal w-full" open>
+              <form onSubmit={handleEditSave}>
+                <div className="modal-box px-13 ">
+                  <div className="flex justify-between items-center  mb-2">
+                    <p className="text-2xl">
+                      <b>Edit User</b>
+                    </p>
+                    <button
+                      type="button"
+                      onClick={closeModal}
+                      className="btn btn-sm btn-circle btn-ghost text-2xl"
+                    >
+                      <IoClose />
+                    </button>
+                  </div>
+
+                  {/* Form fields */}
+                  <div className="w-full max-w-md mx-auto mb-4">
+                    <label className="text-gray-700 text-sm font-bold mb-2">
+                      User Name
+                    </label>
+                    <input
+                      className="shadow text-sm border rounded w-full py-2 px-3 text-gray-700 focus:outline-none"
+                      id="username"
+                      type="text"
+                      placeholder="Enter name"
+                      value={editName}
+                      onChange={(e) => setEditName(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="w-full max-w-md mx-auto mb-4">
+                    <label className="text-gray-700 text-sm font-bold mb-2">
+                      User Phone Number
+                    </label>
+                    <input
+                      className="shadow border text-sm rounded w-full py-2 px-3 text-gray-700 focus:outline-none"
+                      id="usernumber"
+                      type="number"
+                      placeholder="Enter your number"
+                      value={editPhone}
+                      onChange={(e) => setEditPhone(e.target.value)}
+                    />
+                    {/* {errors.phone && (
                 <p className="text-red-500 text-sm">{errors.phone[0]}</p>
               )} */}
-                    </div>
+                  </div>
 
-                    <div className="w-full max-w-md mx-auto mb-4">
-                      <label className="text-gray-700 text-sm font-bold mb-2">
-                        User Mail
-                      </label>
-                      <input
-                        className="shadow border text-sm rounded w-full py-2 px-3 text-gray-700 focus:outline-none"
-                        id="useremail"
-                        type="email"
-                        placeholder="Enter your email"
-                        value={editEmail}
-                        onChange={(e) => setEditEmail(e.target.value)}
-                      />
-                      {/* {errors.email && (
+                  <div className="w-full max-w-md mx-auto mb-4">
+                    <label className="text-gray-700 text-sm font-bold mb-2">
+                      User Mail
+                    </label>
+                    <input
+                      className="shadow border text-sm rounded w-full py-2 px-3 text-gray-700 focus:outline-none"
+                      id="useremail"
+                      type="email"
+                      placeholder="Enter your email"
+                      value={editEmail}
+                      onChange={(e) => setEditEmail(e.target.value)}
+                    />
+                    {/* {errors.email && (
                 <p className="text-red-500 text-sm">{errors.email[0]}</p>
               )} */}
-                    </div>
+                  </div>
 
-                    <div className="w-full max-w-md mx-auto mb-4">
-                      <label className="text-gray-700 text-sm font-bold mb-2">
-                        User Password
-                      </label>
-                      <input
-                        className="shadow border text-sm rounded w-full py-2 px-3 text-gray-700 focus:outline-none"
-                        type="password"
-                        placeholder="Enter password"
-                        value={editPassword}
-                        onChange={(e) => setEditPassword(e.target.value)}
-                      />
-                      {/* {errors.pass && (
+                  <div className="w-full max-w-md mx-auto mb-4">
+                    <label className="text-gray-700 text-sm font-bold mb-2">
+                      User Password
+                    </label>
+                    <input
+                      className="shadow border text-sm rounded w-full py-2 px-3 text-gray-700 focus:outline-none"
+                      type="password"
+                      placeholder="Enter password"
+                      value={editPassword}
+                      onChange={(e) => setEditPassword(e.target.value)}
+                    />
+                    {/* {errors.pass && (
                 <p className="text-red-500 text-sm">{errors.pass[0]}</p>
               )} */}
-                    </div>
-
-                    <div className="w-full max-w-md mx-auto mb-4">
-                      <label className="text-gray-700 text-sm font-bold mb-2">
-                        Confirm Password
-                      </label>
-                      <input
-                        className="shadow border text-sm rounded w-full py-2 px-3 text-gray-700 focus:outline-none"
-                        type="password"
-                        placeholder="Confirm password"
-                        value={editConfirmPassword}
-                        onChange={(e) => setEditConfirmPassword(e.target.value)}
-                      />
-                    </div>
-
-                    {/* Modal action buttons */}
-                    <div className="modal-action ">
-                      <button
-                        type="submit"
-                        className="btn bg-[#28DEFC] hover:bg-[#28DEFC] text-white"
-                      >
-                        Save
-                      </button>
-                    </div>
                   </div>
-                </form>
-              </dialog>
-            )}
-          </div>
+
+                  <div className="w-full max-w-md mx-auto mb-4">
+                    <label className="text-gray-700 text-sm font-bold mb-2">
+                      Confirm Password
+                    </label>
+                    <input
+                      className="shadow border text-sm rounded w-full py-2 px-3 text-gray-700 focus:outline-none"
+                      type="password"
+                      placeholder="Confirm password"
+                      value={editConfirmPassword}
+                      onChange={(e) => setEditConfirmPassword(e.target.value)}
+                    />
+                  </div>
+
+                  {/* Modal action buttons */}
+                  <div className="modal-action ">
+                    <button
+                      type="submit"
+                      className="btn bg-[#28DEFC] hover:bg-[#28DEFC] text-white"
+                    >
+                      Save
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </dialog>
+          )}
         </div>
       </div>
       <Footer_Backend />

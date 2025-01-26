@@ -10,6 +10,7 @@ import { IoClose } from "react-icons/io5";
 import toast from "react-hot-toast";
 import Footer_Backend from "../../Component/Backend/Footer_Backend";
 import Swal from "sweetalert2";
+import { Tooltip as ReactTooltip } from "react-tooltip";
 
 const Category = () => {
   const token = localStorage.getItem("token");
@@ -168,40 +169,54 @@ const Category = () => {
 
       return (
         <React.Fragment key={category.id}>
-          <tr className="hover cursor-pointer">
-            <td className="text-gray-600">{sl}</td>
+          <tr className="hover  text-nowrap cursor-pointer">
+            <td className="px-4 py-2 border-b border-gray-300 text-sm text-gray-700">
+              {sl}
+            </td>
             <td
-              className="flex items-center "
+              className=" px-4 py-2 border-b border-gray-300 text-sm text-gray-700"
               style={{ paddingLeft: `${level * 20}px` }}
             >
               {level > 0 && (
-                <span className="mr-2 text-gray-500">—</span> // Indicate hierarchy
+                <span className="mr-2 text-gray-500 ">—</span> // Indicate hierarchy
               )}
               {category.name}
             </td>
-            <td>
-              {/* Action Dropdown */}
-              <div className="dropdown">
-                <button className="md:text-lg ml-5">
-                  <CiMenuKebab />
-                </button>
-                <ul
-                  tabIndex={0}
-                  className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
+            <td className="px-4 py-2 border-b border-gray-300 text-sm text-gray-700">
+              <div className="flex gap-2">
+                <button
+                  data-tooltip-id="editTooltipId"
+                  onClick={() => handleEdit(category)}
                 >
-                  <li>
-                    <a onClick={() => handleEdit(category)}>
-                      <FaRegEdit className="text-green-500 text-lg pl-1" />
-                      Edit
-                    </a>
-                  </li>
-                  <li>
-                    <a onClick={() => handleDelete(category.id)}>
-                      <MdDeleteForever className="text-red-500 text-lg" />
-                      Delete
-                    </a>
-                  </li>
-                </ul>
+                  <FaRegEdit className="text-green-500 text-lg pl-1" />
+                </button>
+
+                <ReactTooltip
+                  id="editTooltipId"
+                  place="top"
+                  content="Edit"
+                  style={{
+                    fontSize: "11px", // Adjust text size
+                    padding: "4px 8px", // Adjust padding
+                  }}
+                />
+
+                <button
+                  data-tooltip-id="deleteTooltipId"
+                  onClick={() => handleDelete(category.id)}
+                >
+                  <MdDeleteForever className="text-red-500 text-lg" />
+                </button>
+
+                <ReactTooltip
+                  id="deleteTooltipId"
+                  place="top"
+                  content="Delete "
+                  style={{
+                    fontSize: "11px", // Adjust text size
+                    padding: "4px 8px", // Adjust padding
+                  }}
+                />
               </div>
             </td>
           </tr>
@@ -215,11 +230,11 @@ const Category = () => {
   };
   return (
     <div>
-      <div className="pb-8">
-        <div className="flex shadow-md justify-between mt-1 mb-5 py-2 px-4 rounded items-center">
-          <h1 className="text-xl md:text-2xl font-semibold">Category</h1>
+      <div className="">
+        <div className="flex  justify-between mt-1 px-4 py-3 rounded border border-gray-300 items-center">
+          <h1 className=" md:text-lg font-medium ">Category</h1>
           <Link to="/category/addcategory">
-            <button className="ml-auto bg-teal-500 hover:bg-teal-400 text-white font-semibold py-1 px-6  text-sm md:text-base rounded  transition duration-200">
+            <button className="ml-auto bg-teal-500 hover:bg-teal-400 text-white font-medium py-1 px-4  text-sm  rounded  transition duration-200">
               Add New
             </button>
           </Link>
@@ -261,29 +276,37 @@ const Category = () => {
           </form>
         </div>
 
-        <div className="overflow-x-auto overflow-y-hidden my-6 ">
-          <div className="w-full">
-            <table className="table text-nowrap">
-              <thead className="text-base text-gray-700 border-b-2">
+        <div className="overflow-x-auto  my-6 ">
+          <table className="min-w-full ">
+            <thead className="">
+              <tr>
+                <th className="px-4 py-2 border-b border-gray-300 text-left text-sm font-medium text-gray-800">
+                  SL
+                </th>
+                <th className="px-4 py-2 border-b border-gray-300 text-left text-sm font-medium text-gray-800">
+                  Name
+                </th>
+                <th className="px-4 py-2 border-b border-gray-300 text-left text-sm font-medium text-gray-800">
+                  {" "}
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody className="">
+              {categories.length > 0 ? (
+                renderCategories(categories)
+              ) : (
                 <tr>
-                  <th>SL</th>
-                  <th className="">Name</th>
-                  <th>Action</th>
+                  <td
+                    colSpan={3}
+                    className="text-center px-4 py-2 btext-sm text-gray-600"
+                  >
+                    <span className="loading loading-ring loading-md"></span>
+                  </td>
                 </tr>
-              </thead>
-              <tbody className="text-sm text-gray-700 font-medium">
-                {categories.length > 0 ? (
-                  renderCategories(categories)
-                ) : (
-                  <tr>
-                    <td colSpan={3} className="text-center">
-                      <span className="loading loading-ring loading-md"></span>
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
+              )}
+            </tbody>
+          </table>
         </div>
 
         {/* Edit Category Modal */}

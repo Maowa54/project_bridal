@@ -38,11 +38,9 @@ const AddCategory = () => {
     formData.append("parent_id", category_id);
     formData.append("name", name);
     formData.append("image", "");
- 
-  
-  
+
     // console.log(formData);
-  
+
     for (let [key, value] of formData.entries()) {
       console.log(`${key}: ${value}`);
     }
@@ -57,15 +55,12 @@ const AddCategory = () => {
         }
       );
 
- 
-
       if (response.data.status) {
         toast.success(
           response.data.message || "Category created successfully!"
         );
         setErrors({});
 
- 
         localStorage.removeItem(cacheKey);
         localStorage.removeItem(cacheTimeKey);
         navigate("/category");
@@ -80,39 +75,36 @@ const AddCategory = () => {
     }
   };
 
-
   return (
     <div className="">
       <div>
-        <div className="flex shadow-md justify-between mt-1 mb-5 py-2 px-4 items-center">
-          <h1 className="text-xl md:text-2xl font-semibold">Category</h1>
+        <div className="mt-1 px-4 py-3 rounded border border-gray-300 items-center">
+          <h1 className=" md:text-lg font-medium ">Create Category</h1>
         </div>
+        <form onSubmit={handleSave} className="rounded  mt-5 p-4">
+          <div className="mb-6 w-full md:w-1/2 bg-white flex flex-col ">
+            <label
+              htmlFor="category_id"
+              className="block  font-medium text-gray-800 mb-2"
+            >
+              Parent Category
+            </label>
+            <CategoryItems onCategoryIdChange={handleCategoryIdChange} />
+            {errors.category_id && (
+              <p className="text-red-600 text-sm ">{errors.category_id[0]}</p>
+            )}
+          </div>
 
-        <form onSubmit={handleSave} className="rounded-md shadow-md mt-5 p-4">
-          
-            <div className="mb-6 w-full md:w-1/2 bg-white flex flex-col ">
-              <label
-                htmlFor="category_id"
-                className="block  font-semibold text-gray-800 mb-4"
-              >
-                Parent Category
-              </label>
-              <CategoryItems onCategoryIdChange={handleCategoryIdChange} />
-              {errors.category_id && (
-                <p className="text-red-600 text-sm ">{errors.category_id[0]}</p>
-              )}
-            </div>
-          
           <label
             htmlFor="category-name"
-            className="mb-3 block text-sm md:text-base font-semibold"
+            className="mb-2 block text-sm md:text-base font-medium"
           >
             Category Name
           </label>
           <input
             id="category-name"
             type="text"
-            className="form-control text-sm border rounded-md border-gray-300 py-2 px-3 w-full md:w-1/2 focus:outline-none"
+            className="form-control text-sm border rounded border-gray-300 py-2 px-3 w-full md:w-1/2 focus:outline-none"
             placeholder="Enter category name "
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -124,7 +116,7 @@ const AddCategory = () => {
           <div className="flex justify-end mt-6 py-6 gap-4">
             <button
               type="submit"
-              className="rounded bg-teal-500 hover:bg-teal-400 text-white px-4 py-2 font-semibold text-sm md:text-base"
+              className="rounded bg-teal-500 hover:bg-teal-400 text-white px-4 py-2 font-medium text-sm "
               disabled={loading}
             >
               {loading ? (
@@ -137,7 +129,7 @@ const AddCategory = () => {
               )}
             </button>
             <Link
-              className="rounded bg-gray-500 hover:bg-gray-400 text-white px-4 py-2 font-semibold text-sm md:text-base"
+              className="rounded  bg-gray-500 hover:bg-gray-400 text-white px-4 py-2 font-medium text-sm "
               to="/category"
             >
               Back

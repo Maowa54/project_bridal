@@ -26,6 +26,7 @@ import {
   FaTimes,
   FaCalendar,
 } from "react-icons/fa";
+import { Tooltip as ReactTooltip } from "react-tooltip";
 
 import axios from "axios";
 import { Doughnut, Line } from "react-chartjs-2"; // Combined imports for charts
@@ -42,6 +43,7 @@ import {
 } from "chart.js";
 import { MdDeleteForever } from "react-icons/md";
 import { CiMenuKebab } from "react-icons/ci";
+import Swal from "sweetalert2";
 
 // Register all required ChartJS components once
 ChartJS.register(
@@ -156,7 +158,7 @@ const Dashboard = () => {
       try {
         setIsLoading(true);
         const response = await axios.get(
-          `https://admin.attireidyll.com/api/online/orders/get`,
+          `https://admin.attireidyll.com/api/orders/all/get`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -209,6 +211,10 @@ const Dashboard = () => {
   const orders = filteredOrders.slice(0, pageSize);
 
   console.log(orders);
+
+  orders.forEach((order, index) => {
+    console.log(`Order ${index + 1}:`, order.order_products);
+  });
 
   const [getStock, setGetStock] = useState([]);
 
@@ -447,13 +453,7 @@ const Dashboard = () => {
       textColor: "text-orange-800",
       iconBg: "bg-orange-100",
     },
-    {
-      icon: FaChartBar,
-      value: "৳0.00",
-      label: "Today's Pending Earning",
-      textColor: "text-yellow-800",
-      iconBg: "bg-yellow-100",
-    },
+
     {
       icon: FaChartLine,
       value: "৳0.00",
@@ -469,13 +469,6 @@ const Dashboard = () => {
       iconBg: "bg-orange-100",
     },
 
-    {
-      icon: FaCashRegister,
-      value: "৳4,226,702.93",
-      label: "Total Earning",
-      textColor: "text-blue-800",
-      iconBg: "bg-blue-100",
-    },
     {
       icon: FaShoppingCart,
       value: "543",
@@ -504,13 +497,7 @@ const Dashboard = () => {
       textColor: "text-orange-800",
       iconBg: "bg-orange-100",
     },
-    {
-      icon: FaEnvelope,
-      value: "35",
-      label: "Total Subscribers",
-      textColor: "text-yellow-800",
-      iconBg: "bg-yellow-100",
-    },
+
     {
       icon: FaFolder,
       value: "14",
@@ -519,6 +506,54 @@ const Dashboard = () => {
       iconBg: "bg-green-100",
     },
   ];
+
+  const handleDelete = async (id) => {
+    // Show a confirmation dialog
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        const response = await axios.delete(
+          `https://admin.attireidyll.com/api/order/delete/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response.data.status) {
+          Swal.fire(
+            "Deleted!",
+            response.data.message || "Order deleted successfullyyy."
+          );
+
+          // Remove the deleted SMS from the state
+          setDisplayOrders((prevSms) => prevSms.filter((sms) => sms.id !== id));
+        } else {
+          Swal.fire(
+            "Error!",
+            response.data.message || "Failed to delete order.",
+            "error"
+          );
+        }
+      } catch (error) {
+        console.error(
+          "Error deleting order:",
+          error.response ? error.response.data : error.message
+        );
+        Swal.fire("Error!", "Failed to delete order.", "error");
+      }
+    }
+  };
 
   return (
     <div className="">
@@ -559,8 +594,8 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div className="mt-2">
-        <div className="grid font-semibold grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-5">
+      <div className="mt-2 ">
+        <div className="grid font-semibold grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-3">
           {[
             {
               title: "Sales Today",
@@ -575,12 +610,20 @@ const Dashboard = () => {
               unit: "৳",
               dropdown: true,
             },
+
             {
-              title: "Top 5 Category Sales",
+              title: "Total Orders",
+              count: Math.floor(counts.todays_orders),
+              unit: "",
+              icon: "fa-solid fa-box",
+            },
+
+            {
+              title: "Top 4 Category Sales",
               count: Math.floor(counts.this_month_sell),
               unit: "",
               pieChartData: {
-                labels: ["Bridal", "Woman", "Kids", "Family ", "Man "],
+                labels: ["Bridal", "Woman", "Kids", "Man "],
                 datasets: [
                   {
                     data: [30, 25, 20, 15, 10], // Replace with your actual data
@@ -595,70 +638,18 @@ const Dashboard = () => {
                 ],
               },
             },
-            {
-              title: "Total Orders",
-              count: Math.floor(counts.todays_orders),
-              unit: "",
-              icon: "fa-solid fa-box",
-            },
           ].map((card, index) => (
             <div
               key={index}
-              className="card border shadow transform rounded overflow-hidden flex flex-col"
+              className="card border  shadow transform rounded overflow-hidden flex flex-col"
             >
-              <div className="px-5 py-4 flex-grow">
-                <div className="flex text-nowrap justify-between items-center">
-                  <p className="card-title text-gray-500 text-sm md:text-base">
-                    {card.title}
-                  </p>
-
-                  {card.dropdown ? (
-                    <div className="relative inline-block">
-                      <button
-                        className="flex items-center justify-between text-nowrap bg-white text-gray-500 text-xs rounded px-3  cursor-pointer"
-                        onClick={() => setIsOpen(!isOpen)}
-                      >
-                        {selectedValue}
-                        <i
-                          className={`ml-2 fas ${
-                            isOpen ? "fa-chevron-up" : "fa-chevron-down"
-                          } transition-transform`}
-                        ></i>
-                      </button>
-
-                      {isOpen && (
-                        <ul className="absolute mt-2 bg-white text-nowrap rounded shadow-md text-gray-500 text-xs w-auto">
-                          <li
-                            className="px-4 py-2 cursor-pointer hover:text-teal-600"
-                            onClick={() => handleOptionClick("Last 7 Days")}
-                          >
-                            Last 7 Days
-                          </li>
-                          <li
-                            className="px-4 py-2 cursor-pointer hover:text-teal-600"
-                            onClick={() => handleOptionClick("Last 30 Days")}
-                          >
-                            Last 30 Days
-                          </li>
-                          <li
-                            className="px-4 py-2 cursor-pointer hover:text-teal-600"
-                            onClick={() => handleOptionClick("Last 3 Months")}
-                          >
-                            Last 3 Months
-                          </li>
-                        </ul>
-                      )}
-                    </div>
-                  ) : (
-                    <i
-                      className={`${card.icon} text-gray-600 text-lg md:text-xl`}
-                    ></i>
-                  )}
-                </div>
-
-                <div className="flex items-center justify-between mt-6">
+              <div className="px-3 py-2 flex-grow">
+                <p className="card-title text-gray-500 text-sm md:text-base">
+                  {card.title}{" "}
+                </p>
+                <div className="flex items-center justify-between mt-2">
                   {card.pieChartData ? (
-                    <div className="flex items-center">
+                    <div className="flex items-center justify-between">
                       {/* Doughnut Chart on the left side */}
                       <div className="size-14 mr-4">
                         <Doughnut
@@ -670,27 +661,67 @@ const Dashboard = () => {
                                 display: false, // Hide legend inside the chart
                               },
                             },
+                            cutout: "75%", // Adjust the thickness (higher value = thinner)
                           }}
                         />
                       </div>
 
                       {/* Custom Legend on the right side with scrolling */}
-                      <div className="overflow-y-auto max-h-14 scrollbar-custom">
-                        <ul className="space-y-2 text-gray-600 text-sm mr-2">
-                          {card.pieChartData.labels.map((label, idx) => (
-                            <li key={idx} className="flex items-center">
-                              {/* Rounded color circle */}
-                              <span
-                                className="inline-block w-2.5 h-2.5 rounded-full mr-2"
-                                style={{
-                                  backgroundColor:
-                                    card.pieChartData.datasets[0]
-                                      .backgroundColor[idx],
-                                }}
-                              ></span>
-                              {label}
-                            </li>
-                          ))}
+                      <div className="flex justify-between text-gray-600 text-xs">
+                        {/* Left Column */}
+                        <ul className="space-y-1 mr-2">
+                          {card.pieChartData.labels
+                            .slice(
+                              0,
+                              Math.ceil(card.pieChartData.labels.length / 2)
+                            )
+                            .map((label, idx) => (
+                              <li key={idx} className="flex items-center">
+                                {/* Rounded color circle */}
+                                <span
+                                  className="inline-block w-2 h-2 rounded-full mr-2"
+                                  style={{
+                                    backgroundColor:
+                                      card.pieChartData.datasets[0]
+                                        .backgroundColor[idx],
+                                  }}
+                                ></span>
+                                {label}
+                              </li>
+                            ))}
+                        </ul>
+
+                        {/* Right Column */}
+                        <ul className="space-y-1">
+                          {card.pieChartData.labels
+                            .slice(
+                              Math.ceil(card.pieChartData.labels.length / 2)
+                            )
+                            .map((label, idx) => (
+                              <li
+                                key={
+                                  idx +
+                                  Math.ceil(card.pieChartData.labels.length / 2)
+                                }
+                                className="flex items-center"
+                              >
+                                {/* Rounded color circle */}
+                                <span
+                                  className="inline-block w-2 h-2 rounded-full mr-2"
+                                  style={{
+                                    backgroundColor:
+                                      card.pieChartData.datasets[0]
+                                        .backgroundColor[
+                                        idx +
+                                          Math.ceil(
+                                            card.pieChartData.labels.length / 2
+                                          )
+                                      ],
+                                  }}
+                                ></span>
+                                {label}
+                              </li>
+                            ))}
                         </ul>
                       </div>
                     </div>
@@ -702,8 +733,8 @@ const Dashboard = () => {
                   )}
                 </div>
               </div>
-              <div className="bg-teal-100 text-sm text-teal-800 p-3 mt-auto">
-                <span className="bg-teal-700 text-white px-4 py-1 rounded-full text-sm font-medium mr-2">
+              <div className="bg-teal-100 text-sm text-teal-800 p-2 mt-auto">
+                <span className="bg-teal-700 text-white px-2 py-1 rounded-full text-sm font-medium mr-1">
                   10%
                 </span>
                 increase from the last day
@@ -714,10 +745,10 @@ const Dashboard = () => {
       </div>
 
       <div className="mt-4">
-        <div className="grid grid-cols-12 gap-6">
+        <div className="grid grid-cols-12 gap-6 ">
           {/* Sales Graph Section */}
           <div className="col-span-12 md:col-span-9   rounded ">
-            <div className="border shadow px-4 pt-4 pb-12 rounded">
+            <div className="border  shadow px-4 pt-4 pb-12 rounded">
               <h3 className="text-lg font-semibold text-gray-700 mb-4">
                 Sales This Month
               </h3>
@@ -812,8 +843,8 @@ const Dashboard = () => {
           </div>
 
           {/* Top Selling Products Section */}
-          <div className="col-span-12 md:col-span-3 rounded border shadow">
-            <div className="bg-teal-100 p-3 py-4">
+          <div className="col-span-12 md:col-span-3  rounded border shadow-md">
+            <div className="bg-teal-100 px-3 py-4">
               <h3 className="md:text-xl text-teal-800 font-bold">
                 Top-Selling Products
               </h3>
@@ -821,8 +852,8 @@ const Dashboard = () => {
                 We have listed 15 total products
               </h3>
             </div>
-            <div className="max-h-72 overflow-y-auto scrollbar-customize">
-              <ul className="space-y-3">
+            <div className="max-h-72  overflow-y-auto scrollbar-customize">
+              <ul className=" ">
                 {[
                   {
                     name: "Product A",
@@ -868,7 +899,7 @@ const Dashboard = () => {
                 ].map((product, index) => (
                   <li
                     key={index}
-                    className="flex items-center   rounded p-3 border-b"
+                    className="flex items-center   rounded py-2 px-4 border-b"
                   >
                     <img
                       src={product.image}
@@ -876,10 +907,10 @@ const Dashboard = () => {
                       className="w-12 h-12 object-cover rounded"
                     />
                     <div className="ml-4">
-                      <span className="text-gray-600 font-medium">
+                      <span className="text-gray-600 text-sm font-medium">
                         {product.name}
                       </span>
-                      <div className="text-sm text-gray-500">
+                      <div className="text-xs text-gray-500">
                         Sold: {product.sales} Items
                       </div>
                     </div>
@@ -891,7 +922,7 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div className="mt-4 border rounded">
+      <div className="mt-4 border  rounded">
         <div className="flex p-4 border-b justify-between">
           <div>
             <h2 className="font-semibold text-lg md:text-xl">Recent Orders</h2>
@@ -916,7 +947,7 @@ const Dashboard = () => {
                   <th className="">Date</th>
                   <th className="">Order ID</th>
                   <th className="">Customer</th>
-                  <th className="">Items</th>
+                  <th className="">Qty</th>
 
                   <th className="">Address</th>
 
@@ -946,51 +977,84 @@ const Dashboard = () => {
                         <span>{order.c_name}</span>
                         <span>{order.c_phone}</span>
                       </td>
-
                       <td>
                         {Number(order?.s_product_qty) +
                           Number(order?.v_product_qty)}
                       </td>
-
                       <td>
                         {order.address.length > 20
                           ? `${order.address.substring(0, 15)}.....`
                           : order.address}
                       </td>
-
                       <td>{order.cod_amount}</td>
-                      <td>{order.status}</td>
-                      <td>
+                      <td className="px-2 py-2 border-gray-300 text-sm ">
+                        <span
+                          className={`inline-block px-3 py-1 rounded-full font-medium ${
+                            order.status === "order_placed"
+                              ? "bg-yellow-100 text-yellow-800"
+                              : order.status === "online_order"
+                              ? "bg-green-100 text-blue-800"
+                              : order.status === "cancel"
+                              ? "bg-red-100 text-red-800"
+                              : "bg-gray-100 text-gray-800"
+                          }`}
+                        >
+                          {order.status === "order_placed"
+                            ? "Processing"
+                            : order.status === "online_order"
+                            ? "Online"
+                            : order.status === "cancel"
+                            ? "Cancelled"
+                            : "Unknown"}
+                        </span>
+                      </td>{" "}
+                      <td className="px-4 py-2  text-sm">
                         <div className="relative">
-                          <div className="dropdown">
-                            <button className="md:text-lg ml-5">
-                              <CiMenuKebab />
-                            </button>
-                            <ul
-                              tabIndex={0}
-                              className="dropdown-content menu bg-base-100 rounded-box z-50 p-2 shadow absolute right-2"
+                          <div className="flex  gap-2 md:text-lg ">
+                            <Link
+                              data-tooltip-id="viewTooltipId"
+                              to={{
+                                pathname: "/orderdetails",
+                              }}
+                              state={{ order }}
                             >
-                              <li>
-                                <a>
-                                  <FaEye className="text-teal-500 text-lg   pl-1" />
-                                  View
-                                </a>
-                              </li>
+                              <FaEye className="text-teal-500 text-lg  " />
+                            </Link>
 
-                              <li>
-                                <a>
-                                  <MdDeleteForever className="text-red-500 text-lg  " />
-                                  Delete
-                                </a>
-                              </li>
-                            </ul>
+                            <ReactTooltip
+                              id="viewTooltipId"
+                              place="top"
+                              content="View Details"
+                              style={{
+                                fontSize: "11px", // Adjust text size
+                                padding: "4px 8px", // Adjust padding
+                              }}
+                            />
+
+                            <button
+                              data-tooltip-id="DeleteTooltipId"
+                              onClick={() => handleDelete(order.id)}
+                              className=""
+                            >
+                              <MdDeleteForever className="text-red-500 text-lg  " />
+                            </button>
+
+                            <ReactTooltip
+                              id="DeleteTooltipId"
+                              place="top"
+                              content=" Delete"
+                              style={{
+                                fontSize: "11px", // Adjust text size
+                                padding: "4px 8px", // Adjust padding
+                              }}
+                            />
                           </div>
                         </div>
                       </td>
                     </tr>
                   ))
                 ) : (
-                  // If orders array is empty
+                  // If orders array is emptyF
                   <tr>
                     <td colSpan="13" className="text-center">
                       <div className=" flex flex-col items-center ">
@@ -1011,11 +1075,12 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6 ">
         {cards.map((card, index) => (
           <div
             key={index}
-            className={`flex border items-center p-4 rounded-lg shadow `}
+            className={`flex border  items-center p-4 rounded-lg shadow `}
           >
             <div
               className={`flex  items-center justify-center w-12 h-12 rounded-full ${card.iconBg} text-xl`}
@@ -1023,7 +1088,9 @@ const Dashboard = () => {
               <card.icon className={card.textColor} />
             </div>
             <div className="ml-4">
-              <h4 className="text-2xl font-semibold text-gray-800">{card.value}</h4>
+              <h4 className="text-2xl font-semibold text-gray-800">
+                {card.value}
+              </h4>
               <p className="text-sm text-gray-500">{card.label}</p>
             </div>
           </div>

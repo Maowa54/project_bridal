@@ -101,6 +101,7 @@ function App() {
           <Route path="/preorder" element={<PreOrder />} />
 
           <Route path="/checkout" element={<Order />} />
+
           <Route path="/thankyou/:order_id" element={<ThankYou />} />
 
           {/* <Route path="/register" element={<Register />} /> */}
@@ -150,7 +151,7 @@ function App() {
                           <IoIosNotifications size={30} />
                         </button>
                       </header>
-                      <main className="pt-16 px-4">
+                      <main className="pt-16 px-4 ">
                         <MainContent userInfo={userInfo} error={error} />
                       </main>
                     </div>

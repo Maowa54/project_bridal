@@ -2,6 +2,9 @@ import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 
 import { BsBoxes } from "react-icons/bs";
+import { Link } from "react-router-dom";
+import { Tooltip as ReactTooltip } from "react-tooltip";
+
 import {
   FaEllipsisV,
   FaEye,
@@ -15,6 +18,7 @@ import {
   FaUndo,
   FaCheck,
   FaTags,
+  FaPrint,
 } from "react-icons/fa";
 import Datepicker from "react-tailwindcss-datepicker";
 import { printInvoice } from "./InvoicePrint";
@@ -54,9 +58,10 @@ const Order = () => {
     printWindow.document.close();
     printWindow.print();
   };
+
   useEffect(() => {
     const fetchOrders = async () => {
-      const localStorageKey = 'orders';
+      const localStorageKey = "orders";
       const cachedData = localStorage.getItem(localStorageKey);
       const now = Date.now();
 
@@ -101,7 +106,7 @@ const Order = () => {
     };
 
     fetchOrders();
-  }, [ token]);
+  }, [token]);
 
   console.log(displayOrders);
 
@@ -145,7 +150,6 @@ const Order = () => {
   const handlePrintInvoice = (order) => {
     printInvoice(order);
   };
-
 
   const handleDelete = async (id) => {
     // Show a confirmation dialog
@@ -219,9 +223,11 @@ const Order = () => {
 
   return (
     <div>
-      <div className="pb-8">
-        <div className="flex shadow-md rounded justify-between mt-1 mb-5 py-2 px-4 items-center">
-          <h1 className="text-xl md:text-2xl font-semibold">Order</h1>
+      <div className="">
+        <div className="flex rounded border border-gray-300 justify-between mt-1 px-4 py-3 items-center ">
+          <h1 className="text-lg md:text-lg font-medium text-gray-700 ">
+            Order
+          </h1>
         </div>
 
         <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-12 text-nowrap gap-4 my-4">
@@ -231,8 +237,8 @@ const Order = () => {
               label: "Sales Today",
               value: 0,
               icon: <FaShoppingCart size={15} md:size={20} />,
-              bgColor: "bg-green-100",
-              textColor: "text-green-700",
+              bgColor: "bg-teal-100",
+              textColor: "text-teal-700",
             },
             {
               label: "Pending Orders",
@@ -259,8 +265,8 @@ const Order = () => {
               label: "Confirmed",
               value: 0,
               icon: <FaCheck size={15} md:size={20} />,
-              bgColor: "bg-teal-100",
-              textColor: "text-teal-700",
+              bgColor: "bg-green-100",
+              textColor: "text-green-700",
             },
             {
               label: "Offers Today",
@@ -333,133 +339,189 @@ const Order = () => {
           </div>
         </div>
 
-        <div className="overflow-x-auto overflow-y-hidden my-6">
-          <div className="w-full">
-            <table className="table text-nowrap">
-              <thead className="text-base  text-gray-700 border-b-2">
-                <tr>
-                  <th className="">
-                    <input
-                      type="checkbox"
-                      checked={selectAll}
-                      onChange={handleSelectAll}
-                      className="size-3 md:size-3.5" // Adjust size for different screen sizes
-                    />
-                  </th>
+        <div className="overflow-x-auto  my-6 ">
+          <table className="min-w-full text-nowrap">
+            <thead className=" border-b">
+              <tr>
+                <th className="px-4 py-2 border-b border-gray-300 text-left text-sm font-medium text-gray-800">
+                  <input
+                    type="checkbox"
+                    checked={selectAll}
+                    onChange={handleSelectAll}
+                    className="size-3 md:size-3.5" // Adjust size for different screen sizes
+                  />
+                </th>
 
-                  <th className="">Date</th>
-                  <th className="">Order ID</th>
-                  <th className="">Customer</th>
-                  <th className="">Items</th>
+                <th className="px-4 py-2 border-b border-gray-300 text-left text-sm font-medium text-gray-800">
+                  Date
+                </th>
+                <th className="px-4 py-2 border-b border-gray-300 text-left text-sm font-medium text-gray-800">
+                  Order ID
+                </th>
+                <th className="px-4 py-2 border-b border-gray-300 text-left text-sm font-medium text-gray-800">
+                  Customer
+                </th>
+                <th className="px-4 py-2 border-b border-gray-300 text-left text-sm font-medium text-gray-800">
+                  Items
+                </th>
 
-                  <th className="">Address</th>
+                <th className="px-4 py-2 border-b border-gray-300 text-left text-sm font-medium text-gray-800">
+                  Address
+                </th>
 
-                  <th className="">Total</th>
-                  <th className="">Status</th>
-                  <th className="">Action</th>
+                <th className="px-4 py-2 border-b border-gray-300 text-left text-sm font-medium text-gray-800">
+                  Total
+                </th>
+                <th className="px-4 py-2 border-b border-gray-300 text-left text-sm font-medium text-gray-800">
+                  Status
+                </th>
+                <th className="px-4 py-2 border-b border-gray-300 text-left text-sm font-medium text-gray-800">
+                  Action
+                </th>
+              </tr>
+            </thead>
+
+            <tbody className="text-sm  text-gray-700 font-medium">
+              {isLoading ? ( // Check if data is still loading
+                <tr className="hover">
+                  <td colSpan="13" className="text-center">
+                    <span className="loading loading-ring loading-md"></span>
+                    <h1>Loading Orders...</h1>
+                  </td>
                 </tr>
-              </thead>
-
-              <tbody className="text-sm  text-gray-700 font-medium">
-                {isLoading ? ( // Check if data is still loading
-                  <tr className="hover">
-                    <td colSpan="13" className="text-center">
-                      <span className="loading loading-ring loading-md"></span>
-                      <h1>Loading Orders...</h1>
+              ) : orders.length > 0 ? ( // Check if orders array has data
+                orders.map((order, index) => (
+                  <tr key={order.id} className="hover border-b cursor-pointer">
+                    <td className="px-4 py-2  text-sm text-gray-600">
+                      <input
+                        type="checkbox"
+                        checked={selectedOrders.includes(order.id)}
+                        onChange={() => handleSelectOrder(order.id)}
+                        className="size-3 md:size-3.5"
+                      />
                     </td>
-                  </tr>
-                ) : orders.length > 0 ? ( // Check if orders array has data
-                  orders.map((order, index) => (
-                    <tr key={order.id} className="hover cursor-pointer">
-                      <td>
-                        <input
-                          type="checkbox"
-                          checked={selectedOrders.includes(order.id)}
-                          onChange={() => handleSelectOrder(order.id)}
-                          className="size-3 md:size-3.5"
+                    <td className="flex flex-col px-4 py-2  text-sm text-gray-600">
+                      <span>{formatDate(order.created_at)}</span>
+                      <span>{formatTime(order.created_at)}</span>
+                    </td>
+                    <td className="px-4 py-2  text-sm text-gray-600">
+                      {order.unique_id}
+                    </td>
+                    <td className="flex flex-col px-4 py-2  text-sm text-gray-600">
+                      <span>{order.c_name}</span>
+                      <span>{order.c_phone}</span>
+                    </td>
+                    <td className="px-4 py-2  text-sm text-gray-600">
+                      {Number(order?.s_product_qty) +
+                        Number(order?.v_product_qty)}
+                    </td>
+                    <td className="px-4 py-2  text-sm text-gray-600">
+                      {order.address.length > 20
+                        ? `${order.address.substring(0, 15)}.....`
+                        : order.address}
+                    </td>
+                    <td className="px-4 py-2  text-sm text-gray-600">
+                      {order.cod_amount}
+                    </td>
+                    <td className="px-2 py-2 border-gray-300 text-sm ">
+                      <span
+                        className={`inline-block px-3 py-1 rounded-full font-medium ${
+                          order.status === "order_placed"
+                            ? "bg-yellow-100 text-yellow-800"
+                            : order.status === "online_order"
+                            ? "bg-green-100 text-blue-800"
+                            : order.status === "cancel"
+                            ? "bg-red-100 text-red-800"
+                            : "bg-gray-100 text-gray-800"
+                        }`}
+                      >
+                        {order.status === "order_placed"
+                          ? "Processing"
+                          : order.status === "online_order"
+                          ? "Online"
+                          : order.status === "cancel"
+                          ? "Cancelled"
+                          : "Unknown"}
+                      </span>
+                    </td>{" "}
+                    <td className="px-4 py-2  text-sm text-gray-600">
+                      <div className="flex gap-2">
+                        <Link
+                          data-tooltip-id="viewTooltipId"
+                          to={{
+                            pathname: "/orderdetails",
+                          }}
+                          state={{ order }}
+                        >
+                          <FaEye className="text-teal-500 text-lg   pl-1" />
+                        </Link>
+
+                        <ReactTooltip
+                          id="viewTooltipId"
+                          place="top"
+                          content="View Details"
+                          style={{
+                            fontSize: "11px", // Adjust text size
+                            padding: "4px 8px", // Adjust padding
+                          }}
                         />
-                      </td>
-                      <td className="flex flex-col">
-                        <span>{formatDate(order.created_at)}</span>
-                        <span>{formatTime(order.created_at)}</span>
-                      </td>
-                      <td>{order.unique_id}</td>
-                      <td className="flex flex-col">
-                        <span>{order.c_name}</span>
-                        <span>{order.c_phone}</span>
-                      </td>
 
-                      <td>
-                        {Number(order?.s_product_qty) +
-                          Number(order?.v_product_qty)}
-                      </td>
+                        <button
+                          data-tooltip-id="printTooltipId"
+                          onClick={() => handlePrintInvoice(order)}
+                          id="printInvoice"
+                        >
+                          <FaPrint className="text-green-500 text-lg   pl-1" />
+                        </button>
 
-                      <td>
-                        {order.address.length > 20
-                          ? `${order.address.substring(0, 15)}.....`
-                          : order.address}
-                      </td>
+                        <ReactTooltip
+                          id="printTooltipId"
+                          place="top"
+                          content="Print Invoice"
+                          style={{
+                            fontSize: "11px", // Adjust text size
+                            padding: "4px 8px", // Adjust padding
+                          }}
+                        />
 
-                      <td>{order.cod_amount}</td>
-                      <td>{order.status}</td>
-                      <td>
-                        <div className="relative">
-                          <div className="dropdown">
-                            <button className="md:text-lg ml-5">
-                              <CiMenuKebab />
-                            </button>
-                            <ul
-                              tabIndex={0}
-                              className="dropdown-content menu bg-base-100 rounded-box z-50 p-2 shadow absolute right-2"
-                            >
-                              <li>
-                                <a>
-                                  <FaEye className="text-teal-500 text-lg   pl-1" />
-                                  View
-                                </a>
-                              </li>
-                              <li
-                                onClick={() => handlePrintInvoice(order)}
-                                id="printInvoice"
-                              >
-                                <a>
-                                  <FaRegEdit className="text-green-500 text-lg   pl-1" />
-                                  Invoice
-                                </a>
-                              </li>
-                              <li>
-                              <a onClick={() => handleDelete(order.id)}>
-                              <MdDeleteForever className="text-red-500 text-lg  " />
-                                  Delete
-                                </a>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  // If orders array is empty
-                  <tr>
-                    <td colSpan="13" className="text-center">
-                      <div className=" flex flex-col items-center ">
-                        <p className=" my-4 text-xl font-semibold mr-4">
-                          No orders found
-                        </p>
-                        <img
-                          className=" w-[15%] animate-pulse "
-                          src="https://cdn-icons-png.flaticon.com/256/4076/4076478.png"
-                          alt="No Orders found"
+                        <button
+                          data-tooltip-id="deleteTooltipId"
+                          onClick={() => handleDelete(order.id)}
+                        >
+                          <MdDeleteForever className="text-red-500 text-lg  " />
+                        </button>
+                        <ReactTooltip
+                          id="deleteTooltipId"
+                          place="top"
+                          content="Delete"
+                          style={{
+                            fontSize: "11px", // Adjust text size
+                            padding: "4px 8px", // Adjust padding
+                          }}
                         />
                       </div>
                     </td>
                   </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-
+                ))
+              ) : (
+                // If orders array is empty
+                <tr>
+                  <td colSpan="13" className="text-center">
+                    <div className=" flex flex-col items-center ">
+                      <p className=" my-4 text-xl font-semibold mr-4">
+                        No orders found
+                      </p>
+                      <img
+                        className=" w-[15%] animate-pulse "
+                        src="https://cdn-icons-png.flaticon.com/256/4076/4076478.png"
+                        alt="No Orders found"
+                      />
+                    </div>
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
           {modalVisible && (
             <InvoiceModal
               order={selectedOrder}
