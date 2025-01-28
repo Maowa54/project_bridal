@@ -34,7 +34,7 @@ const Order = () => {
   const token = localStorage.getItem("token");
   const [displayOrders, setDisplayOrders] = useState([]);
   const [filteredOrders, setFilteredOrders] = useState([]);
-  const [pageSize, setPageSize] = useState(10); // Default page size
+  // const [pageSize, setPageSize] = useState(50); // Default page size
   const [value, setValue] = useState({ startDate: null, endDate: null });
   const [selectedOrders, setSelectedOrders] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
@@ -42,6 +42,18 @@ const Order = () => {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(20);
+
+  const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const orders = filteredOrders.slice(startIndex, endIndex);
+
+  const handleItemsPerPageChange = (e) => {
+    setItemsPerPage(Number(e.target.value));
+    setCurrentPage(1); // Reset to first page when items per page changes
+  };
   // const handleViewClick = (order) => {
   //   setSelectedOrder(order);
   //   setModalVisible(true);
@@ -126,9 +138,9 @@ const Order = () => {
     setValue(newValue);
   };
 
-  const handlePageSizeChange = (event) => {
-    setPageSize(Number(event.target.value));
-  };
+  // const handlePageSizeChange = (event) => {
+  //   setPageSize(Number(event.target.value));
+  // };
 
   const handleSelectAll = () => {
     if (selectAll) {
@@ -217,7 +229,6 @@ const Order = () => {
   }
 
   // Slice the orders array based on pageSize
-  const orders = filteredOrders.slice(0, pageSize);
 
   console.log(orders);
 
@@ -297,14 +308,17 @@ const Order = () => {
           <div className=" flex items-center gap-3 ">
             <div>
               <select
-                onChange={handlePageSizeChange}
-                value={pageSize}
-                className="border border-gray-300 rounded-lg md:text-lg font-bold px-4 py-1"
+                className="rounded border text-sm border-[#2B2F67] bg-white -md h-8 w-24 md:w-20 flex"
+                id="paginate_input"
+                value={itemsPerPage}
+                onChange={handleItemsPerPageChange}
               >
-                <option value="10">10</option>
-                <option value="15">15</option>
-                <option value="20">20</option>
                 <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="200">200</option>
+                <option value="300">300</option>
+                <option value="400">400</option>
+                <option value="500">500</option>
               </select>
             </div>
 
@@ -522,6 +536,36 @@ const Order = () => {
               )}
             </tbody>
           </table>
+
+          {/* Pagination */}
+          <div className="flex flex-col md:flex-row justify-between px-4 items-center mt-4">
+            <div className="text-sm mb-2 md:mb-0">
+              Showing {startIndex + 1} to{" "}
+              {Math.min(endIndex, filteredOrders.length)} of{" "}
+              {filteredOrders.length} entries
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                className="px-2 py-1 text-sm font-semibold text-teal-600 border border-teal-600 rounded hover:bg-teal-100 disabled:opacity-50"
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+              >
+                « Previous
+              </button>
+              <span className="text-sm font-semibold bg-teal-600 text-white px-3 py-1 border border-teal-600 rounded">
+                {currentPage}
+              </span>
+              <button
+                className="px-4 py-1 text-sm font-semibold text-teal-600 border border-teal-600 rounded hover:bg-teal-100 disabled:opacity-50"
+                onClick={() =>
+                  setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                }
+                disabled={currentPage === totalPages}
+              >
+                Next »
+              </button>
+            </div>
+          </div>
           {modalVisible && (
             <InvoiceModal
               order={selectedOrder}

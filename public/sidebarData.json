@@ -1,4 +1,3 @@
-
 [
   {
     "title": "Dashboard",
@@ -9,7 +8,6 @@
     "title": "Config",
     "icon": "FaCogs",
     "submenu": [
-      
       {
         "title": "User",
         "path": "/config/user"
@@ -18,10 +16,6 @@
         "title": "Invoice",
         "path": "/config/invoice"
       }
-      
-     
-      
-      
     ]
   },
   {
@@ -36,13 +30,11 @@
         "title": "All Product",
         "path": "/product/all-product"
       },
-    
-     
+
       {
         "title": "Variation",
         "path": "/product/variation"
       }
-     
     ]
   },
   {
@@ -54,7 +46,6 @@
     "title": "Order",
     "icon": "FaShoppingCart",
     "submenu": [
-     
       {
         "title": "Online Order",
         "path": "/online-order"
@@ -63,18 +54,12 @@
         "title": "Order",
         "path": "/order"
       }
-   
     ]
   },
-  
 
- 
   {
     "title": "Customer",
     "path": "/customer",
     "icon": "FaUser"
   }
-
 ]
-
-

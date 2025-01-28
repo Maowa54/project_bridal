@@ -14,8 +14,8 @@ export default {
         "custom-xl": "1656px", // Custom screen size for 1656px
       },
       backgroundImage: {
-        "gradient-custom": "linear-gradient(to right, #20FFD2, #0D9470)",
-        "sidebar-gradient-custom": "linear-gradient(to bottom, #20FFD2, #0D9470)", // More light-to-dark teal
+        "gradient-custom": "linear-gradient(to right, #0D9470, #20FFD2)",
+        "sidebar-gradient-custom": "linear-gradient(to right, #20FFD2, #0D9470)", // More light-to-dark teal
       },
       fontFamily: {
         airstrip: ["Airstrip Four", "sans-serif"], // Fallback to sans-serif

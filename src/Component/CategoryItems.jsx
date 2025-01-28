@@ -3,9 +3,10 @@ import Select from "react-select";
 import axios from "axios";
 
 const CategoryItems = ({ categoryId = null, onCategoryIdChange }) => {
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState([]); // Raw categories from API
+  const [categoryOptions, setCategoryOptions] = useState([]); // Flattened options for Select
   const [selectedCategory, setSelectedCategory] = useState(null);
-  
+
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -14,65 +15,61 @@ const CategoryItems = ({ categoryId = null, onCategoryIdChange }) => {
         console.error("No token found.");
         return;
       }
-      
+
       try {
-        const response = await axios.get(`https://admin.attireidyll.com/api/category/get_all`, {
+        const response = await axios.get("https://admin.attireidyll.com/api/category/get_all", {
           headers: {
-            'Authorization': `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
           },
         });
-    
+
         const categories = response.data.data || [];
         setCategories(categories);
-    
+        setCategoryOptions(flattenCategories(categories));
       } catch (error) {
-        console.error('Error fetching categories:', error);
+        console.error("Error fetching categories:", error);
       }
     };
-  
+
     fetchCategories();
   }, [token]);
 
-  // Update selected category when categoryId prop changes
   useEffect(() => {
-    if (categoryId) {
+    if (categoryId && categories.length > 0) {
       const selected = categories.find(category => category.id === categoryId);
       setSelectedCategory(selected ? { value: selected.id, label: selected.name } : null);
     }
   }, [categoryId, categories]);
 
   const flattenCategories = (categories) => {
-    return categories.reduce((acc, category) => {
-      // Add the parent category
-      acc.push({ label: category.name, value: category.id });
-      
-      // Add children categories
+    const processedIds = new Set(); // Prevent duplicates
+
+    const processCategory = (category, prefix = "") => {
+      if (processedIds.has(category.id)) return [];
+
+      processedIds.add(category.id);
+      const result = [
+        { label: `${prefix}${category.name}`, value: category.id },
+      ];
+
       if (category.children && category.children.length > 0) {
-        category.children.forEach((child) => {
-          acc.push({ label: `-- ${child.name}`, value: child.id });
-          
-          // Add grandchildren categories
-          if (child.children && child.children.length > 0) {
-            child.children.forEach((grandchild) => {
-              acc.push({ label: `---- ${grandchild.name}`, value: grandchild.id });
-            });
-          }
+        category.children.forEach(child => {
+          result.push(...processCategory(child, `${prefix}-- `));
         });
       }
-      
-      return acc;
-    }, []);
+
+      return result;
+    };
+
+    return categories.flatMap(category => processCategory(category));
   };
 
-  const categoryOptions = flattenCategories(categories);
-
   const handleCategoryChange = (selectedOption) => {
-    console.log(selectedOption);
+    setSelectedCategory(selectedOption);
     if (selectedOption) {
-      setSelectedCategory(selectedOption);
-      onCategoryIdChange(selectedOption.value); // Call parent function if needed
+      onCategoryIdChange?.(selectedOption.value); // Optional callback
     } else {
-      setSelectedCategory(null); // Clear selection if none selected
+      onCategoryIdChange?.(null);
     }
   };
 
@@ -80,7 +77,7 @@ const CategoryItems = ({ categoryId = null, onCategoryIdChange }) => {
     <div>
       <Select
         options={categoryOptions}
-        value={selectedCategory} // Control the selected category value
+        value={selectedCategory}
         placeholder="Select a category"
         className="text-sm"
         isClearable

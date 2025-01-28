@@ -233,18 +233,7 @@ const AllVariation = () => {
                   </td>
                   <td className="px-4 py-2  text-sm text-gray-700">
                     <div className="flex gap-2">
-                      <button data-tooltip-id="viewTooltipId">
-                        <FaEye className="text-blue-500 text-lg   pl-1" />
-                      </button>
-                      <ReactTooltip
-                        id="viewTooltipId"
-                        place="top"
-                        content="View Details"
-                        style={{
-                          fontSize: "11px", // Adjust text size
-                          padding: "4px 8px", // Adjust padding
-                        }}
-                      />
+                    
 
                       <button
                         data-tooltip-id="editTooltipId"

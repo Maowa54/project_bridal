@@ -20,8 +20,49 @@ const OnlineOrder = () => {
   const [selectAll, setSelectAll] = useState(false);
   const [loading, setLoading] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(20);
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const onlineOrders = online.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(online.length / itemsPerPage);
+
+  const handleItemsPerPageChange = (e) => {
+    setItemsPerPage(Number(e.target.value));
+    setCurrentPage(1); // Reset to first page when items per page changes
+  };
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    const fetchOnlineOrders = async () => {
+      try {
+        setIsLoading(true);
+        const response = await axios.get(
+          `https://admin.attireidyll.com/api/online/orders/get`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response.data.status) {
+          const orders = response.data.data.data;
+          setOnline(orders);
+        } else {
+          console.error("Failed to fetch orders:", response.data.message);
+        }
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      } finally {
+        setIsLoading(false); // End loading
+      }
+    };
+
+    fetchOnlineOrders();
+  }, [token]);
 
   const fetchCancelOrder = async (orderId) => {
     const formData = new FormData();
@@ -64,35 +105,6 @@ const OnlineOrder = () => {
       setLoading(false); // End loading
     }
   };
-
-  useEffect(() => {
-    const fetchOnlineOrders = async () => {
-      try {
-        setIsLoading(true);
-        const response = await axios.get(
-          `https://admin.attireidyll.com/api/online/orders/get`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        if (response.data.status) {
-          const orders = response.data.data.data;
-          setOnline(orders);
-        } else {
-          console.error("Failed to fetch orders:", response.data.message);
-        }
-      } catch (error) {
-        console.error("Error fetching orders:", error);
-      } finally {
-        setIsLoading(false); // End loading
-      }
-    };
-
-    fetchOnlineOrders();
-  }, [token]);
 
   const handleSelectAll = () => {
     if (selectAll) {
@@ -228,7 +240,25 @@ const OnlineOrder = () => {
         </h1>
       </div>
 
-      <div className="overflow-x-auto  my-6 ">
+      <div className="mt-4 flex items-center gap-3 ">
+        <div className="px-1">
+          <select
+            className="rounded border text-sm border-[#2B2F67] bg-white -md h-8 w-24 md:w-20 flex"
+            id="paginate_input"
+            value={itemsPerPage}
+            onChange={handleItemsPerPageChange}
+          >
+            <option value="50">50</option>
+            <option value="100">100</option>
+            <option value="200">200</option>
+            <option value="300">300</option>
+            <option value="400">400</option>
+            <option value="500">500</option>
+          </select>
+        </div>
+      </div>
+
+      <div className="overflow-x-auto  mt-4 ">
         <table className="min-w-full text-nowrap">
           <thead className="text-base  text-gray-600 -2">
             <tr>
@@ -274,8 +304,8 @@ const OnlineOrder = () => {
                   <h1>Online Orders...</h1>
                 </td>
               </tr>
-            ) : online.length > 0 ? ( // Check if online array has data
-              online.map((order, index) => (
+            ) : onlineOrders.length > 0 ? ( // Check if online array has data
+              onlineOrders.map((order, index) => (
                 <tr key={order.id} className="hover border-b cursor-pointer">
                   <td className="px-4 py-2 border-gray-300 text-sm text-gray-600 flex flex-col">
                     <span>{formatDate(order.created_at)}</span>
@@ -410,6 +440,38 @@ const OnlineOrder = () => {
           </tbody>
         </table>
 
+        {/* Pagination  */}
+        <div className="flex flex-col md:flex-row justify-between px-4 items-center mt-4">
+          <div className="text-sm mb-2 md:mb-0">
+            Showing {startIndex + 1} to {Math.min(endIndex, online.length)} of{" "}
+            {online.length} entries
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              className="px-2 py-1 text-sm font-semibold text-teal-600 border border-teal-600 rounded hover:bg-teal-100 disabled:opacity-50"
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+            >
+              « Previous
+            </button>
+
+            {/* Dynamic Page Number */}
+            <span className="text-sm font-semibold bg-teal-600 text-white px-3 py-1 border border-teal-600 rounded">
+              {currentPage}
+            </span>
+
+            <button
+              className="px-4 py-1 text-sm font-semibold text-teal-600 border border-teal-600 rounded hover:bg-teal-100 disabled:opacity-50"
+              onClick={() =>
+                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+              }
+              disabled={currentPage === totalPages}
+            >
+              Next »
+            </button>
+          </div>
+        </div>
+
         {isModalOpen && selectedOrder && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="modal modal-open">
@@ -489,8 +551,7 @@ const OnlineOrder = () => {
         )}
       </div>
 
-      
-      <Footer_Backend  />
+      <Footer_Backend />
     </div>
   );
 };

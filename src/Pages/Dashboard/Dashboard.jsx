@@ -626,13 +626,13 @@ const Dashboard = () => {
                 labels: ["Bridal", "Woman", "Kids", "Man "],
                 datasets: [
                   {
-                    data: [30, 25, 20, 15, 10], // Replace with your actual data
+                    data: [30, 25, 20, 15], // Replace with your actual data
                     backgroundColor: [
                       "#FF5733",
                       "#33FF57",
                       "#3357FF",
                       "#FF33A1",
-                      "#FFDA33",
+                      
                     ],
                   },
                 ],

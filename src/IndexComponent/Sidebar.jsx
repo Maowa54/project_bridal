@@ -77,31 +77,12 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
         isOpen ? "translate-x-0" : "-translate-x-full"
       } w-64`}
     >
-      <nav className="flex flex-col h-full  p-4">
-        {/* <div
-          className={`${isOpen ? "block" : "hidden"} flex-col items-center text-center`}
-        >
-          <img
-            src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuvGkYBiFtH47daT222JlR9hejHnoYre9PLCbteJN_o5Vo-F41yNbWJwz5M4hcC_oHQIQ&usqp=CAU'
-            alt="User"
-            className="rounded-full w-16 h-16 mx-auto"
-          />
-          <div className="text-xl font-bold mt-2">User Name</div>
-          <h2 className=" text-gray-200 font-semibold">User ID: 123456</h2>
-          <h2 className=" text-gray-200 font-semibold">Referral ID: 7891011</h2>
-          <h2 className=" text-gray-200 font-semibold">Standard</h2>
-          <h2 className=" text-gray-200 font-semibold">500 SMS</h2>
-        </div> */}
-        <div>
-          {" "}
-          <h1 className="text-2xl font-semibold text-center">Attire Idyll</h1>
-        </div>
-        {/* Wrapper for scrollable menu */}
-        <div className="font-semibold md:text-lg mt-6 overflow-y-auto">
+      <nav className="flex flex-col h-full p-4">
+        <h1 className="text-2xl font-semibold text-center">Attire Idyll</h1>
+        <div className="font-semibold md:text-lg mt-6 overflow-y-auto scrollbar-customize">
           <ul>
             {menuItems.map((item) => (
               <React.Fragment key={item.title}>
-                {/* Render the item with submenu */}
                 {item.submenu ? (
                   <>
                     <li
@@ -121,7 +102,11 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                         )}
                       </button>
                     </li>
-                    {openMenu === item.title && (
+                    <div
+                      className={`overflow-hidden transition-all duration-700 ease-in-out max-h-0 ${
+                        openMenu === item.title ? "max-h-screen" : ""
+                      }`}
+                    >
                       <ul className="ml-8 text-sm md:text-base">
                         {item.submenu.map((subItem) => (
                           <li key={subItem.title} className="py-2 list-none ">
@@ -143,16 +128,15 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                           </li>
                         ))}
                       </ul>
-                    )}
+                    </div>
                   </>
                 ) : (
-                  /* Render the item without submenu */
                   <li className="flex items-center py-2">
                     <NavLink
                       to={item.path}
                       className={({ isActive }) =>
                         isActive
-                          ? "bg-teal-700 text-white p-2 w-full rounded flex items-center ml-4 "
+                          ? "bg-teal-700 text-white p-2 w-full rounded flex items-center ml-4"
                           : "p-2 w-full text-gray-100 hover:bg-teal-600 hover:text-white ml-4 rounded flex items-center"
                       }
                       onClick={closeSidebar}

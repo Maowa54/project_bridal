@@ -5,21 +5,36 @@ import AllSelectedBusiness from "../../Component/AllSelectedBusiness";
 import Footer_Backend from "../../Component/Backend/Footer_Backend";
 
 const Customer = () => {
-  const [customers, setCustomers] = useState([]);
 
   const token = localStorage.getItem("token");
-  const userId = localStorage.getItem("userId");
+  const [customers, setCustomers] = useState([]); // Raw data
+  const [filteredCustomers, setFilteredCustomers] = useState([]); // Derived data
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
+  // Calculate pagination details
+  const totalPages = Math.ceil(filteredCustomers.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentCustomers = filteredCustomers.slice(startIndex, endIndex);
+
+  // Handle items per page change
+  const handleItemsPerPageChange = (e) => {
+    setItemsPerPage(Number(e.target.value));
+    setCurrentPage(1); // Reset to first page
+  };
+
+  // Fetch customers from API or cache
   useEffect(() => {
     const fetchCustomers = async () => {
-      try {
-        const cacheKey = "customers";
-        const cacheTimeKey = "customers_timestamp";
-        const cacheValidityDuration = 1 * 60 * 60 * 1000; // 2 hours
+      const cacheKey = "customers";
+      const cacheTimeKey = "customers_timestamp";
+      const cacheValidityDuration = 2 * 60 * 60 * 1000; // 2 hours
 
+      try {
+        // Check localStorage for cached data
         const cachedData = localStorage.getItem(cacheKey);
         const cachedTimestamp = localStorage.getItem(cacheTimeKey);
-
         const now = Date.now();
 
         if (
@@ -27,11 +42,13 @@ const Customer = () => {
           cachedTimestamp &&
           now - cachedTimestamp < cacheValidityDuration
         ) {
-          setCustomers(JSON.parse(cachedData));
+          const parsedData = JSON.parse(cachedData);
+          setCustomers(parsedData);
+          setFilteredCustomers(parsedData);
           return;
         }
 
-        // Otherwise, make the API call
+        // If no valid cache, fetch from API
         const response = await axios.get(
           `https://admin.attireidyll.com/api/customer/get`,
           {
@@ -41,10 +58,12 @@ const Customer = () => {
           }
         );
 
-        const customers = response.data.data || [];
-        localStorage.setItem(cacheKey, JSON.stringify(customers));
+        const fetchedCustomers = response.data.data || [];
+        localStorage.setItem(cacheKey, JSON.stringify(fetchedCustomers));
         localStorage.setItem(cacheTimeKey, now.toString());
-        setCustomers(customers);
+
+        setCustomers(fetchedCustomers);
+        setFilteredCustomers(fetchedCustomers);
       } catch (error) {
         console.error(
           "Error fetching customers:",
@@ -56,7 +75,8 @@ const Customer = () => {
     fetchCustomers();
   }, [token]);
 
-  console.log(customers);
+
+
 
   return (
     <div>
@@ -65,6 +85,24 @@ const Customer = () => {
           <h1 className="text-lg md:text-lg font-medium text-gray-700 ">
             Customer
           </h1>
+        </div>
+
+        <div className=" mt-4 flex items-center gap-3 ">
+          <div>
+            <select
+              className="rounded border text-sm border-[#2B2F67] bg-white -md h-8 w-24 md:w-20 flex"
+              id="paginate_input"
+              value={itemsPerPage}
+              onChange={handleItemsPerPageChange}
+            >
+              <option value="50">50</option>
+              <option value="100">100</option>
+              <option value="200">200</option>
+              <option value="300">300</option>
+              <option value="400">400</option>
+              <option value="500">500</option>
+            </select>
+          </div>
         </div>
 
         <div className="overflow-x-auto  my-6 ">
@@ -103,7 +141,7 @@ const Customer = () => {
               {customers.map((customer, index) => (
                 <tr key="" className="hover cursor-pointer">
                   <th className="px-4 py-2 border-b border-gray-300 text-sm text-gray-700">
-                    {index + 1}
+                    {startIndex + index + 1}
                   </th>
                   <td className="px-4 py-2 border-b border-gray-300 text-sm text-gray-700">
                     {customer.c_name}
@@ -134,11 +172,39 @@ const Customer = () => {
               ))}
             </tbody>
           </table>
+     {/* Pagination */}
+     <div className="flex flex-col md:flex-row justify-between px-4 items-center mt-4">
+        <div className="text-sm mb-2 md:mb-0">
+          Showing {filteredCustomers.length > 0 ? startIndex + 1 : 0} to{" "}
+          {Math.min(endIndex, filteredCustomers.length)} of{" "}
+          {filteredCustomers.length} entries
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            className="px-2 py-1 text-sm font-semibold text-teal-600 border border-teal-600 rounded hover:bg-teal-100 disabled:opacity-50"
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+          >
+            « Previous
+          </button>
+          <span className="text-sm font-semibold bg-teal-600 text-white px-3 py-1 border border-teal-600 rounded">
+            {currentPage}
+          </span>
+          <button
+            className="px-4 py-1 text-sm font-semibold text-teal-600 border border-teal-600 rounded hover:bg-teal-100 disabled:opacity-50"
+            onClick={() =>
+              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+            }
+            disabled={currentPage === totalPages || totalPages === 0}
+          >
+            Next »
+          </button>
         </div>
       </div>
-   
-        <Footer_Backend />
- 
+        </div>
+      </div>
+
+      <Footer_Backend />
     </div>
   );
 };

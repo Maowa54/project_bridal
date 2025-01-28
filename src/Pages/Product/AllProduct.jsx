@@ -16,7 +16,7 @@ const AllProduct = () => {
   const navigate = useNavigate();
   const [productsToDisplay, setProductsToDisplay] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [itemsPerPage, setItemsPerPage] = useState(20);
   const [currentPage, setCurrentPage] = useState(1);
   const token = localStorage.getItem("token");
 
@@ -159,12 +159,12 @@ const AllProduct = () => {
               value={itemsPerPage}
               onChange={handleItemsPerPageChange}
             >
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="20">20</option>
               <option value="50">50</option>
               <option value="100">100</option>
               <option value="200">200</option>
+              <option value="300">300</option>
+              <option value="400">400</option>
+              <option value="500">500</option>
             </select>
             <button className="bg-gray-500 hover:bg-gray-400 text-sm  text-white px-4 py-1 rounded -md flex items-center transition">
               <FaFileExport className="mr-2" />
@@ -342,15 +342,17 @@ const AllProduct = () => {
             </div>
             <div className="flex items-center gap-2">
               <button
-                className="p-2 text-sm font-semibold text-teal-600 border border-teal-600 rounded hover:bg-teal-100 disabled:opacity-50"
+                className="px-2 py-1 text-sm font-semibold text-teal-600 border border-teal-600 rounded hover:bg-teal-100 disabled:opacity-50"
                 onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                 disabled={currentPage === 1}
               >
                 « Previous
               </button>
-              <span className="text-sm font-semibold">{currentPage}</span>
+              <span className="text-sm font-semibold bg-teal-600 text-white px-3 py-1 border border-teal-600 rounded">
+                {currentPage}
+              </span>
               <button
-                className="px-4 py-2 text-sm font-semibold text-teal-600 border border-teal-600 rounded hover:bg-teal-100 disabled:opacity-50"
+                className="px-4 py-1  text-sm font-semibold text-teal-600 border border-teal-600 rounded hover:bg-teal-100 disabled:opacity-50"
                 onClick={() =>
                   setCurrentPage((prev) => Math.min(prev + 1, totalPages))
                 }

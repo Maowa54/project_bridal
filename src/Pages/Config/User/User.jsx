@@ -27,12 +27,14 @@ const User = () => {
   const [editPassword, setEditPassword] = useState("");
   const [editConfirmPassword, setEditConfirmPassword] = useState("");
 
-  const [users, setUsers] = useState([]);
-
   const [errors, setErrors] = useState({});
 
   const token = localStorage.getItem("token");
   const userId = localStorage.getItem("userId");
+
+  const [users, setUsers] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   const fetchUser = async () => {
     try {
@@ -56,6 +58,17 @@ const User = () => {
   useEffect(() => {
     fetchUser();
   }, [token]);
+
+  const totalPages = Math.ceil(users.length / itemsPerPage);
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const displayedUsers = users.slice(startIndex, endIndex);
+
+  const handleItemsPerPageChange = (e) => {
+    setItemsPerPage(Number(e.target.value));
+    setCurrentPage(1); // Reset to first page when items per page changes
+  };
 
   const handleSave = async (e) => {
     e.preventDefault();
@@ -206,7 +219,7 @@ const User = () => {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!",
     });
-  
+
     if (result.isConfirmed) {
       try {
         const response = await axios.delete(
@@ -217,14 +230,14 @@ const User = () => {
             },
           }
         );
-  
+
         if (response.data.status) {
           Swal.fire(
             "Deleted!",
             response.data.message || "User deleted successfully.",
-            "success"  // Added success to indicate proper action
+            "success" // Added success to indicate proper action
           );
-  
+
           // Corrected the state update to setUsers instead of setDisplayOrders
           setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
         } else {
@@ -243,7 +256,7 @@ const User = () => {
       }
     }
   };
-  
+
   return (
     <div>
       <div className="">
@@ -258,6 +271,24 @@ const User = () => {
             >
               Add New
             </button>
+          </div>
+
+          <div className=" mt-4 flex items-center gap-3 ">
+            <div className="px-1">
+              <select
+                className="rounded border text-sm border-[#2B2F67] bg-white -md h-8 w-24 md:w-20 flex"
+                id="paginate_input"
+                value={itemsPerPage}
+                onChange={handleItemsPerPageChange}
+              >
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="200">200</option>
+                <option value="300">300</option>
+                <option value="400">400</option>
+                <option value="500">500</option>
+              </select>
+            </div>
           </div>
 
           <form onSubmit={handleSave}>
@@ -398,7 +429,7 @@ const User = () => {
               </tr>
             </thead>
             <tbody className="">
-              {users.map((user, index) => (
+              {displayedUsers.map((user, index) => (
                 <tr
                   key={user.id || index}
                   className="hover cursor-pointer border-b"
@@ -457,6 +488,37 @@ const User = () => {
               ))}
             </tbody>
           </table>
+          {/* Pagination */}
+          <div className="flex flex-col md:flex-row justify-between px-2 items-center mt-4">
+            <div className="text-sm mb-2 md:mb-0">
+              Showing {startIndex + 1} to {Math.min(endIndex, users.length)} of{" "}
+              {users.length} entries
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                className="px-2 py-1 text-sm font-semibold text-teal-600 border border-teal-600 rounded hover:bg-teal-100 disabled:opacity-50"
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+              >
+                « Previous
+              </button>
+
+              {/* Dynamic Page Number */}
+              <span className="text-sm font-semibold bg-teal-600 text-white px-3 py-1 border border-teal-600 rounded">
+                {currentPage}
+              </span>
+
+              <button
+                className="px-4 py-1 text-sm font-semibold text-teal-600 border border-teal-600 rounded hover:bg-teal-100 disabled:opacity-50"
+                onClick={() =>
+                  setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                }
+                disabled={currentPage === totalPages}
+              >
+                Next »
+              </button>
+            </div>
+          </div>
 
           {isModalOpen && (
             <dialog id="" className="modal w-full" open>

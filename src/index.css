@@ -379,7 +379,7 @@ body {
 /* Custom scrollbar for category list */
 .scrollbar-customize {
   overflow-y: auto; /* Enable vertical scrolling */
-  max-height: 20rem; /* Set a maximum height for the scrollable area */
+  max-height: auto; /* Set a maximum height for the scrollable area */
 }
 
 /* Custom scrollbar styles for WebKit browsers (Chrome, Safari, Edge) */

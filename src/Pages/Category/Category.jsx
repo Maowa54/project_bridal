@@ -161,60 +161,66 @@ const Category = () => {
     }
   };
 
-  // Recursive Rendering Function
-  const renderCategories = (categoriesList, level = 0, parentIndices = []) => {
+  const renderCategories = (
+    categoriesList,
+    level = 0,
+    parentIndices = [],
+    processedIds = new Set()
+  ) => {
     return categoriesList.map((category, index) => {
+      // Skip duplicates
+      if (processedIds.has(category.id)) return null;
+      processedIds.add(category.id);
+
       const currentIndices = [...parentIndices, index + 1];
       const sl = currentIndices.join(".");
 
       return (
         <React.Fragment key={category.id}>
-          <tr className="hover  text-nowrap cursor-pointer">
+          <tr className="hover text-nowrap cursor-pointer">
+            {/* SL Column */}
             <td className="px-4 py-2 border-b border-gray-300 text-sm text-gray-700">
               {sl}
             </td>
+            {/* Name Column */}
             <td
-              className=" px-4 py-2 border-b border-gray-300 text-sm text-gray-700"
+              className="px-4 py-2 border-b border-gray-300 text-sm text-gray-700"
               style={{ paddingLeft: `${level * 20}px` }}
             >
-              {level > 0 && (
-                <span className="mr-2 text-gray-500 ">—</span> // Indicate hierarchy
-              )}
+              {level > 0 && <span className="mr-2 text-gray-500">—</span>}
               {category.name}
             </td>
+            {/* Action Column */}
             <td className="px-4 py-2 border-b border-gray-300 text-sm text-gray-700">
-              <div className="flex gap-2">
+              <div className="flex gap-2 justify-center">
                 <button
-                  data-tooltip-id="editTooltipId"
+                  data-tooltip-id={`editTooltip-${category.id}`}
                   onClick={() => handleEdit(category)}
                 >
                   <FaRegEdit className="text-green-500 text-lg pl-1" />
                 </button>
-
                 <ReactTooltip
-                  id="editTooltipId"
+                  id={`editTooltip-${category.id}`}
                   place="top"
                   content="Edit"
                   style={{
-                    fontSize: "11px", // Adjust text size
-                    padding: "4px 8px", // Adjust padding
+                    fontSize: "11px",
+                    padding: "4px 8px",
                   }}
                 />
-
                 <button
-                  data-tooltip-id="deleteTooltipId"
+                  data-tooltip-id={`deleteTooltip-${category.id}`}
                   onClick={() => handleDelete(category.id)}
                 >
                   <MdDeleteForever className="text-red-500 text-lg" />
                 </button>
-
                 <ReactTooltip
-                  id="deleteTooltipId"
+                  id={`deleteTooltip-${category.id}`}
                   place="top"
-                  content="Delete "
+                  content="Delete"
                   style={{
-                    fontSize: "11px", // Adjust text size
-                    padding: "4px 8px", // Adjust padding
+                    fontSize: "11px",
+                    padding: "4px 8px",
                   }}
                 />
               </div>
@@ -223,7 +229,12 @@ const Category = () => {
           {/* Render Children Recursively */}
           {category.children &&
             category.children.length > 0 &&
-            renderCategories(category.children, level + 1, currentIndices)}
+            renderCategories(
+              category.children,
+              level + 1,
+              currentIndices,
+              processedIds
+            )}
         </React.Fragment>
       );
     });
@@ -275,31 +286,29 @@ const Category = () => {
             </div>
           </form>
         </div>
-
-        <div className="overflow-x-auto  my-6 ">
-          <table className="min-w-full ">
-            <thead className="">
+        <div className="overflow-x-auto my-6">
+          <table className="min-w-full">
+            <thead>
               <tr>
-                <th className="px-4 py-2 border-b border-gray-300 text-left text-sm font-medium text-gray-800">
+                <th className="px-4 py-2 border-b border-gray-300 text-sm font-medium text-gray-800 text-left">
                   SL
                 </th>
-                <th className="px-4 py-2 border-b border-gray-300 text-left text-sm font-medium text-gray-800">
+                <th className="px-4 py-2 border-b border-gray-300 text-sm font-medium text-gray-800 text-left">
                   Name
                 </th>
-                <th className="px-4 py-2 border-b border-gray-300 text-left text-sm font-medium text-gray-800">
-                  {" "}
+                <th className="px-4 py-2 border-b border-gray-300 text-sm font-medium text-gray-800 text-center">
                   Action
                 </th>
               </tr>
             </thead>
-            <tbody className="">
+            <tbody>
               {categories.length > 0 ? (
                 renderCategories(categories)
               ) : (
                 <tr>
                   <td
                     colSpan={3}
-                    className="text-center px-4 py-2 btext-sm text-gray-600"
+                    className="text-center px-4 py-2 text-sm text-gray-600"
                   >
                     <span className="loading loading-ring loading-md"></span>
                   </td>
